@@ -18,8 +18,6 @@ factor_columns <- c(
   'TypeHome',
   'sex',
   'MarStat',
-  'Edu',
-  'LiveBA',
   'DualInc',
   'HouseStat',
   'Ethnic',
@@ -27,6 +25,7 @@ factor_columns <- c(
 )
 age_data[factor_columns] <- lapply(age_data[factor_columns], factor)
 fit <- rpart(age ~ ., data = age_data)
+rpart.plot(fit)
 fit
 #First split: Marital status
 #Strong indicators of you are not having ever been married.
@@ -64,4 +63,4 @@ joe_data[factor_columns] <- lapply(joe_data[factor_columns], factor)
 predict(fit, joe_data)
 
 #result: 2.8, on the upper end of 18 through 24. I'm 29. Gotcha tree!
-rpart.plot(fit)
+
