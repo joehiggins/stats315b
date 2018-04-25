@@ -48,3 +48,50 @@ n <- 2
 \end{itemize}
 
 4. (5) Why can’t the prediction function be chosen from the class of all possible functions?
+
+Because then we would have a problem: there are many (infinite) solutions that minimize empirical risk and we can overfit. If our function class was all functions, we would get many bad and overfitting functions if we don't have enough data or we don't regularize our score with certain penalties.
+
+5. (5) What is the definition of the target function for a given problem? Is it always an accurate function for prediction? Why/why not?
+
+The target function is the function that minimizes prediction risk (expected value of loss). No it is not always an accurate function for prediction because...
+
+6. (5) Is the empirical risk evaluated on the training data always the best surrogate for the actual (population) prediction risk? Why/why not? In what settings would it be expected to be good?
+
+Often empirical risk evaluated on training data works well. However, this is not always the case. 
+
+7. (10) Suppose the loss for an incorrect classification prediction is the same regardless of either the predicted calue ck of the true value cl of the outcome y. Show that in this case misclassification risk reduces the classification error rate. What is the Bayes rule for this case in terms of the probabilities of y realizing each of its values PR(y=ck)Kk=1? Derive this rule from the gneral (unequal loss) Bayes rule, for this particular loss structure Lkl = 1(k != l).
+
+8. (5) Does a low error rate using a classification rule derived by substituting probability  KK
+ estimates {Pr(y = ck)}k=1 in place of the true probabilities{Pr(y = ck)}k=1 in the Bayes rule imply accurate estimates of those probabilities? Why?
+ 
+9. (5) Explain the bias-variance trade-off.
+
+The bias-variance trade-off states that in general if we increase model complexity, we tend to reduce squared bias but increase variance.
+
+An example of a high-bias low-variance estimating function is a constant (for a target function that is not a constant): there is a consistent and predictable bias, and there is no variance.
+
+However we can reduce bias by introducing more model complexity. Specifically, we can change the estimating function to rely on the data. As we increase model complexity by having it rely on the data, we inherently introduce variance since the it is assumed there is a random component to the data and thus our loss is random.
+
+10. Why not choose surrogate splits to best predict the outcome variable y rather than the primary split.
+
+11. Show the values of cm that minimize the squared-error risk score criterion:
+
+$$
+\begin{aligned}
+F(\textbf{x}) & = \sum_{m=1}^{M} c_m I(\textbf{x} \in R_m)\\
+S(\textbf{x}) & = \sum_{i=1}^{N} (y_i - F(\textbf{x}_i))^2\\
+S(\textbf{x}) & = \sum_{i=1}^{N} (y_i - \sum_{m=1}^{M} c_{m} I(\textbf{x}_i \in R_{m}))^2\\
+S(\textbf{x})_m & = \sum_{i=1i}^{N} (y_i -c_{m} I(\textbf{x}_i \in R_{m}))^2\\
+\frac{dS_m}{d\textbf{x}} & = \sum_{i=1i}^{N} [2(y_i -  c_m I(\textbf{x}_i \in R_m))(- c_m I(\textbf{x}_i \in R_m))]\\
+\text{set } \frac{dS_m}{d\textbf{x}} & = 0...\\
+0 &= \sum_{i=1i}^{N} [(y_i - c_m I(\textbf{x} \in R_m))(c_m I(\textbf{x} \in R_m))]\\
+0 &= \sum_{i=1i}^{N} y_i c_m I(\textbf{x} \in R_m) - c_m^2 I(\textbf{x} \in R_m)\\
+\sum_{i=1i}^{N} c_m^2 I(\textbf{x} \in R_m) &= \sum_{i=1i}^{N} y_i c_m I(\textbf{x} \in R_m) \\
+c_m^2 \sum_{i=1i}^{N} I(\textbf{x} \in R_m) &= c_m\sum_{i=1i}^{N} y_i I(\textbf{x} \in R_m) \\
+c_m &= \frac{\sum_{i=1i}^{N} y_i I(\textbf{x} \in R_m)}{\sum_{i=1i}^{N} I(\textbf{x} \in R_m)}\\
+\end{aligned}
+$$
+Since this $c_m$ minimizes each $S(\textbf{x})_m$ and $\sum_m S(\textbf{x})_m = S(\textbf{x})$ then this choice of $c_m$ minimizes $S(\textbf{x})$.
+
+
+
