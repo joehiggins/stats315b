@@ -94,4 +94,17 @@ $$
 Since this $c_m$ minimizes each $S(\textbf{x})_m$ and $\sum_m S(\textbf{x})_m = S(\textbf{x})$ then this choice of $c_m$ minimizes $S(\textbf{x})$.
 
 
+12. (10) Show that the improvement in squared-error risk (1) when one of the regions Rm is
+split into two daughter regions, where n is the number of observations in the parent Rm, nl, nr the numbers respectively in the left and right daughters, and y_l and y_r are the means of the outcome variable y for observations in the respective daughter regions.
 
+13. (10) Derive an updating formula for calculating the change in the improvement in prediction risk as the result of a split when the split is modified by one observation changing sides.
+
+14. Is this always a good idea? Will it necessarily lead to better expected mse on future data? Why or why not? Conversely, is it always better to reduce the size of F (increasing the restriction on g(x)), thereby fitting the training data less well? Why or why not?
+
+No it is not always a good idea. This can often lead to over-fitting. One example is polynomial fits. We can reduce MSE by allowing higher and higher order polynomials in F, but the result on new data may be worse than even a simple first order polynomial fit (linear model). The higher order polynomial will have many curves and pass through all the data points, but it will not generalize well. Therefor, is not always a good idea to  allow larger and larger function classes for scripty F.
+
+15. (5) The recursive partitioning strategy described in class for building decision trees uses two-way (binary) splits at each step. This is not fundamental, and one could envision multi-way splits of each non-terminal node creating several (rather than two) daughter regions with each split. What would be the relative advantages and disadvantages of a such a multi-way splitting strategy?
+
+16. (5) As described in class, the recursive binary splitting strategy considers splits that only involve a single input variable. One could generalize the procedure by including “linear combination” splits of the form
+
+where the sum is over the numeric input variables only. The values of the coefficients {aj} and the split points are (jointly) chosen to optimize the splitting criterion, which is same as that used for single variable splits. What would be the advantages and disadvantages of including such linear combination splits in the tree building strategy?

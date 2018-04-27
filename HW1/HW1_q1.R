@@ -23,7 +23,7 @@ factor_columns <- c(
   'Ethnic',
   'Lang'
 )
-age_data[factor_columns] <- lapply(age_data[factor_columns], factor)
+age_data[factor_columns] <- lapply(age_data[factor_columns], as.factor)
 fit <- rpart(age ~ ., data = age_data)
 rpart.plot(fit)
 fit
