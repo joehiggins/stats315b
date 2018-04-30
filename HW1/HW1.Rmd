@@ -23,7 +23,43 @@ library(rpart.plot)
 
 
 ```{r}
-n <- 2
+#Set working directory to data subdirectory
+current_path <- getActiveDocumentContext()$path 
+current_directory <- dirname(current_path)
+data_path <- paste(current_directory,'/data',sep='')
+setwd(data_path)
+
+#Read and type data
+age_data <- read.csv('age_stats315B.csv')
+factor_columns <- c(
+  'Occup',
+  'TypeHome',
+  'sex',
+  'MarStat',
+  'DualInc',
+  'HouseStat',
+  'Ethnic',
+  'Lang'
+)
+age_data[factor_columns] <- lapply(age_data[factor_columns], as.factor)
+fit <- rpart(age ~ ., data = age_data)
+rpart.plot(fit)
+
+#a)
+colnames(age_data)[fit$frame$nsurrogate]
+#yes there were surrogate splits used. Surrogates are variables used to classify data points
+#that have missing values for a given feature The surrogate variables used were:
+
+#b)
+ncols <- dim(age_data)[2]
+joe_data <- data.frame(matrix(ncol = ncols, nrow = 0))
+                             #1,2,3,4,5,6,7,8,9,10,11,12,13,14
+joe_data <- rbind(joe_data, c(3,1,3,1,5,6,9,3,1, 4, 0, 2, 8, 1))
+colnames(joe_data) <- colnames(age_data)
+joe_data[factor_columns] <- lapply(joe_data[factor_columns], factor)
+predict(fit, joe_data)
+
+#result: 2.8, on the upper end of 18 through 24. I'm 29. Gotcha tree!
 ```
 
 # Question 2
@@ -35,7 +71,38 @@ The goal in this problem is to construct a classification tree to predict the ty
 optimal tree. Plot the optimal tree if possible (otherwise plot a smaller tree) and interpret the results.
 
 ```{r results="hold"}
-n <- 2
+#Set working directory to data subdirectory
+current_path <- getActiveDocumentContext()$path 
+current_directory <- dirname(current_path)
+data_path <- paste(current_directory,'/data',sep='')
+setwd(data_path)
+
+#Read and type data
+house_data <- read.csv('housetype_stats315B.csv')
+factor_columns <- c(
+  'TypeHome',
+  'sex',
+  'MarStat',
+  'Occup',
+  'LiveBA',
+  'DualInc',
+  'HouseStat',
+  'Ethnic',
+  'Lang'
+)
+house_data[factor_columns] <- lapply(house_data[factor_columns], as.factor)
+fit <- rpart(TypeHome ~ ., data = house_data, method = 'class')
+rpart.plot(fit)
+
+#say something here
+
+#misclassification
+y_hat <- predict(fit, house_data)
+y_hat_max_p <- apply(y_hat,1,which.max)
+y <- house_data$TypeHome
+correct <- y == y_hat_max_p
+pct_correct <- sum(correct)/length(correct)
+1-pct_correct
 ```
 
 \pagebreak
@@ -53,7 +120,7 @@ Because then we would have a problem: there are many (infinite) solutions that m
 
 5. (5) What is the definition of the target function for a given problem? Is it always an accurate function for prediction? Why/why not?
 
-The target function is the function that minimizes prediction risk (expected value of loss). No it is not always an accurate function for prediction because...
+The target function is the function that minimizes prediction risk (expected value of loss). No it is not always an accurate function for prediction because... if you have a bad class of functions 
 
 6. (5) Is the empirical risk evaluated on the training data always the best surrogate for the actual (population) prediction risk? Why/why not? In what settings would it be expected to be good?
 
@@ -64,6 +131,8 @@ Often empirical risk evaluated on training data works well. However, this is not
 8. (5) Does a low error rate using a classification rule derived by substituting probability  KK
  estimates {Pr(y = ck)}k=1 in place of the true probabilities{Pr(y = ck)}k=1 in the Bayes rule imply accurate estimates of those probabilities? Why?
  
+To look at.
+ 
 9. (5) Explain the bias-variance trade-off.
 
 The bias-variance trade-off states that in general if we increase model complexity, we tend to reduce squared bias but increase variance.
@@ -73,6 +142,8 @@ An example of a high-bias low-variance estimating function is a constant (for a 
 However we can reduce bias by introducing more model complexity. Specifically, we can change the estimating function to rely on the data. As we increase model complexity by having it rely on the data, we inherently introduce variance since the it is assumed there is a random component to the data and thus our loss is random.
 
 10. Why not choose surrogate splits to best predict the outcome variable y rather than the primary split.
+
+jess has coverage
 
 11. Show the values of cm that minimize the squared-error risk score criterion:
 
@@ -97,7 +168,11 @@ Since this $c_m$ minimizes each $S(\textbf{x})_m$ and $\sum_m S(\textbf{x})_m = 
 12. (10) Show that the improvement in squared-error risk (1) when one of the regions Rm is
 split into two daughter regions, where n is the number of observations in the parent Rm, nl, nr the numbers respectively in the left and right daughters, and y_l and y_r are the means of the outcome variable y for observations in the respective daughter regions.
 
+We have some stuff... couldnt get math to work out yet.
+
 13. (10) Derive an updating formula for calculating the change in the improvement in prediction risk as the result of a split when the split is modified by one observation changing sides.
+
+should follow from 12.
 
 14. Is this always a good idea? Will it necessarily lead to better expected mse on future data? Why or why not? Conversely, is it always better to reduce the size of F (increasing the restriction on g(x)), thereby fitting the training data less well? Why or why not?
 
@@ -105,6 +180,10 @@ No it is not always a good idea. This can often lead to over-fitting. One exampl
 
 15. (5) The recursive partitioning strategy described in class for building decision trees uses two-way (binary) splits at each step. This is not fundamental, and one could envision multi-way splits of each non-terminal node creating several (rather than two) daughter regions with each split. What would be the relative advantages and disadvantages of a such a multi-way splitting strategy?
 
+it exists in lectures... more restrictive, likely better to do first split then look and do that same subsequent split if its still the best. maybe slower if greedy algo over all multi-splits.
+
 16. (5) As described in class, the recursive binary splitting strategy considers splits that only involve a single input variable. One could generalize the procedure by including “linear combination” splits of the form
 
 where the sum is over the numeric input variables only. The values of the coefficients {aj} and the split points are (jointly) chosen to optimize the splitting criterion, which is same as that used for single variable splits. What would be the advantages and disadvantages of including such linear combination splits in the tree building strategy?
+
+talks about in lecture.

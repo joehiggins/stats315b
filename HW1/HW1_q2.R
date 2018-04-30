@@ -27,7 +27,6 @@ factor_columns <- c(
 house_data[factor_columns] <- lapply(house_data[factor_columns], as.factor)
 fit <- rpart(TypeHome ~ ., data = house_data, method = 'class')
 rpart.plot(fit)
-fit
 
 #say something here
 
@@ -38,5 +37,4 @@ y <- house_data$TypeHome
 correct <- y == y_hat_max_p
 pct_correct <- sum(correct)/length(correct)
 1-pct_correct
-
 
