@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(dplyr)
 library(knitr)
-library(rstudioapi)
+#library(rstudioapi)
 library(rpart)
 library(rpart.plot)
 ```
@@ -23,11 +23,16 @@ library(rpart.plot)
 
 
 ```{r}
+rm(list = ls())
 #Set working directory to data subdirectory
-current_path <- getActiveDocumentContext()$path 
-current_directory <- dirname(current_path)
-data_path <- paste(current_directory,'/data',sep='')
+#current_path <- getActiveDocumentContext()$path 
+#current_directory <- dirname(current_path)
+#data_path <- paste(current_directory,'/data',sep='')
+#setwd(data_path)
+
+data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
+
 
 #Read and type data
 age_data <- read.csv('age_stats315B.csv')
@@ -71,10 +76,14 @@ The goal in this problem is to construct a classification tree to predict the ty
 optimal tree. Plot the optimal tree if possible (otherwise plot a smaller tree) and interpret the results.
 
 ```{r results="hold"}
+rm(list = ls())
 #Set working directory to data subdirectory
-current_path <- getActiveDocumentContext()$path 
-current_directory <- dirname(current_path)
-data_path <- paste(current_directory,'/data',sep='')
+#current_path <- getActiveDocumentContext()$path 
+#current_directory <- dirname(current_path)
+#data_path <- paste(current_directory,'/data',sep='')
+#setwd(data_path)
+
+data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
 
 #Read and type data
