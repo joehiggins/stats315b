@@ -1,6 +1,6 @@
 ---
 title: "Stats 315B: Homework 1"
-author: "Joe Higgins"
+author: "Joe Higgins, Austin Wang, Jessica Wetstone"
 date: "Due 5/6/2018"
 output: pdf_document
 ---
@@ -154,30 +154,118 @@ However we can reduce bias by introducing more model complexity. Specifically, w
 
 jess has coverage
 
-11. Show the values of cm that minimize the squared-error risk score criterion:
+# Question 11
+Show that the values of $c_m$ that minimize the squared-error risk score criterion are given by:
+$$
+\hat{c}_m = \frac{\sum_{i=1}^Ny_iI(x_i\in R_m)}{\sum_{i=1}^NI(x_i \in R_m)}
+$$
+
+We will show this by taking the partial derivative of the score function $S(\textbf{c})  = \sum_{i=1}^{N} [y_i \ - \sum_{k=1}^Mc_kI(x_i \in R_{k})]^2$ with respect to an arbitrary $c_m$:
 
 $$
 \begin{aligned}
-F(\textbf{x}) & = \sum_{m=1}^{M} c_m I(\textbf{x} \in R_m)\\
-S(\textbf{x}) & = \sum_{i=1}^{N} (y_i - F(\textbf{x}_i))^2\\
-S(\textbf{x}) & = \sum_{i=1}^{N} (y_i - \sum_{m=1}^{M} c_{m} I(\textbf{x}_i \in R_{m}))^2\\
-S(\textbf{x})_m & = \sum_{i=1i}^{N} (y_i -c_{m} I(\textbf{x}_i \in R_{m}))^2\\
-\frac{dS_m}{d\textbf{x}} & = \sum_{i=1i}^{N} [2(y_i -  c_m I(\textbf{x}_i \in R_m))(- c_m I(\textbf{x}_i \in R_m))]\\
-\text{set } \frac{dS_m}{d\textbf{x}} & = 0...\\
-0 &= \sum_{i=1i}^{N} [(y_i - c_m I(\textbf{x} \in R_m))(c_m I(\textbf{x} \in R_m))]\\
-0 &= \sum_{i=1i}^{N} y_i c_m I(\textbf{x} \in R_m) - c_m^2 I(\textbf{x} \in R_m)\\
-\sum_{i=1i}^{N} c_m^2 I(\textbf{x} \in R_m) &= \sum_{i=1i}^{N} y_i c_m I(\textbf{x} \in R_m) \\
-c_m^2 \sum_{i=1i}^{N} I(\textbf{x} \in R_m) &= c_m\sum_{i=1i}^{N} y_i I(\textbf{x} \in R_m) \\
-c_m &= \frac{\sum_{i=1i}^{N} y_i I(\textbf{x} \in R_m)}{\sum_{i=1i}^{N} I(\textbf{x} \in R_m)}\\
+S(\textbf{c})  &= \sum_{i=1}^{N} [y_i \ - \sum_{k=1}^Mc_kI(x_i \in R_{k})]^2 \\
+\implies \frac{\partial S}{\partial c_m} &= 2\sum_{i=1}^N[y_i \ - \sum_{k=1}^Mc_kI(x_i \in R_{k})](-I(x_i \in R_m)) \\
+&= -2\sum_{i=1}^Ny_iI(x_i \in R_m) \ + \ 2\sum_{i=1}^N\sum_{k=1}^Mc_kI(x_i \in R_{k})(I(x_i \in R_m)) \\
+&= -2\sum_{i=1}^Ny_iI(x_i \in R_m) \ + \ 2\sum_{i=1}^Nc_mI(x_i \in R_m) \\
 \end{aligned}
 $$
-Since this $c_m$ minimizes each $S(\textbf{x})_m$ and $\sum_m S(\textbf{x})_m = S(\textbf{x})$ then this choice of $c_m$ minimizes $S(\textbf{x})$.
+Let $\hat{c}_m$ be the value that sets $\frac{\partial S}{\partial c_m} = 0$. Then:
 
+$$
+\begin{aligned}
+-2\sum_{i=1}^Ny_iI(x_i \in R_m) \ + \ 2\sum_{i=1}^N\hat{c}_mI(x_i \in R_m) &= 0 \\
+\implies \sum_{i=1}^N\hat{c}_mI(x_i \in R_m) &= \sum_{i=1}^Ny_iI(x_i \in R_m) \\
+\implies \hat{c}_m\sum_{i=1}^NI(x_i \in R_m) &= \sum_{i=1}^Ny_iI(x_i \in R_m) \\
+\implies \hat{c}_m &= \frac{\sum_{i=1}^Ny_iI(x_i \in R_m)}{\sum_{i=1}^NI(x_i \in R_m)}
+\end{aligned}
+$$
 
-12. (10) Show that the improvement in squared-error risk (1) when one of the regions Rm is
-split into two daughter regions, where n is the number of observations in the parent Rm, nl, nr the numbers respectively in the left and right daughters, and y_l and y_r are the means of the outcome variable y for observations in the respective daughter regions.
+Finally, we show that this value is in fact the unique minimizer by examining the second derivative with respect to $c_m$:
 
-We have some stuff... couldnt get math to work out yet.
+$$
+\begin{aligned}
+\frac{\partial S}{\partial c_m} &= -2\sum_{i=1}^Ny_iI(x_i \in R_m) \ + \ 2\sum_{i=1}^Nc_mI(x_i \in R_m) \\
+\implies \frac{\partial^2 S}{\partial c_m^2} &= 2\sum_{i=1}^NI(x_i\in R_m) \\
+&> 0
+\end{aligned}
+$$
+where the final inequality comes from the fact that at least one training example must exist in $R_m$ for it to be defined.
+
+Therefore, the second partial derivative with respect to $c_m$ is strictly positive, so the score function is strictly convex in $c_m$ and admits a unique minimum given by $\hat{c}_m = \frac{\sum_{i=1}^Ny_iI(x_i\in R_m)}{\sum_{i=1}^NI(x_i \in R_m)} \qquad \blacksquare$.
+
+# Question 12
+Show that the improvement in squared-error risk (1) when one of the regions $R_m$ is split into two daughter regions, where n is the number of observations in the parent $R_m$, $n_l$, $n_r$ the numbers respectively in the left and right daughters, and $\bar{y_l}$ and $\bar{y_r}$ are the means of the outcome variable $y$ for observations in the respective daughter regions.
+
+To show this, we first define some notation. Let:
+$$
+\begin{aligned}
+\bar{m} &= \{k \ | \ x_k \in R_m \} \\
+\bar{l} &= \{k \ | \ x_k \in R_l \} \\
+\bar{r} &= \{k \ | \ x_k \in R_r \} \\
+\end{aligned}
+$$
+and note that this implies:
+$$
+\bar{l} \ \cup \ \bar{r} = \bar{m} 
+$$
+Now, we can define the squared-error risk from the full region $R_m$ and the squared-error risk from the daughter regions $R_l$ and $R_r$ as:
+$$
+\begin{aligned}
+S_m &= \sum_{i \in \bar{m}}(y_i - \bar{y}_m)^2 \\
+S_{lr} &= \sum_{i \in \bar{l}}(y_i - \bar{y}_l)^2 + \sum_{i \in \bar{r}}(y_i - \bar{y}_r)^2
+\end{aligned}
+$$
+where
+$$
+\begin{aligned}
+\bar{y}_m = \frac{1}{n}\sum_{i \in \bar{m}}y_i \\
+\bar{y}_l = \frac{1}{n_l}\sum_{i \in \bar{l}}y_i \\
+\bar{y}_r = \frac{1}{n_r}\sum_{i \in \bar{r}}y_i 
+\end{aligned}
+$$
+Note that from the above equations, we can derive the following result:
+$$
+\begin{aligned}
+\bar{y}_m &= \frac{1}{n}\sum_{i \in \bar{m}}y_i \\
+\implies \bar{y}_m &= \frac{1}{n}(\sum_{i \in \bar{l}}y_i + \sum_{i \in \bar{r}}y_i) \\
+\implies \bar{y}_m &= \frac{n_l}{n}\bar{y}_l + \frac{n_r}{n}\bar{y}_r
+\end{aligned}
+$$
+We are interested in the difference between $S_m$ and $S_{lr}$. Note that this will give the total improvement in the squared-error risk because the risk associated with other regions $\neq m$ is not affected by the splitting of region $m$ into two daughter regions. 
+
+We begin by rewriting the squared-error risks as follows:
+$$
+\begin{aligned}
+S_m &= \sum_{i \in \bar{m}}(y_i - \bar{y}_m)^2 \\
+&= \sum_{i \in \bar{m}}y_i^2 - 2\bar{y}_m\sum_{i \in \bar{m}}y_i \ + \sum_{i \in \bar{m}}\bar{y}_m^2 \\
+&= \sum_{i \in \bar{m}}y_i^2 \ -2n\bar{y}_m^2 \ + n\bar{y}_m^2 \\
+&= \sum_{i \in \bar{m}}y_i^2 \ - n\bar{y}_m^2
+\end{aligned}
+$$
+Similarly:
+$$
+\begin{aligned}
+S_{lr} &= \sum_{i \in \bar{l}}(y_i - \bar{y}_l)^2 \ + \sum_{i \in \bar{r}}(y_i - \bar{y}_r)^2  \\
+&= \sum_{i \in \bar{l}}y_i^2 \ - n_l\bar{y}_l^2 \ + \sum_{i \in \bar{r}}y_i^2 \ - n_r\bar{y}_r^2 \\
+&=  \sum_{i \in \bar{m}}y_i^2 \ - n_l\bar{y}_l^2 \ - n_r\bar{y}_r^2
+\end{aligned}
+$$
+Then, the improvement in the squared-error risk from splitting $R_m$ into the two daughter regions $R_l$ and $R_r$ is given by:
+$$
+\begin{aligned}
+S_m \ - S_{lr} &= (\sum_{i \in \bar{m}}y_i^2 \ - n\bar{y}_m^2) \ - (\sum_{i \in \bar{m}}y_i^2 \ - n_l\bar{y}_l^2 \ - n_r\bar{y}_r^2) \\
+&= - n\bar{y}_m^2 \  + n_l\bar{y}_l^2 \ + n_r\bar{y}_r^2 \\
+&= -n(\frac{n_l}{n}\bar{y}_l \  + \frac{n_r}{n}\bar{y}_r)^2 \  + n_l\bar{y}_l^2 \ + n_r\bar{y}_r^2 \\
+&= -n(\frac{n_l^2}{n^2}\bar{y}_l^2 \  + \ \frac{2n_ln_r}{n^2}\bar{y}_l\bar{y}_r\ + \ \frac{n_r^2}{n^2}\bar{y}_r^2) \  + n_l\bar{y}_l^2 \ + n_r\bar{y}_r^2 \\
+&= -\frac{n_l^2}{n}\bar{y}_l^2 \  - \ \frac{2n_ln_r}{n}\bar{y}_l\bar{y}_r\ - \ \frac{n_r^2}{n}\bar{y}_r^2 \ + n_l\bar{y}_l^2 \ + n_r\bar{y}_r^2 \\
+&= (\frac{nn_l - n_l^2}{n}\bar{y}_l^2) \ + (\frac{nn_r - n_r^2}{n}\bar{y}_r^2) - \ \frac{2n_ln_r}{n}\bar{y}_l\bar{y}_r \\
+&=  [\frac{(n_l + n_r)n_l - n_l^2}{n}\bar{y}_l^2] \ + [\frac{(n_l + n_r)n_r - n_r^2}{n}\bar{y}_r^2] - \ \frac{2n_ln_r}{n}\bar{y}_l\bar{y}_r \\
+&= \frac{n_ln_r}{n}\bar{y}_l^2 \ + \frac{n_ln_r}{n}\bar{y}_r^2 - \ \frac{2n_ln_r}{n}\bar{y}_l\bar{y}_r \\
+&= \frac{n_ln_r}{n}(\bar{y}_l^2 -2\bar{y}_l\bar{y}_r + \bar{y}_r^2) \\
+&= \frac{n_ln_r}{n}(\bar{y}_l - \bar{y}_r)^2 \qquad \blacksquare
+\end{aligned}
+$$
 
 13. (10) Derive an updating formula for calculating the change in the improvement in prediction risk as the result of a split when the split is modified by one observation changing sides.
 
