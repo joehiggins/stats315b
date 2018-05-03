@@ -119,40 +119,61 @@ pct_correct <- sum(correct)/length(correct)
 3. (5) What are the two main reasons why a model that accurately describes the data used to build it, may not do a good job describing future data?
 
 \begin{itemize}
-\item{Overfitting to training data}
-\item{Future data comes from different distribution than training data}
+        \item Any supervised learning model assumes stationarity in the data; namely that new examples will be drawn from the same $p(y|x)$ distribution as the training data.  If the $p(y|x)$ of future data is different than that of the training data, then no matter how good our model approximated the old distribution, we have no guarantees for future data.
+        \item Overfitting the training data: Another reason that a model might not accurately describe future data is if it has a lot of variance; i.e. it has learned too much of the noise in the training data and thus will not generalize well.
 \end{itemize}
 
 4. (5) Why can’t the prediction function be chosen from the class of all possible functions?
 
-Because then we would have a problem: there are many (infinite) solutions that minimize empirical risk and we can overfit. If our function class was all functions, we would get many bad and overfitting functions if we don't have enough data or we don't regularize our score with certain penalties.
+  If we expanded our function class to the class of all possible functions, then we could run into the following issues:
+\begin{itemize}
+\item The class of all possible functions doesn't have a feasible search strategy.
+\item There are many (infinite) solutions that minimize empirical risk so we will almost certainly overfit. While the class of all functions would obviously include the true target function, in searching for this function, we would likely run into other functions that perfectly explain our training data, leading us to choose an unreliable prediction function (a zero bias model but very high variance).
+\end{itemize}
 
 5. (5) What is the definition of the target function for a given problem? Is it always an accurate function for prediction? Why/why not?
 
-The target function is the function that minimizes prediction risk (expected value of loss). No it is not always an accurate function for prediction because... if you have a bad class of functions 
+The target function $F^*$ is the function that minimizes the expected loss over future predictions: $F^* = arg min_F E_{xy}L(y, F(x))$, where $E_{xy}$ is the expected value of the joint distribution of $\{y,x\}$ and the loss function $L(y, F(x))$ is a measure of the cost to the user when $y \neq F(x)$.
+
+The target function is not always an accurate function for prediction.  It is possible that the set of features $\bar{x}$ is just not very predictive of y overall, e.g. $y$ might actually depend on another set of latent variables that we didn't observe. It's also possible that $y$ depends so much on random noise that it is impossible to predict $y$ accurately (For example, suppose $y$ was random noise).
 
 6. (5) Is the empirical risk evaluated on the training data always the best surrogate for the actual (population) prediction risk? Why/why not? In what settings would it be expected to be good?
 
-Often empirical risk evaluated on training data works well. However, this is not always the case. 
+The empirical risk evaluated on the training data is not always the best surrogate for the actual population prediction risk. An analogy to better help understand this is to treat empirical risk as the sample mean and the population risk as the true population mean. While the sample mean converges to the population mean by the law of large numbers, for small sample sizes the variance of the sample mean will be very large and thus could be far off from the true population mean. Similarly, in small samples, the empirical risk has a higher variance and thus may not estimate the population prediction risk well. However, in settings where our training data set is very large, the variance is much smaller and therefore we expect the empirical risk to be a good estimate.
 
-7. (10) Suppose the loss for an incorrect classification prediction is the same regardless of either the predicted calue ck of the true value cl of the outcome y. Show that in this case misclassification risk reduces the classification error rate. What is the Bayes rule for this case in terms of the probabilities of y realizing each of its values PR(y=ck)Kk=1? Derive this rule from the gneral (unequal loss) Bayes rule, for this particular loss structure Lkl = 1(k != l).
+An explicit example where the empirical risk may not be the best surrogate for the population prediction risk would be one in which we have a small training set. In that case, using regularization techniques like enforcing an L1 or L2 penalty on the parameters in our model could lead to a better estimate for the population prediction risk. 
+
+7. (10) Suppose the loss for an incorrect classification prediction is the same regardless of either the predicted value $c_k$ or the true value $c_l$ of the outcome $y$. Show that in this case misclassification risk reduces to the classification error rate. What is the Bayes rule for this case in terms of the probabilities of $y$ realizing each of its values $\{Pr(y=c_k)\}_{k=1}^K$? Derive this rule from the general (unequal loss) Bayes rule, for this particular loss structure $L_{kl} = 1(k \neq l)$.
+
+The misclassification risk is $r = E_{y\bar{x}} L(y, \hat{c}(\bar{x})$.  
+
+If the cost of misclassification is constant for all values $l,k$ $c_l \neq c_k$, then $L( y = c_l, \hat{c}(\bar{x}) = c_k) = L_{lk} = I(l\neq k)$.
+
+So $r = E_{y \bar{x}} I(y \neq \hat{c}(\bar{x}))$, which is the error rate.
+
+We know that the general Bayes' optimal prediction rule states that:
+
 
 8. (5) Does a low error rate using a classification rule derived by substituting probability  KK
  estimates {Pr(y = ck)}k=1 in place of the true probabilities{Pr(y = ck)}k=1 in the Bayes rule imply accurate estimates of those probabilities? Why?
- 
-To look at.
- 
+
+Not necessarily. Imagine a scenario in which we have a data set with large class imbalance (majority of examples are class 0, few examples are class 1). Then we can use a substitute probability derived from the proportions present in our training set (For example, $P(y=0) = .98$ and $P(y=1) = 0.02$) and achieve high accuracy. However, this will not generalize if the true population classes are more balanced (close to 50/50). In other words, this does not work well if our sample data is not representative of the population.
+
 9. (5) Explain the bias-variance trade-off.
 
 The bias-variance trade-off states that in general if we increase model complexity, we tend to reduce squared bias but increase variance.
 
 An example of a high-bias low-variance estimating function is a constant (for a target function that is not a constant): there is a consistent and predictable bias, and there is no variance.
 
-However we can reduce bias by introducing more model complexity. Specifically, we can change the estimating function to rely on the data. As we increase model complexity by having it rely on the data, we inherently introduce variance since the it is assumed there is a random component to the data and thus our loss is random.
+However, we can reduce bias by introducing more model complexity. In this specific example, we can change the estimating function to actually rely on the data, for instance. With more model complexity, the noise in our data is amplified.  
+
+As we increase model complexity, we inherently introduce variance since it is assumed there is a random component to the data and thus our loss itself becomes random.
 
 10. Why not choose surrogate splits to best predict the outcome variable y rather than the primary split.
 
-jess has coverage
+The surrogate splits $\{j(l,m),s(l,m)\}_{l=2}^k$ are found by those splits that best predict the primary split  $\{j(1,m),s(1,m)\}$.  
+    
+If instead we chose a surrogate split to predict the outcome variable y instead of the primary split, we may encounter a problem: the rest of the tree would no longer be optimal, because it is expecting observations of a certain type - those dictated by the primary split. Each of the subsequent splits were chosen to optimize (greedily) for data of a certain structure, and using a surrogate split that best predicts y instead of the primary split may send observations of an unexpected structure to its daughters.
 
 # Question 11
 Show that the values of $c_m$ that minimize the squared-error risk score criterion are given by:
@@ -269,18 +290,28 @@ $$
 
 13. (10) Derive an updating formula for calculating the change in the improvement in prediction risk as the result of a split when the split is modified by one observation changing sides.
 
-should follow from 12.
+Austin to TeX
 
 14. Is this always a good idea? Will it necessarily lead to better expected mse on future data? Why or why not? Conversely, is it always better to reduce the size of F (increasing the restriction on g(x)), thereby fitting the training data less well? Why or why not?
 
-No it is not always a good idea. This can often lead to over-fitting. One example is polynomial fits. We can reduce MSE by allowing higher and higher order polynomials in F, but the result on new data may be worse than even a simple first order polynomial fit (linear model). The higher order polynomial will have many curves and pass through all the data points, but it will not generalize well. Therefor, is not always a good idea to  allow larger and larger function classes for scripty F.
+No it is not always a good idea to increase the size of the function class. This can often lead to over-fitting and an increase in variance.  One example is polynomial fits. We can reduce MSE by allowing higher and higher order polynomials in F, but the result on new data may be worse than even a simple first order polynomial fit (linear model). The higher order polynomial will have many curves and pass through all the data points, but it will not generalize well on future data. In other words, because $mse = bias^2 + variance$, if the decrease in bias from the higher order models does not compensate for the increase in variance, the mse on future data might be worse. Therefore, it is not always a good idea to  allow larger and larger function classes for F.
+
+Conversely, it is not always a better idea to reduce the size of F, increasing the bias of the model.  If the function class F is too restrictive, then the estimate of the target function that is found may be nowhere close to the true target function.  In this case, though the model may have low variance, it will not necessarily lead to a low mse on future data.
 
 15. (5) The recursive partitioning strategy described in class for building decision trees uses two-way (binary) splits at each step. This is not fundamental, and one could envision multi-way splits of each non-terminal node creating several (rather than two) daughter regions with each split. What would be the relative advantages and disadvantages of a such a multi-way splitting strategy?
 
-it exists in lectures... more restrictive, likely better to do first split then look and do that same subsequent split if its still the best. maybe slower if greedy algo over all multi-splits.
+This is not a good general strategy. One problem is that multi-way splits fragment the data too quickly, leaving insufficient data at the next level down. Hence we would want to use such splits only when needed.  Another problem is that multi-way splits make the assumption that the "next-best" binary split occurs in the same variable $x_j$ as the first split.  This is an unnecessary restriction. Since multi-way splits can be achieved by a series of binary splits anyway, the latter are preferred.
+
+The possible advantages of a multi-way splitting approach are:
+\begin{itemize}
+    \item Increased interpretability.  By splitting multiple ways on a single variable, we avoid convoluted and unnecessarily deep tree structures where the pathway from a node to leaf contains multiple splits on the same attribute.
+    \item Ability to apply domain knowledge. If for some reason we had prior knowledge that a multiway split would lead to the best outcome for a particular variable, enforcing this could lead to a better tree than the greedy recursive partitioning approach.
+\end{itemize}
 
 16. (5) As described in class, the recursive binary splitting strategy considers splits that only involve a single input variable. One could generalize the procedure by including “linear combination” splits of the form
 
-where the sum is over the numeric input variables only. The values of the coefficients {aj} and the split points are (jointly) chosen to optimize the splitting criterion, which is same as that used for single variable splits. What would be the advantages and disadvantages of including such linear combination splits in the tree building strategy?
+where the sum is over the numeric input variables only. The values of the coefficients $\{a_j\}$ and the split points are (jointly) chosen to optimize the splitting criterion, which is same as that used for single variable splits. What would be the advantages and disadvantages of including such linear combination splits in the tree building strategy?
 
-talks about in lecture.
+Disadvantage: not interpretable, more computationally intensive, more difficult search strategy, more variance in the solution due to the larger function class
+
+Advantage: If there are interaction effects between the variables, then this function class will capture those variables.  
