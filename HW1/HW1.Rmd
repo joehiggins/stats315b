@@ -145,14 +145,17 @@ An explicit example where the empirical risk may not be the best surrogate for t
 
 7. (10) Suppose the loss for an incorrect classification prediction is the same regardless of either the predicted value $c_k$ or the true value $c_l$ of the outcome $y$. Show that in this case misclassification risk reduces to the classification error rate. What is the Bayes rule for this case in terms of the probabilities of $y$ realizing each of its values $\{Pr(y=c_k)\}_{k=1}^K$? Derive this rule from the general (unequal loss) Bayes rule, for this particular loss structure $L_{kl} = 1(k \neq l)$.
 
-The misclassification risk is $r = E_{y\bar{x}} L(y, \hat{c}(\bar{x})$.  
+The misclassification risk is given by $r = E_{y\bar{x}} L(y, \hat{y}(\bar{x}))$. If the cost of misclassification is constant for all values $k,l$ with $c_k \neq c_l$, then $L( y = c_l, \hat{y}(\bar{x}) = c_k) = L_{lk} = I(l\neq k) \implies L(y, \hat{y}(\bar{x})) = I(y \neq \hat{y}(\bar{x}))$.
 
-If the cost of misclassification is constant for all values $l,k$ $c_l \neq c_k$, then $L( y = c_l, \hat{c}(\bar{x}) = c_k) = L_{lk} = I(l\neq k)$.
-
-So $r = E_{y \bar{x}} I(y \neq \hat{c}(\bar{x}))$, which is the error rate.
-
-We know that the general Bayes' optimal prediction rule states that:
-
+Thus, $r = E_{y \bar{x}} I(y \neq \hat{y}(\bar{x}))$, which is simply the expectation of a Bernoulli random variable with parameter $p = P(y \neq \hat{y}(\bar{x}))$. Since the expectation of a Bernoulli random variable with parameter $p$ is $p$, we find that:
+$$
+\begin{aligned}
+r &= E_{y \bar{x}} I(y \neq \hat{y}(\bar{x})) \\
+  &= P(y \neq \hat{y}(\bar{x})) \\
+  &= \text{Classification Error Rate}
+\end{aligned}
+$$
+For Jess to fill in:
 
 8. (5) Does a low error rate using a classification rule derived by substituting probability  KK
  estimates {Pr(y = ck)}k=1 in place of the true probabilities{Pr(y = ck)}k=1 in the Bayes rule imply accurate estimates of those probabilities? Why?
@@ -290,7 +293,6 @@ $$
 
 13. (10) Derive an updating formula for calculating the change in the improvement in prediction risk as the result of a split when the split is modified by one observation changing sides.
 
-Austin to TeX
 
 14. Is this always a good idea? Will it necessarily lead to better expected mse on future data? Why or why not? Conversely, is it always better to reduce the size of F (increasing the restriction on g(x)), thereby fitting the training data less well? Why or why not?
 
