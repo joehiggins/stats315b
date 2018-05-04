@@ -16,24 +16,23 @@ library(rpart.plot)
 ```
 
 #Question 1
-## Data Mining Marketing
+##Data Mining Marketing
 
 The data set age_stats315B.csv represents an extract from a commercial marketing database. The goal is to fit a regression tree to predict the age of a person from 13 demographic attributes and interpret the results. Note that some of the variables are categorical: be sure to mark them as such using the R function as.factor, before running rpart. Use the RPART implementation of the decision tree algorithm to fulfill this task. Write a short report about the relation between the age and the other demographic predictors as obtained from the RPART output and answer the following questions:
-(a) Were surrogate splits used in the construction of the optimal tree you obtained? What does a surrogate split mean? Give an example of a surrogate split from your optimal decision tree. Which variable is the split on? Which variable(s) is the surrogate split on?
-(b) Using your optimal decision tree, predict your age.
 
+  The first primary split of the tree to predict age was on Marital Status. It split people into two groups of roughly equal size (49% and 51% of the total) comprised of mostly younger folks in one group, and mostly older in the other. 
+  
+  
+  The younger side of the first primary split belonged to set {2. Living together, not married 5. Single, never married}. Intuitively, this makes sense and gels with our outside knowledge: people who have never been married tend to be younger and vice versa. Within the younger group of the primary split, the next split was on householder status, specifically whether or not a person was in the set {3. Live with Parents/Family}. Those who lived with their parents were younger, and those who owned or rented were older within this younger primary split. Those who lived with their parents and had yet to graduate high school were the youngest 10% of our tree. There is also a small terminal node of (1% of the total) the oldest subset of those never married: these people were never married $\rightarrow$ don't live with their parents $\rightarrow$ are retired.
+  
+  
+  The older side of the first primary split belonged to the set {1. Married, 3. Divorced or separated, 4. Widowed}. The next split within the older group defines oldest leaf in our tree, those who are retired. For those that are in the older primary split node but not retired, there are two other variables that further predict our age groups: home ownership, and whether or not there is at least one person in the house under 18.
+  Overall, the splits gel with common sense understanding of age: marriage, home ownership, education level and retirement status all intuitively are good indicators of a person's age.
 
 ```{r}
 rm(list = ls())
-#Set working directory to data subdirectory
-#current_path <- getActiveDocumentContext()$path 
-#current_directory <- dirname(current_path)
-#data_path <- paste(current_directory,'/data',sep='')
-#setwd(data_path)
-
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
-
 
 #Read and type data
 age_data <- read.csv('age_stats315B.csv')
@@ -50,12 +49,34 @@ factor_columns <- c(
 age_data[factor_columns] <- lapply(age_data[factor_columns], as.factor)
 fit <- rpart(age ~ ., data = age_data)
 rpart.plot(fit)
+```
 
-#a)
-colnames(age_data)[fit$frame$nsurrogate]
-#yes there were surrogate splits used. Surrogates are variables used to classify data points
-#that have missing values for a given feature The surrogate variables used were:
+(a) Were surrogate splits used in the construction of the optimal tree you obtained? What does a surrogate split mean? Give an example of a surrogate split from your optimal decision tree. Which variable is the split on? Which variable(s) is the surrogate split on?
 
+Yes there were surrogate splits used. You can see them by calling $\texttt{summary()}$ on the model. Surrogates are variables used to classify data points that have missing values for a given primary split feature. They are used to predict the primary split feature. One example in our data set is that the top surrogate for a split on Householder status is whether or not the example has no people under 18 in the household. Intuitively, this makes sense. The surrrogate of the surrogate is Education.
+
+  $\texttt{Primary splits:}\\$
+      $\texttt{HouseStat splits as  RRL,       improve=0.2932322, (92 missing)}\\$
+      $\texttt{Edu       < 2.5 to the left,    improve=0.2862099, (38 missing)}\\$
+      $\texttt{Occup     splits as  RLRRRLRRL, improve=0.2470701, (0 missing)}\\$
+      $\texttt{Under18   < 0.5 to the right,   improve=0.2206589, (0 missing)}\\$
+      $\texttt{Persons   < 2.5 to the right,   improve=0.2131353, (189 missing)}\\$
+  $\texttt{Surrogate splits:}\\$
+      $\texttt{Under18  < 0.5 to the right,   agree=0.776, adj=0.440, (92 split)}\\$
+      $\texttt{Edu      < 2.5 to the left,    agree=0.758, adj=0.396, (0 split)}\\$
+      $\texttt{Occup    splits as  RRRRRLRRL, agree=0.755, adj=0.387, (0 split)}\\$
+      $\texttt{Persons  < 2.5 to the right,   agree=0.741, adj=0.352, (0 split)}\\$
+      $\texttt{TypeHome splits as  LRRRR,     agree=0.732, adj=0.330, (0 split)}\\$
+
+
+```{r}
+#summary(fit)
+```
+
+
+(b) Using your optimal decision tree, predict your age.
+
+```{r}
 #b)
 ncols <- dim(age_data)[2]
 joe_data <- data.frame(matrix(ncol = ncols, nrow = 0))
@@ -64,25 +85,26 @@ joe_data <- rbind(joe_data, c(3,1,3,1,5,6,9,3,1, 4, 0, 2, 8, 1))
 colnames(joe_data) <- colnames(age_data)
 joe_data[factor_columns] <- lapply(joe_data[factor_columns], factor)
 predict(fit, joe_data)
-
-#result: 2.8, on the upper end of 18 through 24. I'm 29. Gotcha tree!
 ```
 
+Result: 2.8, on the upper end of 18 through 24. I'm 29. Gotcha tree!
+
 #Question 2
-## Multi-Class Classification: Marketing Data. 
-The data set housetype_stats315B.csv comes from the same marketing database that was used for problem 1. Refer to the documen- tation housetype_stats315B.txt for attributes names and order. From the original pool of 9409 questionnaires, those with non-missing answers to the question “What is your type of home?” were selected. There are 9013 such questionnaires.
-The goal in this problem is to construct a classification tree to predict the type of home from the other 13 demographics attributes. Give an estimate of the misclassification error of an
-1
-optimal tree. Plot the optimal tree if possible (otherwise plot a smaller tree) and interpret the results.
+##Multi-Class Classification: Marketing Data. 
+
+The data set housetype_stats315B.csv comes from the same marketing database that was used for problem 1. Refer to the documentation housetype_stats315B.txt for attributes names and order. From the original pool of 9409 questionnaires, those with non-missing answers to the question “What is your type of home?” were selected. There are 9013 such questionnaires.
+The goal in this problem is to construct a classification tree to predict the type of home from the other 13 demographics attributes. Give an estimate of the misclassification error of an optimal tree. Plot the optimal tree if possible (otherwise plot a smaller tree) and interpret the results.
+
+The misclassification rate is approximately 26.1%.
+
+The first primary split of the tree divides our population into 2 groups: those that rent, and those that either own or live with their parents. Those that own or live with their parents are a large group, 59% of the population, and the tree predicts these examples live in houses (class 1). This makes intuitive sense.
+
+The other half of the first primary split, renters, has two other variables it splits on to predict houses vs. apartments: having fewer than 3 people living in a household was indicative of apartments. If there were more than 3 people in the household, then relatively lower income was indicative of an apartment.
+
+The terminal nodes in this example can only classify 2 out of the 5 potential classes: houses (class 1) and apartments (class 3). These two classes make up the vast majority of the examples in the data (see barplot), and there were no terminal nodes that had a majority vote for any of the 3 smallest classes.
 
 ```{r results="hold"}
 rm(list = ls())
-#Set working directory to data subdirectory
-#current_path <- getActiveDocumentContext()$path 
-#current_directory <- dirname(current_path)
-#data_path <- paste(current_directory,'/data',sep='')
-#setwd(data_path)
-
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
 
@@ -102,9 +124,9 @@ factor_columns <- c(
 house_data[factor_columns] <- lapply(house_data[factor_columns], as.factor)
 fit <- rpart(TypeHome ~ ., data = house_data, method = 'class')
 rpart.plot(fit)
+```
 
-#say something here
-
+```{r}
 #misclassification
 y_hat <- predict(fit, house_data)
 y_hat_max_p <- apply(y_hat,1,which.max)
@@ -112,6 +134,10 @@ y <- house_data$TypeHome
 correct <- y == y_hat_max_p
 pct_correct <- sum(correct)/length(correct)
 1-pct_correct
+```
+
+```{r}
+barplot(prop.table(table(house_data['TypeHome'])))
 ```
 
 \pagebreak
