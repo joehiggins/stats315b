@@ -350,4 +350,4 @@ The possible advantages of a multi-way splitting approach are:
 
 The primary disadvantages of including linear combination splits in the tree building strategy would be that the resulting tree is less interpretable by a user.  In addition, building the tree would require a much more difficult search strategy and be more computationally intensive.  Finally, there would be more variance in the solution due to the larger function class.
 
-The advantage of including linear combination splits in tree building would be that it would better capture interactions between features. 
+The advantage of including linear combination splits in tree building would be that it would better capture interactions between features.
