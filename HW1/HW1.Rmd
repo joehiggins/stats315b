@@ -155,8 +155,27 @@ r &= E_{y \bar{x}} I(y \neq \hat{y}(\bar{x})) \\
   &= \text{Classification Error Rate}
 \end{aligned}
 $$
-For Jess to fill in:
-
+We know that the general Bayes' optimal prediction rule states:
+$$
+\begin{aligned}
+k^*(x) = argmin_{1 \leq k \leq K}\sum_{l=1}^K L_{lk}Pr(y = c_l|\bar{x})
+\end{aligned}
+$$
+Substituting in the particular loss structure  $L_{kl} = 1(k \neq l)$,
+$$
+\begin{aligned}
+k^*(x) &= argmin_{1 \leq k \leq K}\sum_{l=1}^K I(l \neq k) Pr(y = c_l|\bar{x}) \\
+&= argmin_{1 \leq k \leq K}\sum_{ l \neq k} Pr(y = c_l|\bar{x})
+\end{aligned}
+$$
+We have defined our classes such that each observation $\bar{x}$ must belong to exactly one class. Thus, we know $\sum_{l=1}^K Pr(y = c_l|\bar{x}) = 1$. So 
+$$
+\begin{aligned}
+k^*(x) &= argmin_{1 \leq k \leq K}\sum_{ l \neq k} Pr(y = c_l|\bar{x}) \\
+&= argmin_{1 \leq k \leq K}\{1 - Pr(y = c_k|\bar{x})\} \\
+&= argmax_{1 \leq k \leq K}Pr(y = c_k|\bar{x}) \quad \square
+\end{aligned}
+$$
 8. (5) Does a low error rate using a classification rule derived by substituting probability  KK
  estimates {Pr(y = ck)}k=1 in place of the true probabilities{Pr(y = ck)}k=1 in the Bayes rule imply accurate estimates of those probabilities? Why?
 
@@ -291,7 +310,15 @@ S_m \ - S_{lr} &= (\sum_{i \in \bar{m}}y_i^2 \ - n\bar{y}_m^2) \ - (\sum_{i \in 
 \end{aligned}
 $$
 
-13. (10) Derive an updating formula for calculating the change in the improvement in prediction risk as the result of a split when the split is modified by one observation changing sides.
+13. (10) Derive an updating formula for calculating the change in the improvement in prediction risk as the result of a split when the split is modified by one observation changing sides. \\ \\
+Suppose that we have an existing split of $R_m$ into $R_l$ and $R_r$, with $n$, $n_l$, $n_r$ as well as $\bar{y}_l$ and $\bar{y}_r$ defined as in the above problem. \\
+Let $y^*$ be the outcome of the one observation that is changing sides. Without loss of generality, we can assume that the observation belonged to $R_l$, and after the new switch will belong to $R_n$.  Then the improvement from this swap can be written as:
+$$
+\begin{aligned}
+Improvement &= S_m - S_{lr} - (S_m - S_{l^*r^*}) \\
+&=  \frac{n_ln_r}{n}(\bar{y}_l - \bar{y}_r)^2 -  \frac{(n_l - 1) * (n_r + 1)}{n}\big(\frac{n_l(\bar{y}_l - y^*)}{n_l - 1} - \frac{n_r\bar{y}_r + y^*}{n_r + 1}\big)^2
+\end{aligned}
+$$
 
 
 14. Is this always a good idea? Will it necessarily lead to better expected mse on future data? Why or why not? Conversely, is it always better to reduce the size of F (increasing the restriction on g(x)), thereby fitting the training data less well? Why or why not?
