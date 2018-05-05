@@ -1,0 +1,3636 @@
+Call:
+rpart(formula = age ~ ., data = age_data, method = "anova", control = rpart.control(minbucket = 10, 
+    xval = 10, maxsurrogate = 5, usesurrogate = 2, cp = 1e-04))
+  n= 8710 
+
+              CP nsplit rel error    xerror        xstd
+1   0.3861169337      0 1.0000000 1.0001997 0.013332359
+2   0.1402270050      1 0.6138831 0.6141277 0.009339671
+3   0.0630711297      2 0.4736561 0.4738674 0.008610643
+4   0.0314237204      3 0.4105849 0.4125040 0.007902763
+5   0.0164978283      4 0.3791612 0.3812922 0.007654261
+6   0.0153818310      5 0.3626634 0.3622144 0.007508912
+7   0.0153786585      6 0.3472816 0.3535526 0.007344613
+8   0.0096578116      7 0.3319029 0.3372981 0.006997501
+9   0.0096129783      8 0.3222451 0.3292533 0.006926661
+10  0.0087427068      9 0.3126321 0.3235166 0.006875199
+11  0.0047115322     10 0.3038894 0.3121539 0.006677136
+12  0.0045025167     11 0.2991779 0.3081375 0.006664821
+13  0.0043826241     12 0.2946753 0.3062662 0.006667054
+14  0.0028851744     13 0.2902927 0.2964510 0.006552725
+15  0.0024532643     14 0.2874075 0.2940939 0.006572073
+16  0.0019626562     15 0.2849543 0.2926955 0.006554363
+17  0.0017679485     16 0.2829916 0.2911189 0.006535529
+18  0.0013819147     17 0.2812237 0.2900445 0.006495228
+19  0.0013758531     18 0.2798418 0.2878295 0.006424707
+20  0.0013475632     19 0.2784659 0.2874328 0.006429507
+21  0.0013431083     20 0.2771183 0.2872928 0.006436344
+22  0.0013395628     21 0.2757752 0.2871608 0.006433525
+23  0.0013369336     22 0.2744357 0.2871608 0.006433525
+24  0.0011909169     23 0.2730987 0.2866199 0.006423033
+25  0.0011656009     24 0.2719078 0.2859505 0.006424585
+26  0.0011401732     25 0.2707422 0.2852308 0.006436680
+27  0.0011350149     26 0.2696021 0.2846097 0.006427365
+28  0.0010463545     27 0.2684670 0.2829585 0.006385768
+29  0.0010197578     28 0.2674207 0.2823676 0.006394516
+30  0.0009786567     29 0.2664009 0.2826289 0.006390485
+31  0.0009698635     31 0.2644436 0.2824936 0.006397663
+32  0.0009057881     32 0.2634737 0.2821182 0.006390046
+33  0.0008922893     33 0.2625680 0.2808991 0.006376086
+34  0.0008676307     34 0.2616757 0.2803556 0.006371077
+35  0.0008652073     35 0.2608080 0.2796660 0.006346507
+36  0.0008141080     36 0.2599428 0.2790950 0.006310897
+37  0.0007880298     37 0.2591287 0.2795002 0.006320873
+38  0.0007805103     38 0.2583407 0.2784625 0.006248844
+39  0.0007780254     39 0.2575602 0.2780004 0.006240066
+40  0.0007541870     40 0.2567822 0.2774106 0.006238633
+41  0.0007145979     41 0.2560280 0.2768632 0.006221127
+42  0.0006646479     42 0.2553134 0.2763207 0.006224626
+43  0.0006102994     43 0.2546487 0.2755123 0.006201411
+44  0.0005928461     44 0.2540384 0.2754865 0.006209051
+45  0.0005720349     45 0.2534456 0.2752662 0.006206237
+46  0.0005705915     47 0.2523015 0.2748125 0.006199080
+47  0.0005674228     48 0.2517309 0.2748125 0.006199080
+48  0.0005343777     49 0.2511635 0.2746479 0.006181666
+49  0.0005278309     50 0.2506291 0.2749072 0.006189172
+50  0.0005184902     51 0.2501013 0.2747324 0.006192307
+51  0.0005178379     52 0.2495828 0.2743252 0.006189526
+52  0.0004936945     53 0.2490650 0.2741483 0.006179013
+53  0.0004844526     54 0.2485713 0.2732509 0.006173224
+54  0.0004570409     55 0.2480868 0.2723699 0.006140662
+55  0.0004544886     56 0.2476298 0.2720444 0.006130223
+56  0.0004506571     57 0.2471753 0.2723237 0.006135850
+57  0.0004428303     58 0.2467246 0.2724949 0.006142357
+58  0.0004413182     59 0.2462818 0.2724577 0.006114690
+59  0.0004304847     61 0.2453992 0.2724862 0.006120333
+60  0.0004153248     62 0.2449687 0.2725276 0.006114289
+61  0.0004106217     63 0.2445534 0.2731768 0.006134326
+62  0.0003934431     64 0.2441427 0.2732901 0.006142568
+63  0.0003875818     65 0.2437493 0.2733824 0.006149068
+64  0.0003778930     70 0.2418114 0.2733987 0.006148431
+65  0.0003686234     71 0.2414335 0.2731566 0.006131092
+66  0.0003671349     72 0.2410649 0.2729415 0.006147432
+67  0.0003661150     73 0.2406977 0.2729489 0.006147792
+68  0.0003612660     74 0.2403316 0.2727131 0.006154523
+69  0.0003334834     75 0.2399703 0.2724295 0.006145764
+70  0.0003326935     76 0.2396369 0.2722963 0.006145655
+71  0.0003278735     77 0.2393042 0.2720722 0.006140906
+72  0.0003267613     78 0.2389763 0.2721591 0.006136437
+73  0.0003224108     79 0.2386495 0.2722178 0.006143651
+74  0.0003197411     80 0.2383271 0.2723293 0.006145568
+75  0.0003123260     81 0.2380074 0.2721125 0.006151153
+76  0.0003102511     82 0.2376951 0.2719960 0.006162116
+77  0.0003078396     83 0.2373848 0.2720427 0.006161343
+78  0.0002988580     84 0.2370770 0.2724511 0.006160821
+79  0.0002905419     86 0.2364792 0.2721575 0.006152215
+80  0.0002810888     87 0.2361887 0.2723862 0.006163047
+81  0.0002769005     88 0.2359076 0.2724332 0.006157112
+82  0.0002658227     89 0.2356307 0.2723930 0.006166918
+83  0.0002657807     90 0.2353649 0.2727614 0.006174720
+84  0.0002548985     92 0.2348333 0.2728671 0.006174742
+85  0.0002451757     94 0.2343235 0.2733286 0.006177292
+86  0.0002437730     95 0.2340784 0.2739810 0.006175482
+87  0.0002407533     96 0.2338346 0.2740343 0.006175252
+88  0.0002405010     97 0.2335938 0.2741421 0.006175807
+89  0.0002396844    100 0.2328723 0.2741421 0.006175807
+90  0.0002390310    101 0.2326326 0.2743346 0.006178999
+91  0.0002388514    103 0.2321546 0.2744082 0.006183817
+92  0.0002380223    104 0.2319157 0.2744086 0.006184133
+93  0.0002376718    107 0.2312017 0.2744456 0.006184354
+94  0.0002356244    108 0.2309640 0.2744065 0.006188325
+95  0.0002348903    109 0.2307284 0.2744339 0.006194816
+96  0.0002305007    110 0.2304935 0.2743675 0.006194768
+97  0.0002282839    111 0.2302630 0.2743095 0.006192469
+98  0.0002276906    113 0.2298064 0.2740573 0.006192320
+99  0.0002266791    116 0.2291233 0.2738957 0.006189388
+100 0.0002238612    119 0.2284433 0.2739310 0.006181314
+101 0.0002225077    120 0.2282194 0.2740096 0.006180777
+102 0.0002187337    121 0.2279969 0.2740272 0.006182122
+103 0.0002186211    122 0.2277782 0.2741089 0.006187870
+104 0.0002167924    124 0.2273410 0.2741089 0.006187870
+105 0.0002166681    125 0.2271242 0.2741262 0.006187552
+106 0.0002141277    129 0.2262575 0.2742122 0.006187579
+107 0.0002138858    130 0.2260434 0.2741825 0.006187711
+108 0.0002100568    131 0.2258295 0.2739750 0.006164117
+109 0.0002092174    134 0.2251699 0.2738676 0.006161138
+110 0.0002078317    135 0.2249606 0.2738419 0.006160419
+111 0.0002076330    136 0.2247528 0.2737763 0.006160792
+112 0.0002044991    137 0.2245452 0.2740136 0.006162850
+113 0.0002040916    138 0.2243407 0.2741159 0.006170306
+114 0.0001988346    140 0.2239325 0.2740629 0.006170419
+115 0.0001914173    141 0.2237337 0.2742760 0.006164631
+116 0.0001903997    142 0.2235422 0.2743758 0.006169243
+117 0.0001903739    143 0.2233518 0.2743458 0.006168894
+118 0.0001884273    144 0.2231615 0.2743822 0.006168341
+119 0.0001838682    147 0.2225962 0.2743769 0.006171196
+120 0.0001806509    150 0.2220446 0.2744219 0.006168838
+121 0.0001760570    151 0.2218639 0.2742410 0.006166471
+122 0.0001754271    152 0.2216879 0.2745315 0.006178114
+123 0.0001743296    153 0.2215125 0.2746564 0.006178102
+124 0.0001734460    155 0.2211638 0.2745773 0.006181424
+125 0.0001640538    156 0.2209903 0.2753071 0.006186390
+126 0.0001638618    157 0.2208263 0.2751821 0.006181575
+127 0.0001613502    158 0.2206624 0.2752147 0.006180421
+128 0.0001587965    159 0.2205011 0.2755468 0.006185590
+129 0.0001585195    160 0.2203423 0.2758381 0.006191121
+130 0.0001583480    161 0.2201838 0.2758381 0.006191121
+131 0.0001578526    162 0.2200254 0.2758818 0.006191180
+132 0.0001509647    163 0.2198676 0.2757489 0.006186282
+133 0.0001507802    164 0.2197166 0.2762072 0.006192997
+134 0.0001502306    165 0.2195658 0.2761633 0.006191942
+135 0.0001479955    166 0.2194156 0.2761198 0.006185415
+136 0.0001478928    168 0.2191196 0.2759728 0.006181883
+137 0.0001470601    171 0.2186759 0.2759326 0.006181789
+138 0.0001383244    175 0.2179706 0.2759241 0.006175916
+139 0.0001362244    176 0.2178323 0.2759206 0.006176642
+140 0.0001345450    177 0.2176961 0.2755665 0.006164436
+141 0.0001340850    179 0.2174270 0.2756122 0.006164608
+142 0.0001333094    180 0.2172929 0.2755431 0.006159714
+143 0.0001320480    181 0.2171596 0.2754967 0.006158616
+144 0.0001286468    182 0.2170275 0.2759206 0.006160314
+145 0.0001286291    184 0.2167702 0.2760239 0.006166461
+146 0.0001256994    185 0.2166416 0.2761542 0.006168041
+147 0.0001247489    186 0.2165159 0.2763935 0.006166362
+148 0.0001226597    187 0.2163912 0.2763815 0.006164412
+149 0.0001204180    188 0.2162685 0.2760714 0.006163546
+150 0.0001199679    189 0.2161481 0.2762084 0.006163200
+151 0.0001167623    190 0.2160281 0.2763205 0.006163012
+152 0.0001162266    191 0.2159114 0.2763730 0.006164186
+153 0.0001148512    194 0.2155627 0.2761148 0.006160347
+154 0.0001138343    195 0.2154478 0.2761107 0.006158067
+155 0.0001137134    197 0.2152202 0.2761233 0.006158267
+156 0.0001119996    199 0.2149927 0.2760669 0.006159167
+157 0.0001109148    200 0.2148807 0.2760206 0.006156010
+158 0.0001090553    201 0.2147698 0.2761290 0.006152864
+159 0.0001081774    202 0.2146608 0.2763566 0.006157521
+160 0.0001066353    203 0.2145526 0.2764487 0.006162826
+161 0.0001065509    204 0.2144460 0.2764313 0.006162791
+162 0.0001046662    205 0.2143394 0.2763545 0.006159953
+163 0.0001046641    209 0.2138987 0.2765417 0.006157901
+164 0.0001044980    210 0.2137940 0.2765549 0.006157949
+165 0.0001040305    211 0.2136895 0.2765595 0.006158292
+166 0.0001029119    212 0.2135855 0.2766073 0.006158353
+167 0.0001024992    214 0.2133797 0.2767868 0.006160258
+168 0.0001013765    215 0.2132772 0.2770635 0.006165740
+169 0.0001000580    216 0.2131758 0.2770833 0.006165598
+170 0.0001000000    217 0.2130757 0.2770914 0.006165026
+
+Variable importance
+  MarStat     Occup   DualInc HouseStat    Income       Edu   Under18   Persons  TypeHome    Ethnic 
+       23        21        16        15         9         7         3         3         3         1 
+
+Node number 1: 8710 observations,    complexity param=0.3861169
+  mean=3.426751, MSE=2.706862 
+  left son=2 (4268 obs) right son=3 (4442 obs)
+  Primary splits:
+      MarStat   splits as  RLRRL,     improve=0.3861169, (0 missing)
+      Occup     splits as  LLLLLLLRL, improve=0.2923202, (0 missing)
+      HouseStat splits as  RLL,       improve=0.2856154, (180 missing)
+      Income    < 1.5 to the left,    improve=0.1592160, (338 missing)
+      Edu       < 2.5 to the left,    improve=0.1505839, (76 missing)
+  Surrogate splits:
+      DualInc   splits as  LRR,       agree=0.832, adj=0.658, (0 split)
+      HouseStat splits as  RLL,       agree=0.724, adj=0.437, (0 split)
+      Occup     splits as  RLLRRLRRL, agree=0.699, adj=0.386, (0 split)
+      Income    < 4.5 to the left,    agree=0.663, adj=0.312, (0 split)
+      Edu       < 2.5 to the left,    agree=0.600, adj=0.184, (0 split)
+
+Node number 2: 4268 observations,    complexity param=0.06307113
+  mean=2.383786, MSE=1.196663 
+  left son=4 (1684 obs) right son=5 (2584 obs)
+  Primary splits:
+      HouseStat splits as  RRL,       improve=0.2932322, (92 missing)
+      Edu       < 2.5 to the left,    improve=0.2862099, (38 missing)
+      Occup     splits as  RLRRRLRRL, improve=0.2470701, (0 missing)
+      Under18   < 0.5 to the right,   improve=0.2206589, (0 missing)
+      Persons   < 2.5 to the right,   improve=0.2131353, (189 missing)
+  Surrogate splits:
+      Under18  < 0.5 to the right,   agree=0.776, adj=0.440, (92 split)
+      Edu      < 2.5 to the left,    agree=0.758, adj=0.396, (0 split)
+      Occup    splits as  RRRRRLRRL, agree=0.755, adj=0.387, (0 split)
+      Persons  < 2.5 to the right,   agree=0.741, adj=0.352, (0 split)
+      TypeHome splits as  LRRRR,     agree=0.732, adj=0.330, (0 split)
+
+Node number 3: 4442 observations,    complexity param=0.140227
+  mean=4.428861, MSE=2.108514 
+  left son=6 (3806 obs) right son=7 (636 obs)
+  Primary splits:
+      Occup     splits as  LLLLLLLRL, improve=0.3529887, (0 missing)
+      HouseStat splits as  RLL,       improve=0.1256600, (88 missing)
+      Under18   < 0.5 to the right,   improve=0.1217663, (0 missing)
+      DualInc   splits as  RLR,       improve=0.1194711, (0 missing)
+      MarStat   splits as  L-LR-,     improve=0.1040724, (0 missing)
+  Surrogate splits:
+      MarStat splits as  L-LR-, agree=0.862, adj=0.033, (0 split)
+
+Node number 4: 1684 observations,    complexity param=0.01649783
+  mean=1.652613, MSE=0.5058067 
+  left son=8 (871 obs) right son=9 (813 obs)
+  Primary splits:
+      Edu     < 2.5 to the left,    improve=0.45458890, (17 missing)
+      Income  < 1.5 to the left,    improve=0.23854500, (89 missing)
+      Under18 < 0.5 to the right,   improve=0.21348470, (0 missing)
+      Occup   splits as  RLRRRLRRL, improve=0.17638400, (0 missing)
+      Persons < 2.5 to the right,   improve=0.03819768, (65 missing)
+  Surrogate splits:
+      Income  < 1.5 to the left,    agree=0.715, adj=0.413, (16 split)
+      Under18 < 0.5 to the right,   agree=0.713, adj=0.409, (1 split)
+      Occup   splits as  RRRRRLRRL, agree=0.683, adj=0.346, (0 split)
+      sex     splits as  RL,        agree=0.543, adj=0.059, (0 split)
+      Ethnic  splits as  LLLLLRRL,  agree=0.540, adj=0.052, (0 split)
+
+Node number 5: 2584 observations,    complexity param=0.01538183
+  mean=2.860294, MSE=1.071427 
+  left son=10 (2536 obs) right son=11 (48 obs)
+  Primary splits:
+      Occup   splits as  LLLLLLLRL, improve=0.13098980, (0 missing)
+      Edu     < 4.5 to the left,    improve=0.07970118, (21 missing)
+      Income  < 3.5 to the left,    improve=0.07463654, (89 missing)
+      Persons < 2.5 to the right,   improve=0.05517562, (124 missing)
+      LiveBA  < 3.5 to the left,    improve=0.03247417, (243 missing)
+
+Node number 6: 3806 observations,    complexity param=0.03142372
+  mean=4.076195, MSE=1.503916 
+  left son=12 (1596 obs) right son=13 (2210 obs)
+  Primary splits:
+      HouseStat splits as  RLL,     improve=0.12574030, (70 missing)
+      TypeHome  splits as  RRLRL,   improve=0.06466022, (0 missing)
+      Under18   < 0.5 to the right, improve=0.05630241, (0 missing)
+      LiveBA    < 4.5 to the left,  improve=0.05211808, (381 missing)
+      MarStat   splits as  L-LR-,   improve=0.05070201, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  RRLRL,     agree=0.801, adj=0.526, (70 split)
+      Income   < 5.5 to the left,    agree=0.691, adj=0.262, (0 split)
+      MarStat  splits as  R-LR-,     agree=0.645, adj=0.153, (0 split)
+      DualInc  splits as  LRR,       agree=0.641, adj=0.142, (0 split)
+      Occup    splits as  RLLLRLL-L, agree=0.632, adj=0.121, (0 split)
+
+Node number 7: 636 observations,    complexity param=0.001190917
+  mean=6.539308, MSE=0.5283291 
+  left son=14 (87 obs) right son=15 (549 obs)
+  Primary splits:
+      Persons < 2.5 to the right,  improve=0.08734174, (35 missing)
+      Ethnic  splits as  LRR-RRRL, improve=0.03268803, (6 missing)
+      Under18 < 0.5 to the right,  improve=0.03157216, (0 missing)
+      MarStat splits as  L-LR-,    improve=0.02688518, (0 missing)
+      Lang    splits as  RLL,      improve=0.02471100, (35 missing)
+  Surrogate splits:
+      Under18 < 0.5 to the right, agree=0.89, adj=0.233, (35 split)
+
+Node number 8: 871 observations,    complexity param=0.001165601
+  mean=1.188289, MSE=0.2194266 
+  left son=16 (720 obs) right son=17 (151 obs)
+  Primary splits:
+      Income  < 1.5 to the left,    improve=0.15206530, (43 missing)
+      Under18 < 0.5 to the right,   improve=0.11166140, (0 missing)
+      Occup   splits as  RLRLRLLRL, improve=0.10356540, (0 missing)
+      MarStat splits as  -R--L,     improve=0.09554651, (0 missing)
+      Edu     < 1.5 to the left,    improve=0.01883912, (13 missing)
+  Surrogate splits:
+      Occup   splits as  RRLLRLRLL, agree=0.848, adj=0.100, (43 split)
+      DualInc splits as  LLR,       agree=0.835, adj=0.021, (0 split)
+
+Node number 9: 813 observations,    complexity param=0.001767948
+  mean=2.150062, MSE=0.3341851 
+  left son=18 (801 obs) right son=19 (12 obs)
+  Primary splits:
+      Occup   splits as  LLLLRLLRL, improve=0.15341800, (0 missing)
+      Persons < 2.5 to the right,   improve=0.06162365, (36 missing)
+      Edu     < 4.5 to the left,    improve=0.04464104, (4 missing)
+      Under18 < 0.5 to the right,   improve=0.03806557, (0 missing)
+      Income  < 1.5 to the left,    improve=0.01338555, (46 missing)
+
+Node number 10: 2536 observations,    complexity param=0.009657812
+  mean=2.808754, MSE=0.9109802 
+  left son=20 (901 obs) right son=21 (1635 obs)
+  Primary splits:
+      Occup   splits as  RLRRRLL-L, improve=0.09856094, (0 missing)
+      Income  < 3.5 to the left,    improve=0.09376406, (85 missing)
+      Edu     < 4.5 to the left,    improve=0.08142972, (21 missing)
+      Persons < 2.5 to the right,   improve=0.05811523, (120 missing)
+      LiveBA  < 3.5 to the left,    improve=0.02737521, (235 missing)
+  Surrogate splits:
+      Income   < 1.5 to the left,  agree=0.699, adj=0.153, (0 split)
+      TypeHome splits as  RRRRL,   agree=0.661, adj=0.046, (0 split)
+      Edu      < 2.5 to the left,  agree=0.650, adj=0.014, (0 split)
+      Under18  < 2.5 to the right, agree=0.649, adj=0.012, (0 split)
+
+Node number 11: 48 observations,    complexity param=0.0008922893
+  mean=5.583333, MSE=1.993056 
+  left son=22 (22 obs) right son=23 (26 obs)
+  Primary splits:
+      HouseStat splits as  RL-,     improve=0.20371570, (2 missing)
+      TypeHome  splits as  RRLRL,   improve=0.15535650, (0 missing)
+      Edu       < 4.5 to the left,  improve=0.03592789, (0 missing)
+      sex       splits as  LR,      improve=0.02460182, (0 missing)
+      Income    < 1.5 to the left,  improve=0.02164378, (4 missing)
+  Surrogate splits:
+      TypeHome splits as  RRLRR,   agree=0.804, adj=0.591, (2 split)
+      Income   < 5.5 to the left,  agree=0.652, adj=0.273, (0 split)
+      Persons  < 1.5 to the left,  agree=0.630, adj=0.227, (0 split)
+      MarStat  splits as  -R--L,   agree=0.587, adj=0.136, (0 split)
+      Edu      < 3.5 to the right, agree=0.587, adj=0.136, (0 split)
+
+Node number 12: 1596 observations,    complexity param=0.008742707
+  mean=3.557018, MSE=1.281837 
+  left son=24 (1031 obs) right son=25 (565 obs)
+  Primary splits:
+      MarStat splits as  L-RR-,     improve=0.10075450, (0 missing)
+      DualInc splits as  RLL,       improve=0.09238239, (0 missing)
+      Persons < 1.5 to the right,   improve=0.07696209, (41 missing)
+      LiveBA  < 3.5 to the left,    improve=0.02766463, (162 missing)
+      Occup   splits as  RRRRRLL-R, improve=0.02529380, (0 missing)
+  Surrogate splits:
+      DualInc   splits as  RLL,       agree=0.981, adj=0.947, (0 split)
+      Persons   < 1.5 to the right,   agree=0.800, adj=0.435, (0 split)
+      HouseStat splits as  -LR,       agree=0.652, adj=0.016, (0 split)
+      Occup     splits as  LLLLLLL-R, agree=0.651, adj=0.014, (0 split)
+      TypeHome  splits as  LLLRL,     agree=0.647, adj=0.002, (0 split)
+
+Node number 13: 2210 observations,    complexity param=0.01537866
+  mean=4.451131, MSE=1.32906 
+  left son=26 (979 obs) right son=27 (1231 obs)
+  Primary splits:
+      Under18 < 0.5 to the right, improve=0.12344280, (0 missing)
+      DualInc splits as  RLR,     improve=0.06033117, (0 missing)
+      Persons < 2.5 to the right, improve=0.05282155, (46 missing)
+      MarStat splits as  L-LR-,   improve=0.03892095, (0 missing)
+      LiveBA  < 4.5 to the left,  improve=0.03824272, (219 missing)
+  Surrogate splits:
+      Persons  < 2.5 to the right,   agree=0.834, adj=0.626, (0 split)
+      Ethnic   splits as  RLLRLRRR,  agree=0.573, adj=0.036, (0 split)
+      Occup    splits as  RRLRLLR-R, agree=0.567, adj=0.021, (0 split)
+      TypeHome splits as  RRLRR,     agree=0.559, adj=0.004, (0 split)
+
+Node number 14: 87 observations,    complexity param=0.0005928461
+  mean=6.011494, MSE=1.091822 
+  left son=28 (15 obs) right son=29 (72 obs)
+  Primary splits:
+      Ethnic  splits as  LLL-RRRL, improve=0.14714830, (0 missing)
+      Lang    splits as  RLL,      improve=0.10176260, (2 missing)
+      Persons < 3.5 to the right,  improve=0.04192978, (1 missing)
+      DualInc splits as  LLR,      improve=0.02824965, (0 missing)
+      Income  < 7.5 to the right,  improve=0.02290158, (5 missing)
+  Surrogate splits:
+      TypeHome splits as  RRRLR,   agree=0.839, adj=0.067, (0 split)
+      Under18  < 2.5 to the right, agree=0.839, adj=0.067, (0 split)
+
+Node number 15: 549 observations,    complexity param=0.0002810888
+  mean=6.622951, MSE=0.3878886 
+  left son=30 (398 obs) right son=31 (151 obs)
+  Primary splits:
+      MarStat  splits as  L-LR-,   improve=0.031120640, (0 missing)
+      Income   < 5.5 to the right, improve=0.015665120, (35 missing)
+      TypeHome splits as  LRLRL,   improve=0.012415720, (0 missing)
+      Persons  < 1.5 to the right, improve=0.009793029, (34 missing)
+      Edu      < 5.5 to the right, improve=0.004827403, (10 missing)
+  Surrogate splits:
+      DualInc splits as  RLL,      agree=0.834, adj=0.397, (0 split)
+      Persons < 1.5 to the right,  agree=0.807, adj=0.298, (0 split)
+      Ethnic  splits as  LLR-RRLL, agree=0.732, adj=0.026, (0 split)
+
+Node number 16: 720 observations,    complexity param=0.0006646479
+  mean=1.106944, MSE=0.1482851 
+  left son=32 (684 obs) right son=33 (36 obs)
+  Primary splits:
+      Occup   splits as  LLRR-L-RL, improve=0.14677290, (0 missing)
+      MarStat splits as  -R--L,     improve=0.11348240, (0 missing)
+      Under18 < 0.5 to the right,   improve=0.09949704, (0 missing)
+      Lang    splits as  LRL,       improve=0.02895391, (36 missing)
+      Persons < 2.5 to the right,   improve=0.02491996, (25 missing)
+  Surrogate splits:
+      MarStat splits as  -R--L, agree=0.956, adj=0.111, (0 split)
+      DualInc splits as  LRL,   agree=0.953, adj=0.056, (0 split)
+
+Node number 17: 151 observations,    complexity param=0.0008676307
+  mean=1.576159, MSE=0.3766501 
+  left son=34 (76 obs) right son=35 (75 obs)
+  Primary splits:
+      Occup    splits as  RLRLRRLLL, improve=0.35966990, (0 missing)
+      Under18  < 0.5 to the right,   improve=0.08689879, (0 missing)
+      Edu      < 1.5 to the left,    improve=0.06911753, (0 missing)
+      Ethnic   splits as  LLL-RLLL,  improve=0.02905123, (4 missing)
+      TypeHome splits as  RLLLR,     improve=0.02528872, (0 missing)
+  Surrogate splits:
+      Under18  < 1.5 to the right,  agree=0.576, adj=0.147, (0 split)
+      Ethnic   splits as  LRL-RLLR, agree=0.536, adj=0.067, (0 split)
+      Lang     splits as  LRR,      agree=0.536, adj=0.067, (0 split)
+      TypeHome splits as  RLRLL,    agree=0.530, adj=0.053, (0 split)
+      MarStat  splits as  -R--L,    agree=0.523, adj=0.040, (0 split)
+
+Node number 18: 801 observations,    complexity param=0.0005705915
+  mean=2.122347, MSE=0.2422097 
+  left son=36 (446 obs) right son=37 (355 obs)
+  Primary splits:
+      Occup   splits as  RLRR-LR-R, improve=0.06934026, (0 missing)
+      Persons < 2.5 to the right,   improve=0.06037024, (35 missing)
+      Edu     < 4.5 to the left,    improve=0.05616767, (4 missing)
+      Under18 < 0.5 to the right,   improve=0.04103424, (0 missing)
+      Income  < 1.5 to the left,    improve=0.01659075, (46 missing)
+  Surrogate splits:
+      Edu     < 4.5 to the left,   agree=0.591, adj=0.076, (0 split)
+      Persons < 2.5 to the right,  agree=0.583, adj=0.059, (0 split)
+      sex     splits as  RL,       agree=0.573, adj=0.037, (0 split)
+      MarStat splits as  -R--L,    agree=0.571, adj=0.031, (0 split)
+      Ethnic  splits as  LLR-RLLR, agree=0.569, adj=0.028, (0 split)
+
+Node number 19: 12 observations
+  mean=4, MSE=3 
+
+Node number 20: 901 observations,    complexity param=0.002453264
+  mean=2.405105, MSE=0.6405511 
+  left son=40 (728 obs) right son=41 (173 obs)
+  Primary splits:
+      Edu     < 4.5 to the left,    improve=0.10221360, (7 missing)
+      Persons < 1.5 to the right,   improve=0.06334160, (61 missing)
+      Under18 < 0.5 to the right,   improve=0.04522515, (0 missing)
+      Income  < 2.5 to the left,    improve=0.03170789, (55 missing)
+      Occup   splits as  -R---LR-R, improve=0.01695424, (0 missing)
+
+Node number 21: 1635 observations,    complexity param=0.004711532
+  mean=3.031193, MSE=0.9207396 
+  left son=42 (945 obs) right son=43 (690 obs)
+  Primary splits:
+      Income    < 5.5 to the left,  improve=0.07058671, (30 missing)
+      HouseStat splits as  RL-,     improve=0.05379281, (23 missing)
+      Edu       < 5.5 to the left,  improve=0.05031843, (14 missing)
+      LiveBA    < 3.5 to the left,  improve=0.04839809, (131 missing)
+      Persons   < 4.5 to the right, improve=0.03839481, (59 missing)
+  Surrogate splits:
+      Occup     splits as  R-LLL----, agree=0.666, adj=0.202, (30 split)
+      HouseStat splits as  RL-,       agree=0.664, adj=0.196, (0 split)
+      Edu       < 4.5 to the left,    agree=0.642, adj=0.144, (0 split)
+      TypeHome  splits as  RRLLL,     agree=0.626, adj=0.107, (0 split)
+      MarStat   splits as  -R--L,     agree=0.612, adj=0.073, (0 split)
+
+Node number 22: 22 observations
+  mean=4.863636, MSE=2.117769 
+
+Node number 23: 26 observations
+  mean=6.192308, MSE=1.078402 
+
+Node number 24: 1031 observations,    complexity param=0.002885174
+  mean=3.29098, MSE=1.026873 
+  left son=48 (463 obs) right son=49 (568 obs)
+  Primary splits:
+      Income   < 5.5 to the left,    improve=0.06010012, (26 missing)
+      TypeHome splits as  RRLLL,     improve=0.04639400, (0 missing)
+      Occup    splits as  RRRRRLL-R, improve=0.03097321, (0 missing)
+      LiveBA   < 3.5 to the left,    improve=0.02371200, (120 missing)
+      Edu      < 4.5 to the left,    improve=0.02091901, (8 missing)
+  Surrogate splits:
+      Edu     < 3.5 to the left,    agree=0.659, adj=0.238, (25 split)
+      Occup   splits as  RRLRLLR-L, agree=0.637, adj=0.189, (1 split)
+      Ethnic  splits as  RRRLLRRR,  agree=0.626, adj=0.164, (0 split)
+      DualInc splits as  LRL,       agree=0.609, adj=0.127, (0 split)
+      Lang    splits as  RLR,       agree=0.589, adj=0.082, (0 split)
+
+Node number 25: 565 observations,    complexity param=0.004502517
+  mean=4.042478, MSE=1.382266 
+  left son=50 (505 obs) right son=51 (60 obs)
+  Primary splits:
+      MarStat   splits as  --LR-,    improve=0.13592500, (0 missing)
+      Under18   < 0.5 to the right,  improve=0.05555544, (0 missing)
+      Persons   < 2.5 to the right,  improve=0.03840143, (25 missing)
+      Ethnic    splits as  LLL-LLRL, improve=0.02525503, (0 missing)
+      HouseStat splits as  -RL,      improve=0.02161287, (14 missing)
+
+Node number 26: 979 observations,    complexity param=0.0006102994
+  mean=3.996936, MSE=0.6812981 
+  left son=52 (18 obs) right son=53 (961 obs)
+  Primary splits:
+      TypeHome splits as  RRLLR,     improve=0.02157284, (0 missing)
+      LiveBA   < 4.5 to the left,    improve=0.01867901, (102 missing)
+      Persons  < 6.5 to the left,    improve=0.01518422, (6 missing)
+      Occup    splits as  RLRRRRL-R, improve=0.01380077, (0 missing)
+      sex      splits as  RL,        improve=0.01239742, (0 missing)
+
+Node number 27: 1231 observations,    complexity param=0.009612978
+  mean=4.812348, MSE=1.549677 
+  left son=54 (646 obs) right son=55 (585 obs)
+  Primary splits:
+      DualInc splits as  RLR,       improve=0.11880730, (0 missing)
+      Occup   splits as  LLLLRLL-L, improve=0.07947177, (0 missing)
+      LiveBA  < 4.5 to the left,    improve=0.05930688, (117 missing)
+      MarStat splits as  L-LR-,     improve=0.03686188, (0 missing)
+      Ethnic  splits as  LLLRLLRL,  improve=0.03392779, (7 missing)
+  Surrogate splits:
+      MarStat splits as  L-RR-,     agree=0.729, adj=0.429, (0 split)
+      Occup   splits as  LLLLRRR-R, agree=0.673, adj=0.311, (0 split)
+      Persons < 1.5 to the right,   agree=0.632, adj=0.226, (0 split)
+      Income  < 7.5 to the right,   agree=0.623, adj=0.207, (0 split)
+      Edu     < 4.5 to the right,   agree=0.570, adj=0.096, (0 split)
+
+Node number 28: 15 observations
+  mean=5.133333, MSE=2.382222 
+
+Node number 29: 72 observations,    complexity param=0.000120418
+  mean=6.194444, MSE=0.628858 
+  left son=58 (10 obs) right son=59 (62 obs)
+  Primary splits:
+      TypeHome splits as  RLL-L,   improve=0.06270334, (0 missing)
+      Persons  < 3.5 to the right, improve=0.05684067, (1 missing)
+      Income   < 2.5 to the left,  improve=0.02244387, (5 missing)
+      Under18  < 0.5 to the right, improve=0.02004090, (0 missing)
+      sex      splits as  LR,      improve=0.01840491, (0 missing)
+  Surrogate splits:
+      Ethnic splits as  ----RLR-, agree=0.875, adj=0.1, (0 split)
+
+Node number 30: 398 observations,    complexity param=0.0001638618
+  mean=6.555276, MSE=0.4429244 
+  left son=60 (68 obs) right son=61 (330 obs)
+  Primary splits:
+      MarStat  splits as  R-L--,    improve=0.02191539, (0 missing)
+      DualInc  splits as  LLR,      improve=0.01606201, (0 missing)
+      TypeHome splits as  LRLRL,    improve=0.01571976, (0 missing)
+      Ethnic   splits as  LLL-L-RR, improve=0.01219303, (5 missing)
+      sex      splits as  RL,       improve=0.01135362, (0 missing)
+  Surrogate splits:
+      DualInc   splits as  LRR,     agree=0.942, adj=0.662, (0 split)
+      Persons   < 1.5 to the left,  agree=0.922, adj=0.544, (0 split)
+      TypeHome  splits as  RRLRR,   agree=0.854, adj=0.147, (0 split)
+      HouseStat splits as  RLR,     agree=0.842, adj=0.074, (0 split)
+
+Node number 31: 151 observations,    complexity param=0.0001333094
+  mean=6.801325, MSE=0.1989386 
+  left son=62 (19 obs) right son=63 (132 obs)
+  Primary splits:
+      Persons  < 1.5 to the right,  improve=0.10775970, (13 missing)
+      Income   < 5.5 to the right,  improve=0.02703981, (9 missing)
+      TypeHome splits as  LRRLL,    improve=0.02482546, (0 missing)
+      Edu      < 4.5 to the left,   improve=0.02384408, (7 missing)
+      Ethnic   splits as  LRL-LLR-, improve=0.01061213, (1 missing)
+  Surrogate splits:
+      Ethnic splits as  LRR-RRR-, agree=0.87, adj=0.053, (12 split)
+
+Node number 32: 684 observations,    complexity param=0.0001081774
+  mean=1.073099, MSE=0.07360384 
+  left son=64 (619 obs) right son=65 (65 obs)
+  Primary splits:
+      Under18 < 0.5 to the right,   improve=0.050659860, (0 missing)
+      Occup   splits as  LR---L--R, improve=0.050019470, (0 missing)
+      Edu     < 1.5 to the left,    improve=0.019068420, (12 missing)
+      Ethnic  splits as  LLRLRLRR,  improve=0.005889833, (3 missing)
+      LiveBA  < 2.5 to the right,   improve=0.005469733, (68 missing)
+
+Node number 33: 36 observations,    complexity param=0.0005278309
+  mean=1.75, MSE=1.131944 
+  left son=66 (25 obs) right son=67 (11 obs)
+  Primary splits:
+      Under18 < 0.5 to the right,   improve=0.30538760, (0 missing)
+      Ethnic  splits as  -LL-RRLL,  improve=0.14636920, (0 missing)
+      Persons < 3.5 to the right,   improve=0.09961506, (2 missing)
+      Occup   splits as  --RL---R-, improve=0.05065732, (0 missing)
+      LiveBA  < 4.5 to the right,   improve=0.04517568, (0 missing)
+  Surrogate splits:
+      Edu     < 1.5 to the right,   agree=0.778, adj=0.273, (0 split)
+      Occup   splits as  --LL---R-, agree=0.722, adj=0.091, (0 split)
+      LiveBA  < 2.5 to the right,   agree=0.722, adj=0.091, (0 split)
+      DualInc splits as  LLR,       agree=0.722, adj=0.091, (0 split)
+      Ethnic  splits as  -LL-LRLL,  agree=0.722, adj=0.091, (0 split)
+
+Node number 34: 76 observations,    complexity param=0.000207633
+  mean=1.210526, MSE=0.166205 
+  left son=68 (63 obs) right son=69 (13 obs)
+  Primary splits:
+      Under18  < 0.5 to the right,  improve=0.38754580, (0 missing)
+      Ethnic   splits as  LLL-RLLL, improve=0.08091214, (1 missing)
+      TypeHome splits as  RLLLL,    improve=0.06557377, (0 missing)
+      Income   < 3.5 to the right,  improve=0.03727748, (9 missing)
+      Persons  < 3.5 to the left,   improve=0.01944099, (2 missing)
+  Surrogate splits:
+      MarStat splits as  -R--L, agree=0.842, adj=0.077, (0 split)
+
+Node number 35: 75 observations
+  mean=1.946667, MSE=0.3171556 
+
+Node number 36: 446 observations
+  mean=2.006726, MSE=0.0873987 
+
+Node number 37: 355 observations,    complexity param=0.0004153248
+  mean=2.267606, MSE=0.3988098 
+  left son=74 (288 obs) right son=75 (67 obs)
+  Primary splits:
+      Persons  < 2.5 to the right, improve=0.07445769, (16 missing)
+      Edu      < 4.5 to the left,  improve=0.05505065, (2 missing)
+      Under18  < 0.5 to the right, improve=0.03648225, (0 missing)
+      TypeHome splits as  LRLRR,   improve=0.02188983, (0 missing)
+      Income   < 2.5 to the left,  improve=0.01833627, (20 missing)
+  Surrogate splits:
+      TypeHome splits as  LLLRL,   agree=0.805, adj=0.015, (16 split)
+      Edu      < 5.5 to the left,  agree=0.805, adj=0.015, (0 split)
+
+Node number 40: 728 observations,    complexity param=0.001347563
+  mean=2.281593, MSE=0.5072436 
+  left son=80 (103 obs) right son=81 (625 obs)
+  Primary splits:
+      Edu     < 2.5 to the left,  improve=0.08385475, (7 missing)
+      Persons < 2.5 to the right, improve=0.05797115, (53 missing)
+      Under18 < 0.5 to the right, improve=0.05184906, (0 missing)
+      Income  < 1.5 to the left,  improve=0.02344689, (47 missing)
+      MarStat splits as  -R--L,   improve=0.01429969, (0 missing)
+  Surrogate splits:
+      Under18 < 2.5 to the right, agree=0.864, adj=0.049, (7 split)
+
+Node number 41: 173 observations,    complexity param=0.0005674228
+  mean=2.924855, MSE=0.8671857 
+  left son=82 (71 obs) right son=83 (102 obs)
+  Primary splits:
+      Occup     splits as  -R---LR-R, improve=0.08917289, (0 missing)
+      Income    < 3.5 to the left,    improve=0.05688427, (8 missing)
+      HouseStat splits as  RL-,       improve=0.05147958, (4 missing)
+      Edu       < 5.5 to the left,    improve=0.04631577, (0 missing)
+      LiveBA    < 3.5 to the left,    improve=0.02980436, (23 missing)
+  Surrogate splits:
+      Income < 2.5 to the left,   agree=0.711, adj=0.296, (0 split)
+      Edu    < 5.5 to the right,  agree=0.607, adj=0.042, (0 split)
+      Ethnic splits as  LRR-RRRL, agree=0.607, adj=0.042, (0 split)
+
+Node number 42: 945 observations,    complexity param=0.001339563
+  mean=2.808466, MSE=0.8109336 
+  left son=84 (572 obs) right son=85 (373 obs)
+  Primary splits:
+      Persons < 1.5 to the right, improve=0.04123313, (44 missing)
+      LiveBA  < 3.5 to the left,  improve=0.03892170, (75 missing)
+      Income  < 3.5 to the left,  improve=0.03876246, (12 missing)
+      Edu     < 5.5 to the left,  improve=0.03182337, (4 missing)
+      Under18 < 0.5 to the right, improve=0.01400836, (0 missing)
+  Surrogate splits:
+      Edu      < 4.5 to the left,    agree=0.634, adj=0.088, (43 split)
+      MarStat  splits as  -L--R,     agree=0.606, adj=0.019, (1 split)
+      Occup    splits as  R-LLL----, agree=0.604, adj=0.014, (0 split)
+      TypeHome splits as  LLLRL,     agree=0.599, adj=0.003, (0 split)
+
+Node number 43: 690 observations,    complexity param=0.001375853
+  mean=3.336232, MSE=0.9101365 
+  left son=86 (215 obs) right son=87 (475 obs)
+  Primary splits:
+      LiveBA    < 3.5 to the left,    improve=0.05746138, (56 missing)
+      HouseStat splits as  RL-,       improve=0.05319027, (4 missing)
+      Persons   < 4.5 to the right,   improve=0.04396525, (15 missing)
+      Edu       < 2.5 to the left,    improve=0.03921784, (10 missing)
+      Occup     splits as  R-LLR----, improve=0.02406228, (0 missing)
+
+Node number 48: 463 observations,    complexity param=0.001019758
+  mean=3.006479, MSE=1.051794 
+  left son=96 (64 obs) right son=97 (399 obs)
+  Primary splits:
+      Occup    splits as  RRRRRLL-R, improve=0.04937074, (0 missing)
+      LiveBA   < 3.5 to the left,    improve=0.02796579, (67 missing)
+      TypeHome splits as  RRLLL,     improve=0.02563852, (0 missing)
+      Edu      < 1.5 to the right,   improve=0.02361171, (4 missing)
+      Ethnic   splits as  RRLLRLLR,  improve=0.02245910, (4 missing)
+
+Node number 49: 568 observations,    complexity param=0.0009786567
+  mean=3.522887, MSE=0.8868001 
+  left son=98 (266 obs) right son=99 (302 obs)
+  Primary splits:
+      TypeHome splits as  RRL-L,     improve=0.04259907, (0 missing)
+      Occup    splits as  LLLLRLL-R, improve=0.03584953, (0 missing)
+      Persons  < 2.5 to the left,    improve=0.02276492, (6 missing)
+      Income   < 7.5 to the left,    improve=0.02052535, (13 missing)
+      LiveBA   < 3.5 to the left,    improve=0.01853009, (53 missing)
+  Surrogate splits:
+      Persons < 2.5 to the left,    agree=0.665, adj=0.286, (0 split)
+      Under18 < 0.5 to the left,    agree=0.639, adj=0.229, (0 split)
+      Occup   splits as  RLRRRLR-L, agree=0.542, adj=0.023, (0 split)
+      Ethnic  splits as  RLLLRRRR,  agree=0.542, adj=0.023, (0 split)
+      Edu     < 4.5 to the right,   agree=0.540, adj=0.019, (0 split)
+
+Node number 50: 505 observations,    complexity param=0.001140173
+  mean=3.893069, MSE=1.137081 
+  left son=100 (135 obs) right son=101 (370 obs)
+  Primary splits:
+      Under18   < 0.5 to the right, improve=0.04681364, (0 missing)
+      Persons   < 3.5 to the right, improve=0.03705830, (22 missing)
+      HouseStat splits as  -RL,     improve=0.03044217, (12 missing)
+      LiveBA    < 2.5 to the left,  improve=0.02249555, (31 missing)
+      Income    < 2.5 to the left,  improve=0.02133748, (14 missing)
+  Surrogate splits:
+      Persons < 2.5 to the right,   agree=0.758, adj=0.096, (0 split)
+      Occup   splits as  RRRRLRR-R, agree=0.749, adj=0.059, (0 split)
+      Ethnic  splits as  RLR-RLRR,  agree=0.737, adj=0.015, (0 split)
+
+Node number 51: 60 observations,    complexity param=0.0009057881
+  mean=5.3, MSE=1.676667 
+  left son=102 (15 obs) right son=103 (45 obs)
+  Primary splits:
+      Persons  < 2.5 to the right,   improve=0.20807740, (3 missing)
+      Ethnic   splits as  -LL-RLR-,  improve=0.17176940, (0 missing)
+      TypeHome splits as  L-RLL,     improve=0.08016019, (0 missing)
+      sex      splits as  LR,        improve=0.07838682, (0 missing)
+      Occup    splits as  LRRLRL--R, improve=0.06629666, (0 missing)
+  Surrogate splits:
+      Under18   < 0.5 to the right,  agree=0.842, adj=0.400, (3 split)
+      HouseStat splits as  -RL,      agree=0.842, adj=0.400, (0 split)
+      TypeHome  splits as  L-RLR,    agree=0.807, adj=0.267, (0 split)
+      Edu       < 1.5 to the left,   agree=0.772, adj=0.133, (0 split)
+      Ethnic    splits as  -LR-RLR-, agree=0.772, adj=0.133, (0 split)
+
+Node number 52: 18 observations
+  mean=3.111111, MSE=1.098765 
+
+Node number 53: 961 observations,    complexity param=0.0004428303
+  mean=4.013528, MSE=0.6585059 
+  left son=106 (218 obs) right son=107 (743 obs)
+  Primary splits:
+      LiveBA  < 4.5 to the left,    improve=0.019986760, (100 missing)
+      Persons < 6.5 to the left,    improve=0.015147480, (6 missing)
+      sex     splits as  RL,        improve=0.012905110, (0 missing)
+      Occup   splits as  RLRRRRL-R, improve=0.011727680, (0 missing)
+      Ethnic  splits as  RLL-LRLL,  improve=0.006916901, (9 missing)
+  Surrogate splits:
+      Occup splits as  RRRRRRL-R, agree=0.749, adj=0.005, (100 split)
+
+Node number 54: 646 observations,    complexity param=0.001962656
+  mean=4.404025, MSE=1.250077 
+  left son=108 (472 obs) right son=109 (174 obs)
+  Primary splits:
+      Persons  < 2.5 to the left,    improve=0.057355010, (13 missing)
+      LiveBA   < 4.5 to the left,    improve=0.052981720, (65 missing)
+      Occup    splits as  LLLRRLR-L, improve=0.018658850, (0 missing)
+      Ethnic   splits as  LLRRLLRL,  improve=0.014231510, (4 missing)
+      TypeHome splits as  LLLRL,     improve=0.009236738, (0 missing)
+  Surrogate splits:
+      Edu < 1.5 to the right, agree=0.73, adj=0.012, (13 split)
+
+Node number 55: 585 observations,    complexity param=0.004382624
+  mean=5.263248, MSE=1.493094 
+  left son=110 (181 obs) right son=111 (404 obs)
+  Primary splits:
+      MarStat splits as  R-LR-,     improve=0.11829750, (0 missing)
+      Ethnic  splits as  LLLRRLRL,  improve=0.06477823, (3 missing)
+      DualInc splits as  L-R,       improve=0.05598645, (0 missing)
+      Occup   splits as  LLLLRLL-L, improve=0.05414078, (0 missing)
+      LiveBA  < 4.5 to the left,    improve=0.04582377, (52 missing)
+  Surrogate splits:
+      DualInc  splits as  L-R,      agree=0.846, adj=0.503, (0 split)
+      Persons  < 1.5 to the left,   agree=0.745, adj=0.177, (0 split)
+      TypeHome splits as  RLLRR,    agree=0.704, adj=0.044, (0 split)
+      Ethnic   splits as  RRLRRLRR, agree=0.699, adj=0.028, (0 split)
+      Edu      < 5.5 to the right,  agree=0.696, adj=0.017, (0 split)
+
+Node number 58: 10 observations
+  mean=5.7, MSE=0.81 
+
+Node number 59: 62 observations
+  mean=6.274194, MSE=0.5538502 
+
+Node number 60: 68 observations,    complexity param=0.0001119996
+  mean=6.338235, MSE=0.6061851 
+  left son=120 (50 obs) right son=121 (18 obs)
+  Primary splits:
+      TypeHome splits as  LRLRR,   improve=0.0640599400, (0 missing)
+      Edu      < 4.5 to the right, improve=0.0027523130, (1 missing)
+      LiveBA   < 4.5 to the right, improve=0.0026315630, (9 missing)
+      Income   < 6.5 to the right, improve=0.0023597550, (6 missing)
+      sex      splits as  LR,      improve=0.0009711817, (0 missing)
+
+Node number 61: 330 observations,    complexity param=0.0001585195
+  mean=6.6, MSE=0.3975758 
+  left son=122 (213 obs) right son=123 (117 obs)
+  Primary splits:
+      Income   < 5.5 to the right,  improve=0.026962110, (20 missing)
+      TypeHome splits as  LRRRL,    improve=0.019875290, (0 missing)
+      sex      splits as  RL,       improve=0.017317580, (0 missing)
+      Ethnic   splits as  LRR-L-RR, improve=0.011874150, (2 missing)
+      LiveBA   < 4.5 to the left,   improve=0.008735573, (52 missing)
+  Surrogate splits:
+      TypeHome  splits as  LLRRR,   agree=0.671, adj=0.105, (20 split)
+      HouseStat splits as  LRR,     agree=0.655, adj=0.061, (0 split)
+      Edu       < 3.5 to the right, agree=0.635, adj=0.009, (0 split)
+
+Node number 62: 19 observations
+  mean=6.421053, MSE=0.4542936 
+
+Node number 63: 132 observations
+  mean=6.856061, MSE=0.1383724 
+
+Node number 64: 619 observations
+  mean=1.053312, MSE=0.05693168 
+
+Node number 65: 65 observations
+  mean=1.261538, MSE=0.1931361 
+
+Node number 66: 25 observations
+  mean=1.36, MSE=0.2304 
+
+Node number 67: 11 observations
+  mean=2.636364, MSE=2.049587 
+
+Node number 68: 63 observations
+  mean=1.095238, MSE=0.0861678 
+
+Node number 69: 13 observations
+  mean=1.769231, MSE=0.1775148 
+
+Node number 74: 288 observations,    complexity param=0.0001754271
+  mean=2.1875, MSE=0.2912326 
+  left son=148 (140 obs) right son=149 (148 obs)
+  Primary splits:
+      Edu     < 3.5 to the left,   improve=0.05285317, (1 missing)
+      Under18 < 0.5 to the right,  improve=0.02167134, (0 missing)
+      Ethnic  splits as  RLR-LLRR, improve=0.01616968, (1 missing)
+      MarStat splits as  -R--L,    improve=0.01457915, (0 missing)
+      Income  < 2.5 to the left,   improve=0.01430923, (18 missing)
+  Surrogate splits:
+      Occup    splits as  R-LR--L-L, agree=0.624, adj=0.229, (1 split)
+      Ethnic   splits as  RRL-LLRR,  agree=0.606, adj=0.193, (0 split)
+      Under18  < 0.5 to the right,   agree=0.561, adj=0.100, (0 split)
+      TypeHome splits as  RRLRL,     agree=0.557, adj=0.093, (0 split)
+      sex      splits as  LR,        agree=0.533, adj=0.043, (0 split)
+
+Node number 75: 67 observations,    complexity param=0.0002092174
+  mean=2.61194, MSE=0.7150813 
+  left son=150 (45 obs) right son=151 (22 obs)
+  Primary splits:
+      Income < 4.5 to the left,    improve=0.11389660, (2 missing)
+      LiveBA < 4.5 to the left,    improve=0.06516724, (8 missing)
+      Ethnic splits as  LRL-LRLR,  improve=0.04136627, (0 missing)
+      Edu    < 4.5 to the left,    improve=0.04052775, (1 missing)
+      Occup  splits as  R-RL--L-L, improve=0.02192375, (0 missing)
+  Surrogate splits:
+      Occup   splits as  R-LL--L-L, agree=0.708, adj=0.05, (2 split)
+      DualInc splits as  LR-,       agree=0.708, adj=0.05, (0 split)
+      Lang    splits as  LLR,       agree=0.708, adj=0.05, (0 split)
+
+Node number 80: 103 observations,    complexity param=0.0007880298
+  mean=1.76699, MSE=0.6447356 
+  left son=160 (63 obs) right son=161 (40 obs)
+  Primary splits:
+      Under18   < 0.5 to the right,   improve=0.27977440, (0 missing)
+      Persons   < 1.5 to the right,   improve=0.14693270, (2 missing)
+      Occup     splits as  -L---RL-L, improve=0.05030788, (0 missing)
+      HouseStat splits as  LR-,       improve=0.05020893, (2 missing)
+      Ethnic    splits as  RRR-RLRL,  improve=0.03241221, (1 missing)
+  Surrogate splits:
+      Persons  < 2.5 to the right,   agree=0.709, adj=0.250, (0 split)
+      Occup    splits as  -L---LR-L, agree=0.641, adj=0.075, (0 split)
+      TypeHome splits as  LLLRL,     agree=0.621, adj=0.025, (0 split)
+      DualInc  splits as  LLR,       agree=0.621, adj=0.025, (0 split)
+
+Node number 81: 625 observations,    complexity param=0.0004544886
+  mean=2.3664, MSE=0.433751 
+  left son=162 (266 obs) right son=163 (359 obs)
+  Primary splits:
+      Occup    splits as  -R---LR-R, improve=0.03952635, (0 missing)
+      Persons  < 2.5 to the right,   improve=0.03234350, (51 missing)
+      Income   < 2.5 to the left,    improve=0.03085932, (31 missing)
+      MarStat  splits as  -R--L,     improve=0.02054925, (0 missing)
+      TypeHome splits as  LRRRL,     improve=0.00689253, (0 missing)
+  Surrogate splits:
+      Income  < 1.5 to the left,   agree=0.614, adj=0.094, (0 split)
+      Edu     < 3.5 to the right,  agree=0.603, adj=0.068, (0 split)
+      Ethnic  splits as  RLRRRLRR, agree=0.579, adj=0.011, (0 split)
+      Under18 < 5.5 to the right,  agree=0.578, adj=0.008, (0 split)
+
+Node number 82: 71 observations,    complexity param=0.0001383244
+  mean=2.591549, MSE=0.4388018 
+  left son=164 (43 obs) right son=165 (28 obs)
+  Primary splits:
+      Edu      < 5.5 to the left,  improve=0.10467820, (0 missing)
+      Income   < 1.5 to the left,  improve=0.07603796, (4 missing)
+      TypeHome splits as  LLR-L,   improve=0.04741850, (0 missing)
+      LiveBA   < 4.5 to the right, improve=0.04238724, (13 missing)
+      sex      splits as  RL,      improve=0.03714731, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  LRL-L,    agree=0.648, adj=0.107, (0 split)
+      DualInc  splits as  LLR,      agree=0.620, adj=0.036, (0 split)
+      Ethnic   splits as  RLL-L-LL, agree=0.620, adj=0.036, (0 split)
+
+Node number 83: 102 observations,    complexity param=0.0003278735
+  mean=3.156863, MSE=1.034218 
+  left son=166 (77 obs) right son=167 (25 obs)
+  Primary splits:
+      Edu     < 5.5 to the left,   improve=0.07327881, (0 missing)
+      LiveBA  < 3.5 to the left,   improve=0.06626553, (10 missing)
+      Ethnic  splits as  -LR-LRRR, improve=0.04944780, (0 missing)
+      Persons < 1.5 to the right,  improve=0.04840895, (5 missing)
+      MarStat splits as  -R--L,    improve=0.04779728, (0 missing)
+
+Node number 84: 572 observations,    complexity param=0.000814108
+  mean=2.660839, MSE=0.7870678 
+  left son=168 (331 obs) right son=169 (241 obs)
+  Primary splits:
+      Income   < 3.5 to the left,  improve=0.04305851, (11 missing)
+      Persons  < 4.5 to the right, improve=0.03039264, (33 missing)
+      Edu      < 5.5 to the left,  improve=0.02221589, (4 missing)
+      LiveBA   < 4.5 to the left,  improve=0.02221155, (45 missing)
+      TypeHome splits as  LLLRL,   improve=0.01591996, (0 missing)
+  Surrogate splits:
+      Occup    splits as  R-LLL----, agree=0.649, adj=0.183, (11 split)
+      Edu      < 4.5 to the left,    agree=0.597, adj=0.062, (0 split)
+      TypeHome splits as  LRLLL,     agree=0.590, adj=0.046, (0 split)
+      MarStat  splits as  -R--L,     agree=0.590, adj=0.046, (0 split)
+      Ethnic   splits as  LRL-LLLL,  agree=0.576, adj=0.012, (0 split)
+
+Node number 85: 373 observations,    complexity param=0.000754187
+  mean=3.034853, MSE=0.7628604 
+  left son=170 (123 obs) right son=171 (250 obs)
+  Primary splits:
+      LiveBA < 3.5 to the left,    improve=0.06907836, (30 missing)
+      Edu    < 5.5 to the left,    improve=0.02884537, (0 missing)
+      Ethnic splits as  LLR-LLRR,  improve=0.01843867, (1 missing)
+      Income < 3.5 to the left,    improve=0.01647138, (1 missing)
+      Occup  splits as  L-LRL----, improve=0.01264798, (0 missing)
+
+Node number 86: 215 observations,    complexity param=0.0004844526
+  mean=3.013953, MSE=0.5253867 
+  left son=172 (36 obs) right son=173 (179 obs)
+  Primary splits:
+      Occup     splits as  R-LLL----, improve=0.10111560, (0 missing)
+      Edu       < 5.5 to the left,    improve=0.04350034, (5 missing)
+      Ethnic    splits as  RRL-LLRL,  improve=0.03737737, (1 missing)
+      HouseStat splits as  RL-,       improve=0.02733318, (0 missing)
+      Persons   < 4.5 to the right,   improve=0.02454907, (2 missing)
+  Surrogate splits:
+      Ethnic  splits as  RRR-LLRR, agree=0.847, adj=0.083, (0 split)
+      DualInc splits as  RRL,      agree=0.837, adj=0.028, (0 split)
+
+Node number 87: 475 observations,    complexity param=0.001135015
+  mean=3.482105, MSE=1.015996 
+  left son=174 (20 obs) right son=175 (455 obs)
+  Primary splits:
+      Persons   < 4.5 to the right,   improve=0.05600092, (13 missing)
+      Edu       < 5.5 to the left,    improve=0.04860661, (5 missing)
+      HouseStat splits as  RL-,       improve=0.03274021, (4 missing)
+      Ethnic    splits as  LRLRLLRL,  improve=0.02925139, (3 missing)
+      Occup     splits as  R-LLR----, improve=0.01922886, (0 missing)
+  Surrogate splits:
+      Under18 < 2.5 to the right, agree=0.961, adj=0.1, (13 split)
+
+Node number 96: 64 observations,    complexity param=0.0001040305
+  mean=2.4375, MSE=0.3710938 
+  left son=192 (37 obs) right son=193 (27 obs)
+  Primary splits:
+      Income < 3.5 to the left,   improve=0.09824561, (1 missing)
+      Edu    < 3.5 to the left,   improve=0.06939112, (0 missing)
+      Ethnic splits as  RRRLLLR-, improve=0.02186235, (0 missing)
+      Lang   splits as  RLL,      improve=0.01491516, (2 missing)
+      sex    splits as  RL,       improve=0.01427989, (0 missing)
+  Surrogate splits:
+      Ethnic  splits as  LLLRLLR-,  agree=0.635, adj=0.148, (1 split)
+      Under18 < 0.5 to the right,   agree=0.619, adj=0.111, (0 split)
+      Occup   splits as  -----LR--, agree=0.603, adj=0.074, (0 split)
+      DualInc splits as  LRL,       agree=0.603, adj=0.074, (0 split)
+      Persons < 4.5 to the left,    agree=0.603, adj=0.074, (0 split)
+
+Node number 97: 399 observations,    complexity param=0.0005184902
+  mean=3.097744, MSE=1.100722 
+  left son=194 (238 obs) right son=195 (161 obs)
+  Primary splits:
+      TypeHome splits as  RRLRL,    improve=0.02783392, (0 missing)
+      Ethnic   splits as  RRLLLLLR, improve=0.02345524, (4 missing)
+      Lang     splits as  LRR,      improve=0.02112363, (14 missing)
+      Edu      < 1.5 to the right,  improve=0.01981349, (4 missing)
+      LiveBA   < 3.5 to the left,   improve=0.01792761, (57 missing)
+  Surrogate splits:
+      Under18   < 2.5 to the left,   agree=0.624, adj=0.068, (0 split)
+      Persons   < 5.5 to the left,   agree=0.619, adj=0.056, (0 split)
+      Edu       < 1.5 to the right,  agree=0.609, adj=0.031, (0 split)
+      Ethnic    splits as  RLLRLLLL, agree=0.604, adj=0.019, (0 split)
+      HouseStat splits as  -LR,      agree=0.599, adj=0.006, (0 split)
+
+Node number 98: 266 observations,    complexity param=0.0009786567
+  mean=3.315789, MSE=0.9303522 
+  left son=196 (239 obs) right son=197 (27 obs)
+  Primary splits:
+      Occup   splits as  LLLLRLL-R, improve=0.09976763, (0 missing)
+      DualInc splits as  RLR,       improve=0.05370124, (0 missing)
+      LiveBA  < 3.5 to the left,    improve=0.04101305, (25 missing)
+      Income  < 7.5 to the left,    improve=0.03177252, (7 missing)
+      Edu     < 5.5 to the left,    improve=0.01843904, (1 missing)
+
+Node number 99: 302 observations,    complexity param=0.000298858
+  mean=3.705298, MSE=0.7773891 
+  left son=198 (202 obs) right son=199 (100 obs)
+  Primary splits:
+      Edu     < 4.5 to the left,    improve=0.026715950, (3 missing)
+      Persons < 2.5 to the left,    improve=0.014973250, (4 missing)
+      Occup   splits as  RRLRRLL-L, improve=0.011168690, (0 missing)
+      Ethnic  splits as  LLL-LRRR,  improve=0.007218359, (2 missing)
+      Income  < 7.5 to the left,    improve=0.006970162, (6 missing)
+  Surrogate splits:
+      Occup   splits as  LLLLLLR-L, agree=0.682, adj=0.05, (3 split)
+      DualInc splits as  RLL,       agree=0.669, adj=0.01, (0 split)
+
+Node number 100: 135 observations,    complexity param=0.0004506571
+  mean=3.511111, MSE=0.7091358 
+  left son=200 (93 obs) right son=201 (42 obs)
+  Primary splits:
+      Income  < 5.5 to the left,    improve=0.12318890, (3 missing)
+      Occup   splits as  RLRLRLL-L, improve=0.10744280, (0 missing)
+      Edu     < 4.5 to the left,    improve=0.07063916, (1 missing)
+      Under18 < 2.5 to the right,   improve=0.05372787, (0 missing)
+      Ethnic  splits as  RLL-RRRL,  improve=0.03418719, (0 missing)
+  Surrogate splits:
+      sex     splits as  RL,      agree=0.742, adj=0.171, (3 split)
+      Edu     < 5.5 to the left,  agree=0.742, adj=0.171, (0 split)
+      Persons < 1.5 to the right, agree=0.705, adj=0.049, (0 split)
+
+Node number 101: 370 observations,    complexity param=0.0007805103
+  mean=4.032432, MSE=1.22057 
+  left son=202 (77 obs) right son=203 (293 obs)
+  Primary splits:
+      LiveBA    < 2.5 to the left,    improve=0.04052113, (18 missing)
+      HouseStat splits as  -RL,       improve=0.03240789, (10 missing)
+      sex       splits as  LR,        improve=0.02416214, (0 missing)
+      Persons   < 2.5 to the right,   improve=0.01785425, (22 missing)
+      Occup     splits as  RRRRRLL-R, improve=0.01635794, (0 missing)
+  Surrogate splits:
+      Occup splits as  RRRRRRL-R, agree=0.793, adj=0.039, (18 split)
+
+Node number 102: 15 observations
+  mean=4.266667, MSE=2.195556 
+
+Node number 103: 45 observations,    complexity param=0.0002141277
+  mean=5.644444, MSE=1.029136 
+  left son=206 (31 obs) right son=207 (14 obs)
+  Primary splits:
+      Income < 2.5 to the right,   improve=0.14806690, (3 missing)
+      Occup  splits as  LLRLRL--R, improve=0.09636189, (0 missing)
+      sex    splits as  LR,        improve=0.09632340, (0 missing)
+      Ethnic splits as  -LL-L-R-,  improve=0.06728243, (0 missing)
+      Edu    < 4.5 to the right,   improve=0.06728243, (0 missing)
+  Surrogate splits:
+      Occup splits as  LLLLRR--R, agree=0.857, adj=0.571, (3 split)
+      Edu   < 3.5 to the right,   agree=0.810, adj=0.429, (0 split)
+
+Node number 106: 218 observations,    complexity param=0.000239031
+  mean=3.821101, MSE=0.5413896 
+  left son=212 (84 obs) right son=213 (134 obs)
+  Primary splits:
+      Occup   splits as  RLRRLLL--, improve=0.03678691, (0 missing)
+      Ethnic  splits as  RRL-RRLL,  improve=0.03491492, (0 missing)
+      Persons < 4.5 to the left,    improve=0.02861936, (1 missing)
+      sex     splits as  RL,        improve=0.01310078, (0 missing)
+      Lang    splits as  LRR,       improve=0.01102309, (8 missing)
+  Surrogate splits:
+      DualInc  splits as  RRL,      agree=0.757, adj=0.369, (0 split)
+      Income   < 3.5 to the left,   agree=0.647, adj=0.083, (0 split)
+      TypeHome splits as  RR--L,    agree=0.619, adj=0.012, (0 split)
+      sex      splits as  RL,       agree=0.619, adj=0.012, (0 split)
+      Ethnic   splits as  RRR-RRRL, agree=0.619, adj=0.012, (0 split)
+
+Node number 107: 743 observations,    complexity param=0.0003875818
+  mean=4.069987, MSE=0.6788166 
+  left son=214 (723 obs) right son=215 (20 obs)
+  Primary splits:
+      Persons < 6.5 to the left,    improve=0.016714580, (5 missing)
+      sex     splits as  RL,        improve=0.013092070, (0 missing)
+      Edu     < 3.5 to the right,   improve=0.009650988, (5 missing)
+      Occup   splits as  RLRRRRR-R, improve=0.009494815, (0 missing)
+      MarStat splits as  L-LR-,     improve=0.007101344, (0 missing)
+  Surrogate splits:
+      Under18 < 4.5 to the left,  agree=0.982, adj=0.35, (5 split)
+
+Node number 108: 472 observations,    complexity param=0.001381915
+  mean=4.241525, MSE=1.335733 
+  left son=216 (130 obs) right son=217 (342 obs)
+  Primary splits:
+      LiveBA   < 4.5 to the left,    improve=0.05375663, (45 missing)
+      Ethnic   splits as  LLRLLLRL,  improve=0.02530065, (3 missing)
+      Occup    splits as  LLLRRLR-L, improve=0.02305289, (0 missing)
+      TypeHome splits as  LLLRL,     improve=0.01986248, (0 missing)
+      Income   < 3.5 to the left,    improve=0.01420035, (14 missing)
+  Surrogate splits:
+      Occup    splits as  RRRRRLR-R, agree=0.698, adj=0.008, (45 split)
+      TypeHome splits as  RRLRR,     agree=0.698, adj=0.008, (0 split)
+
+Node number 109: 174 observations,    complexity param=0.0003224108
+  mean=4.844828, MSE=0.7517836 
+  left son=218 (26 obs) right son=219 (148 obs)
+  Primary splits:
+      Ethnic  splits as  RRLRRLRL,  improve=0.05796012, (1 missing)
+      Edu     < 4.5 to the left,    improve=0.02155762, (0 missing)
+      LiveBA  < 4.5 to the left,    improve=0.02060306, (20 missing)
+      Occup   splits as  RRLRRRR-R, improve=0.02016678, (0 missing)
+      Persons < 4.5 to the right,   improve=0.01716599, (1 missing)
+
+Node number 110: 181 observations,    complexity param=0.0004413182
+  mean=4.635359, MSE=1.170904 
+  left son=220 (150 obs) right son=221 (31 obs)
+  Primary splits:
+      Occup  splits as  LRRLRLL-L, improve=0.04882102, (0 missing)
+      Ethnic splits as  LLL-RLRL,  improve=0.04676937, (1 missing)
+      Edu    < 3.5 to the right,   improve=0.03799429, (1 missing)
+      Income < 4.5 to the right,   improve=0.02035840, (5 missing)
+      LiveBA < 4.5 to the left,    improve=0.01920470, (11 missing)
+  Surrogate splits:
+      Edu < 2.5 to the right, agree=0.845, adj=0.097, (0 split)
+
+Node number 111: 404 observations,    complexity param=0.001343108
+  mean=5.544554, MSE=1.381678 
+  left son=222 (40 obs) right son=223 (364 obs)
+  Primary splits:
+      Ethnic splits as  LLLRR-RL,  improve=0.05679007, (2 missing)
+      LiveBA < 4.5 to the left,    improve=0.04968281, (41 missing)
+      Income < 3.5 to the right,   improve=0.03679470, (28 missing)
+      Edu    < 3.5 to the right,   improve=0.03154443, (1 missing)
+      Occup  splits as  RLRRRLR-L, improve=0.02106770, (0 missing)
+
+Node number 120: 50 observations
+  mean=6.22, MSE=0.6916 
+
+Node number 121: 18 observations
+  mean=6.666667, MSE=0.2222222 
+
+Node number 122: 213 observations,    complexity param=0.0001138343
+  mean=6.521127, MSE=0.4749058 
+  left son=244 (12 obs) right son=245 (201 obs)
+  Primary splits:
+      TypeHome splits as  RRRLL,    improve=0.024094410, (0 missing)
+      sex      splits as  RL,       improve=0.020603360, (0 missing)
+      Ethnic   splits as  LLL-L-R-, improve=0.014176510, (1 missing)
+      LiveBA   < 4.5 to the left,   improve=0.009978003, (25 missing)
+      Income   < 7.5 to the right,  improve=0.003852385, (17 missing)
+
+Node number 123: 117 observations
+  mean=6.74359, MSE=0.2248521 
+
+Node number 148: 140 observations
+  mean=2.064286, MSE=0.2030102 
+
+Node number 149: 148 observations
+  mean=2.304054, MSE=0.3467403 
+
+Node number 150: 45 observations
+  mean=2.422222, MSE=0.5995062 
+
+Node number 151: 22 observations
+  mean=3, MSE=0.7272727 
+
+Node number 160: 63 observations,    complexity param=0.0002167924
+  mean=1.428571, MSE=0.30839 
+  left son=320 (39 obs) right son=321 (24 obs)
+  Primary splits:
+      Persons  < 4.5 to the left,    improve=0.26307980, (0 missing)
+      Occup    splits as  -L---RL-L, improve=0.22000160, (0 missing)
+      Under18  < 2.5 to the left,    improve=0.18014710, (0 missing)
+      TypeHome splits as  RLL-L,     improve=0.05294118, (0 missing)
+      Income   < 2.5 to the left,    improve=0.02932249, (13 missing)
+  Surrogate splits:
+      Under18   < 2.5 to the left,    agree=0.825, adj=0.542, (0 split)
+      Occup     splits as  -L---RL-L, agree=0.683, adj=0.167, (0 split)
+      HouseStat splits as  RL-,       agree=0.683, adj=0.167, (0 split)
+      Lang      splits as  LRL,       agree=0.635, adj=0.042, (0 split)
+
+Node number 161: 40 observations,    complexity param=0.0002187337
+  mean=2.3, MSE=0.71 
+  left son=322 (17 obs) right son=323 (23 obs)
+  Primary splits:
+      Persons  < 2.5 to the right,   improve=0.20349130, (2 missing)
+      Occup    splits as  -L---RL-R, improve=0.06055257, (0 missing)
+      TypeHome splits as  LRRLR,     improve=0.03844117, (0 missing)
+      LiveBA   < 4.5 to the left,    improve=0.02334181, (2 missing)
+      Ethnic   splits as  RLR-LLRL,  improve=0.01877934, (0 missing)
+  Surrogate splits:
+      TypeHome  splits as  LRRLR,    agree=0.789, adj=0.529, (2 split)
+      HouseStat splits as  LR-,      agree=0.605, adj=0.118, (0 split)
+      Ethnic    splits as  RRL-RRLR, agree=0.605, adj=0.118, (0 split)
+      Income    < 1.5 to the left,   agree=0.579, adj=0.059, (0 split)
+      LiveBA    < 3   to the right,  agree=0.579, adj=0.059, (0 split)
+
+Node number 162: 266 observations,    complexity param=0.0001199679
+  mean=2.214286, MSE=0.2360365 
+  left son=324 (134 obs) right son=325 (132 obs)
+  Primary splits:
+      Persons   < 2.5 to the right, improve=0.04877795, (22 missing)
+      DualInc   splits as  LRR,     improve=0.03766776, (0 missing)
+      HouseStat splits as  LR-,     improve=0.03319082, (8 missing)
+      Income    < 1.5 to the left,  improve=0.01389087, (12 missing)
+      MarStat   splits as  -R--L,   improve=0.01107259, (0 missing)
+  Surrogate splits:
+      TypeHome  splits as  LLRLL,   agree=0.652, adj=0.286, (22 split)
+      MarStat   splits as  -R--L,   agree=0.631, adj=0.244, (0 split)
+      Under18   < 0.5 to the right, agree=0.586, adj=0.151, (0 split)
+      Edu       < 3.5 to the left,  agree=0.578, adj=0.134, (0 split)
+      HouseStat splits as  LR-,     agree=0.557, adj=0.092, (0 split)
+
+Node number 163: 359 observations,    complexity param=0.000240501
+  mean=2.479109, MSE=0.5503992 
+  left son=326 (176 obs) right son=327 (183 obs)
+  Primary splits:
+      Income  < 2.5 to the left,   improve=0.03899642, (19 missing)
+      Edu     < 3.5 to the left,   improve=0.03267044, (3 missing)
+      MarStat splits as  -R--L,    improve=0.02606028, (0 missing)
+      Persons < 3.5 to the right,  improve=0.01925419, (29 missing)
+      Ethnic  splits as  LLLRLLRR, improve=0.01550275, (5 missing)
+  Surrogate splits:
+      Occup    splits as  -R----L-L, agree=0.606, adj=0.198, (19 split)
+      TypeHome splits as  RRRLL,     agree=0.582, adj=0.150, (0 split)
+      Edu      < 3.5 to the left,    agree=0.579, adj=0.144, (0 split)
+      MarStat  splits as  -R--L,     agree=0.550, adj=0.084, (0 split)
+      LiveBA   < 2.5 to the left,    agree=0.535, adj=0.054, (0 split)
+
+Node number 164: 43 observations
+  mean=2.418605, MSE=0.2898864 
+
+Node number 165: 28 observations
+  mean=2.857143, MSE=0.5510204 
+
+Node number 166: 77 observations,    complexity param=0.0002388514
+  mean=3, MSE=0.7792208 
+  left son=332 (67 obs) right son=333 (10 obs)
+  Primary splits:
+      Occup    splits as  -L----R-L, improve=0.09385572, (0 missing)
+      TypeHome splits as  RRL-R,     improve=0.07071429, (0 missing)
+      LiveBA   < 2.5 to the left,    improve=0.04480852, (7 missing)
+      MarStat  splits as  -R--L,     improve=0.04113248, (0 missing)
+      Persons  < 1.5 to the right,   improve=0.03837017, (4 missing)
+
+Node number 167: 25 observations
+  mean=3.64, MSE=1.5104 
+
+Node number 168: 331 observations,    complexity param=0.0005343777
+  mean=2.504532, MSE=0.7998284 
+  left son=336 (316 obs) right son=337 (15 obs)
+  Primary splits:
+      Edu      < 5.5 to the left,  improve=0.04727734, (2 missing)
+      Persons  < 4.5 to the right, improve=0.01897283, (23 missing)
+      LiveBA   < 2.5 to the left,  improve=0.01862401, (31 missing)
+      DualInc  splits as  RLR,     improve=0.01522916, (0 missing)
+      TypeHome splits as  RLLRL,   improve=0.01129298, (0 missing)
+
+Node number 169: 241 observations,    complexity param=0.0002905419
+  mean=2.875519, MSE=0.6898986 
+  left son=338 (97 obs) right son=339 (144 obs)
+  Primary splits:
+      Persons   < 2.5 to the right,  improve=0.04023953, (10 missing)
+      HouseStat splits as  RL-,      improve=0.03882098, (6 missing)
+      DualInc   splits as  LLR,      improve=0.03111330, (0 missing)
+      LiveBA    < 4.5 to the left,   improve=0.02551806, (14 missing)
+      Ethnic    splits as  RRR-RLRL, improve=0.01809774, (2 missing)
+  Surrogate splits:
+      Under18  < 0.5 to the right,   agree=0.684, adj=0.247, (10 split)
+      TypeHome splits as  LRRRR,     agree=0.641, adj=0.144, (0 split)
+      Ethnic   splits as  LLR-RLRL,  agree=0.615, adj=0.082, (0 split)
+      Occup    splits as  R-RRL----, agree=0.597, adj=0.041, (0 split)
+
+Node number 170: 123 observations,    complexity param=0.0001613502
+  mean=2.723577, MSE=0.2975742 
+  left son=340 (109 obs) right son=341 (14 obs)
+  Primary splits:
+      Edu      < 5.5 to the left,   improve=0.103933000, (0 missing)
+      Income   < 3.5 to the left,   improve=0.045122190, (0 missing)
+      Ethnic   splits as  -LR-L-LR, improve=0.030346110, (0 missing)
+      LiveBA   < 2.5 to the left,   improve=0.021106270, (0 missing)
+      TypeHome splits as  LLRRR,    improve=0.003940664, (0 missing)
+
+Node number 171: 250 observations,    complexity param=0.0003671349
+  mean=3.188, MSE=0.920656 
+  left son=342 (77 obs) right son=343 (173 obs)
+  Primary splits:
+      Ethnic   splits as  LLL-LLRR,  improve=0.03787893, (1 missing)
+      Occup    splits as  L-LRL----, improve=0.01904454, (0 missing)
+      Edu      < 5.5 to the left,    improve=0.01767888, (0 missing)
+      Income   < 3.5 to the left,    improve=0.01340244, (1 missing)
+      TypeHome splits as  RLRRR,     improve=0.01047193, (0 missing)
+  Surrogate splits:
+      Lang    splits as  RLR,     agree=0.723, adj=0.104, (1 split)
+      MarStat splits as  -L--R,   agree=0.699, adj=0.026, (0 split)
+      Edu     < 2.5 to the left,  agree=0.699, adj=0.026, (0 split)
+
+Node number 172: 36 observations
+  mean=2.5, MSE=0.3055556 
+
+Node number 173: 179 observations,    complexity param=0.0002238612
+  mean=3.117318, MSE=0.5057895 
+  left son=346 (149 obs) right son=347 (30 obs)
+  Primary splits:
+      HouseStat splits as  RL-,      improve=0.05829621, (0 missing)
+      MarStat   splits as  -R--L,    improve=0.04434974, (0 missing)
+      LiveBA    < 1.5 to the left,   improve=0.03213746, (0 missing)
+      Ethnic    splits as  RRL-R-RL, improve=0.02811808, (1 missing)
+      TypeHome  splits as  RRL-L,    improve=0.02788991, (0 missing)
+  Surrogate splits:
+      DualInc splits as  LLR, agree=0.838, adj=0.033, (0 split)
+
+Node number 174: 20 observations
+  mean=2.35, MSE=0.9275 
+
+Node number 175: 455 observations,    complexity param=0.0009698635
+  mean=3.531868, MSE=0.9610723 
+  left son=350 (255 obs) right son=351 (200 obs)
+  Primary splits:
+      HouseStat splits as  RL-,       improve=0.05515011, (4 missing)
+      Edu       < 5.5 to the left,    improve=0.04274866, (5 missing)
+      TypeHome  splits as  RLLRL,     improve=0.03375395, (0 missing)
+      Ethnic    splits as  LRLRLLRL,  improve=0.02332809, (3 missing)
+      Occup     splits as  R-LLL----, improve=0.01204310, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  RRLRL,    agree=0.758, adj=0.449, (4 split)
+      Income   < 7.5 to the left,   agree=0.594, adj=0.076, (0 split)
+      Edu      < 5.5 to the left,   agree=0.585, adj=0.056, (0 split)
+      Under18  < 1.5 to the left,   agree=0.585, adj=0.056, (0 split)
+      Ethnic   splits as  LRLLLLLR, agree=0.574, adj=0.030, (0 split)
+
+Node number 192: 37 observations
+  mean=2.27027, MSE=0.3053324 
+
+Node number 193: 27 observations
+  mean=2.666667, MSE=0.3703704 
+
+Node number 194: 238 observations,    complexity param=0.0005178379
+  mean=2.953782, MSE=0.9348386 
+  left son=388 (140 obs) right son=389 (98 obs)
+  Primary splits:
+      Ethnic  splits as  -RL-RLLR, improve=0.05781976, (2 missing)
+      sex     splits as  RL,       improve=0.04329769, (0 missing)
+      Lang    splits as  LRR,      improve=0.04102204, (8 missing)
+      Under18 < 1.5 to the left,   improve=0.02149217, (0 missing)
+      Persons < 3.5 to the left,   improve=0.01461083, (7 missing)
+  Surrogate splits:
+      Lang   splits as  LRR,       agree=0.767, adj=0.433, (2 split)
+      Edu    < 2.5 to the right,   agree=0.674, adj=0.206, (0 split)
+      Occup  splits as  LLRLL---L, agree=0.636, adj=0.113, (0 split)
+      Income < 1.5 to the right,   agree=0.636, adj=0.113, (0 split)
+      sex    splits as  RL,        agree=0.631, adj=0.103, (0 split)
+
+Node number 195: 161 observations,    complexity param=0.0003334834
+  mean=3.310559, MSE=1.270013 
+  left son=390 (146 obs) right son=391 (15 obs)
+  Primary splits:
+      Edu     < 1.5 to the right,   improve=0.03947696, (2 missing)
+      Under18 < 0.5 to the right,   improve=0.01718539, (0 missing)
+      LiveBA  < 2.5 to the left,    improve=0.01578734, (23 missing)
+      Ethnic  splits as  RLLLL-RR,  improve=0.01564373, (2 missing)
+      Occup   splits as  RLLRL---R, improve=0.01220013, (0 missing)
+  Surrogate splits:
+      Under18 < 4.5 to the left,  agree=0.912, adj=0.067, (2 split)
+
+Node number 196: 239 observations,    complexity param=0.0004304847
+  mean=3.213389, MSE=0.7787329 
+  left son=392 (94 obs) right son=393 (145 obs)
+  Primary splits:
+      LiveBA  < 3.5 to the left,    improve=0.06222638, (22 missing)
+      Income  < 7.5 to the left,    improve=0.02046488, (6 missing)
+      Persons < 4.5 to the left,    improve=0.01652168, (2 missing)
+      Occup   splits as  LLRL-LL--, improve=0.01482025, (0 missing)
+      Edu     < 5.5 to the left,    improve=0.01461653, (1 missing)
+  Surrogate splits:
+      Occup   splits as  RRRR-LL--, agree=0.604, adj=0.065, (22 split)
+      Ethnic  splits as  RRR-RRRL,  agree=0.594, adj=0.043, (0 split)
+      Lang    splits as  RLL,       agree=0.585, adj=0.022, (0 split)
+      DualInc splits as  RRL,       agree=0.581, adj=0.011, (0 split)
+
+Node number 197: 27 observations
+  mean=4.222222, MSE=1.358025 
+
+Node number 198: 202 observations
+  mean=3.60396, MSE=0.6748358 
+
+Node number 199: 100 observations,    complexity param=0.000298858
+  mean=3.91, MSE=0.9219 
+  left son=398 (38 obs) right son=399 (62 obs)
+  Primary splits:
+      Persons < 2.5 to the left,    improve=0.08931018, (2 missing)
+      Ethnic  splits as  RLL-RLRL,  improve=0.07983139, (1 missing)
+      Under18 < 0.5 to the left,    improve=0.03274244, (0 missing)
+      Occup   splits as  RRLRRRL-R, improve=0.03259798, (0 missing)
+      LiveBA  < 4.5 to the left,    improve=0.02829925, (12 missing)
+  Surrogate splits:
+      Under18  < 0.5 to the left,  agree=0.898, adj=0.722, (2 split)
+      TypeHome splits as  RL---,   agree=0.684, adj=0.139, (0 split)
+
+Node number 200: 93 observations,    complexity param=0.0001479955
+  mean=3.322581, MSE=0.4120708 
+  left son=400 (34 obs) right son=401 (59 obs)
+  Primary splits:
+      Occup   splits as  RLRLRLL-R, improve=0.07680116, (0 missing)
+      Income  < 2.5 to the left,    improve=0.05023626, (2 missing)
+      Ethnic  splits as  RRL-RRRR,  improve=0.04475131, (0 missing)
+      Persons < 5.5 to the right,   improve=0.02379808, (0 missing)
+      LiveBA  < 3.5 to the left,    improve=0.02258159, (12 missing)
+  Surrogate splits:
+      TypeHome splits as  RRRLR,    agree=0.656, adj=0.059, (0 split)
+      Persons  < 1.5 to the left,   agree=0.656, adj=0.059, (0 split)
+      Ethnic   splits as  RRL-RRRR, agree=0.656, adj=0.059, (0 split)
+
+Node number 201: 42 observations,    complexity param=0.0003078396
+  mean=3.928571, MSE=1.113946 
+  left son=402 (13 obs) right son=403 (29 obs)
+  Primary splits:
+      Occup    splits as  RLLLR---L, improve=0.15512990, (0 missing)
+      TypeHome splits as  LRR-R,     improve=0.06785411, (0 missing)
+      Persons  < 2.5 to the left,    improve=0.04837719, (0 missing)
+      Edu      < 4.5 to the left,    improve=0.03321429, (1 missing)
+      Ethnic   splits as  RLL-R-L-,  improve=0.02042936, (0 missing)
+  Surrogate splits:
+      Ethnic splits as  RLR-R-R-, agree=0.738, adj=0.154, (0 split)
+
+Node number 202: 77 observations,    complexity param=0.0002356244
+  mean=3.597403, MSE=0.8638894 
+  left son=404 (18 obs) right son=405 (59 obs)
+  Primary splits:
+      Occup    splits as  RLRRRLL-R, improve=0.08351331, (0 missing)
+      Ethnic   splits as  RRR-L-RL,  improve=0.04949239, (0 missing)
+      Income   < 3.5 to the left,    improve=0.04655283, (1 missing)
+      Persons  < 1.5 to the right,   improve=0.02031318, (5 missing)
+      TypeHome splits as  LLR-R,     improve=0.01179284, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  RRR-L, agree=0.792, adj=0.111, (0 split)
+
+Node number 203: 293 observations,    complexity param=0.0007780254
+  mean=4.146758, MSE=1.2515 
+  left son=406 (31 obs) right son=407 (262 obs)
+  Primary splits:
+      HouseStat splits as  -RL,      improve=0.04999979, (5 missing)
+      sex       splits as  LR,       improve=0.03138334, (0 missing)
+      Persons   < 2.5 to the right,  improve=0.02790095, (17 missing)
+      Ethnic    splits as  LLL-L-RR, improve=0.01528822, (0 missing)
+      TypeHome  splits as  LRRLL,    improve=0.01150929, (0 missing)
+  Surrogate splits:
+      Occup splits as  RRRRRLR-R, agree=0.896, adj=0.032, (5 split)
+
+Node number 206: 31 observations
+  mean=5.419355, MSE=1.01769 
+
+Node number 207: 14 observations
+  mean=6.142857, MSE=0.6938776 
+
+Node number 212: 84 observations
+  mean=3.642857, MSE=0.5153061 
+
+Node number 213: 134 observations,    complexity param=0.000239031
+  mean=3.932836, MSE=0.5253397 
+  left son=426 (117 obs) right son=427 (17 obs)
+  Primary splits:
+      Ethnic  splits as  LRL-LRLR,  improve=0.098436080, (0 missing)
+      Persons < 3.5 to the left,    improve=0.035469010, (1 missing)
+      Occup   splits as  L-RR-----, improve=0.029683790, (0 missing)
+      Lang    splits as  LRR,       improve=0.010526600, (4 missing)
+      Edu     < 5.5 to the left,    improve=0.008627879, (3 missing)
+
+Node number 214: 723 observations,    complexity param=0.0003875818
+  mean=4.052559, MSE=0.6639042 
+  left son=428 (466 obs) right son=429 (257 obs)
+  Primary splits:
+      sex     splits as  RL,        improve=0.015843320, (0 missing)
+      Edu     < 5.5 to the left,    improve=0.012168880, (4 missing)
+      Occup   splits as  RLRRRRR-R, improve=0.010475090, (0 missing)
+      Under18 < 1.5 to the right,   improve=0.006993585, (0 missing)
+      Income  < 6.5 to the left,    improve=0.005786108, (14 missing)
+  Surrogate splits:
+      Occup  splits as  LLRLLLL-L, agree=0.686, adj=0.117, (0 split)
+      Edu    < 5.5 to the left,    agree=0.654, adj=0.027, (0 split)
+      Ethnic splits as  RRL-LRLL,  agree=0.650, adj=0.016, (0 split)
+
+Node number 215: 20 observations
+  mean=4.7, MSE=0.81 
+
+Node number 216: 130 observations,    complexity param=0.0007145979
+  mean=3.815385, MSE=1.058225 
+  left son=432 (103 obs) right son=433 (27 obs)
+  Primary splits:
+      TypeHome splits as  LRLRL,     improve=0.122468600, (0 missing)
+      Edu      < 3.5 to the right,   improve=0.099580220, (0 missing)
+      Occup    splits as  LLRRRLL-L, improve=0.066553900, (0 missing)
+      LiveBA   < 3.5 to the left,    improve=0.017869030, (0 missing)
+      Income   < 8.5 to the left,    improve=0.004307942, (3 missing)
+
+Node number 217: 342 observations,    complexity param=0.001046355
+  mean=4.403509, MSE=1.345953 
+  left son=434 (64 obs) right son=435 (278 obs)
+  Primary splits:
+      Ethnic   splits as  LLR-LLRL,  improve=0.053856080, (1 missing)
+      Income   < 5.5 to the left,    improve=0.022671210, (11 missing)
+      Occup    splits as  LLLRRLR-L, improve=0.019311940, (0 missing)
+      TypeHome splits as  RL-RL,     improve=0.016477580, (0 missing)
+      Edu      < 5.5 to the left,    improve=0.005565647, (1 missing)
+
+Node number 218: 26 observations
+  mean=4.346154, MSE=0.6878698 
+
+Node number 219: 148 observations,    complexity param=0.0001226597
+  mean=4.932432, MSE=0.7116508 
+  left son=438 (34 obs) right son=439 (114 obs)
+  Primary splits:
+      Edu     < 3.5 to the left,    improve=0.02745728, (0 missing)
+      Occup   splits as  RRLRRRR-R, improve=0.02318526, (0 missing)
+      Persons < 4.5 to the right,   improve=0.02156493, (1 missing)
+      LiveBA  < 4.5 to the left,    improve=0.01213700, (15 missing)
+      Lang    splits as  RLR,       improve=0.01162188, (4 missing)
+  Surrogate splits:
+      Occup   splits as  RRLRRRR-L, agree=0.804, adj=0.147, (0 split)
+      Persons < 5.5 to the right,   agree=0.791, adj=0.088, (0 split)
+      Lang    splits as  RLR,       agree=0.784, adj=0.059, (0 split)
+      Ethnic  splits as  RR-RL-R-,  agree=0.777, adj=0.029, (0 split)
+
+Node number 220: 150 observations,    complexity param=0.0004413182
+  mean=4.526667, MSE=1.209289 
+  left son=440 (27 obs) right son=441 (123 obs)
+  Primary splits:
+      Ethnic  splits as  LLL-RLRL, improve=0.05711654, (1 missing)
+      Edu     < 3.5 to the right,  improve=0.02646273, (1 missing)
+      Income  < 5.5 to the right,  improve=0.02230953, (5 missing)
+      Persons < 2.5 to the right,  improve=0.01706881, (7 missing)
+      LiveBA  < 4.5 to the left,   improve=0.01419390, (10 missing)
+  Surrogate splits:
+      Occup splits as  R--R-RL-R, agree=0.826, adj=0.037, (1 split)
+
+Node number 221: 31 observations,    complexity param=0.0001362244
+  mean=5.16129, MSE=0.6514048 
+  left son=442 (11 obs) right son=443 (20 obs)
+  Primary splits:
+      Persons < 1.5 to the right,  improve=0.166056500, (1 missing)
+      Income  < 6.5 to the left,   improve=0.083865810, (0 missing)
+      Ethnic  splits as  R-L-L-RL, improve=0.053703170, (0 missing)
+      sex     splits as  LR,       improve=0.012886050, (0 missing)
+      Edu     < 3.5 to the left,   improve=0.003550622, (0 missing)
+  Surrogate splits:
+      sex    splits as  RL,        agree=0.700, adj=0.182, (1 split)
+      Occup  splits as  -RR-L----, agree=0.667, adj=0.091, (0 split)
+      Ethnic splits as  R-R-L-RR,  agree=0.667, adj=0.091, (0 split)
+
+Node number 222: 40 observations,    complexity param=0.0002078317
+  mean=4.7, MSE=1.56 
+  left son=444 (20 obs) right son=445 (20 obs)
+  Primary splits:
+      Ethnic  splits as  LRL----R, improve=0.07852564, (0 missing)
+      Income  < 6.5 to the left,   improve=0.05099287, (2 missing)
+      Persons < 2.5 to the left,   improve=0.02175602, (5 missing)
+      MarStat splits as  L--R-,    improve=0.01923077, (0 missing)
+      DualInc splits as  R-L,      improve=0.01803325, (0 missing)
+  Surrogate splits:
+      Income   < 6.5 to the left,    agree=0.650, adj=0.30, (0 split)
+      Lang     splits as  LRR,       agree=0.625, adj=0.25, (0 split)
+      Occup    splits as  RLRLR-R-L, agree=0.600, adj=0.20, (0 split)
+      sex      splits as  LR,        agree=0.600, adj=0.20, (0 split)
+      TypeHome splits as  RL---,     agree=0.575, adj=0.15, (0 split)
+
+Node number 223: 364 observations,    complexity param=0.001336934
+  mean=5.637363, MSE=1.275088 
+  left son=446 (53 obs) right son=447 (311 obs)
+  Primary splits:
+      LiveBA   < 4.5 to the left,  improve=0.07125843, (37 missing)
+      Income   < 3.5 to the right, improve=0.03581763, (26 missing)
+      Edu      < 3.5 to the right, improve=0.03551184, (1 missing)
+      TypeHome splits as  LR-RL,   improve=0.02578937, (0 missing)
+      Persons  < 3.5 to the right, improve=0.02252533, (14 missing)
+  Surrogate splits:
+      Occup splits as  RRRRRLR-R, agree=0.844, adj=0.019, (37 split)
+
+Node number 244: 12 observations
+  mean=6.083333, MSE=1.909722 
+
+Node number 245: 201 observations,    complexity param=0.0001138343
+  mean=6.547264, MSE=0.3771194 
+  left son=490 (84 obs) right son=491 (117 obs)
+  Primary splits:
+      sex      splits as  RL,       improve=0.03865940, (0 missing)
+      Ethnic   splits as  LLL-L-R-, improve=0.02238256, (1 missing)
+      TypeHome splits as  LRR--,    improve=0.01540262, (0 missing)
+      Income   < 6.5 to the right,  improve=0.01455533, (17 missing)
+      LiveBA   < 4.5 to the left,   improve=0.01311925, (23 missing)
+  Surrogate splits:
+      DualInc  splits as  LRR,      agree=0.597, adj=0.036, (0 split)
+      Ethnic   splits as  LRL-L-R-, agree=0.597, adj=0.036, (0 split)
+      TypeHome splits as  RLR--,    agree=0.592, adj=0.024, (0 split)
+
+Node number 320: 39 observations
+  mean=1.205128, MSE=0.2143327 
+
+Node number 321: 24 observations
+  mean=1.791667, MSE=0.2482639 
+
+Node number 322: 17 observations
+  mean=1.882353, MSE=0.1038062 
+
+Node number 323: 23 observations
+  mean=2.608696, MSE=0.9338374 
+
+Node number 324: 134 observations
+  mean=2.11194, MSE=0.114335 
+
+Node number 325: 132 observations
+  mean=2.318182, MSE=0.3381543 
+
+Node number 326: 176 observations,    complexity param=0.0002225077
+  mean=2.352273, MSE=0.5122676 
+  left son=652 (129 obs) right son=653 (47 obs)
+  Primary splits:
+      Occup    splits as  -L----L-R, improve=0.05818616, (0 missing)
+      MarStat  splits as  -R--L,     improve=0.04370367, (0 missing)
+      LiveBA   < 4.5 to the left,    improve=0.03276781, (18 missing)
+      TypeHome splits as  LRRRL,     improve=0.02158529, (0 missing)
+      Persons  < 3.5 to the right,   improve=0.01082968, (19 missing)
+
+Node number 327: 183 observations,    complexity param=0.000240501
+  mean=2.601093, MSE=0.5567201 
+  left son=654 (76 obs) right son=655 (107 obs)
+  Primary splits:
+      Edu     < 3.5 to the left,   improve=0.04945612, (1 missing)
+      Ethnic  splits as  LLLRLLRR, improve=0.04494979, (4 missing)
+      Income  < 6.5 to the left,   improve=0.03920753, (10 missing)
+      Persons < 1.5 to the right,  improve=0.02460848, (10 missing)
+      Lang    splits as  RLL,      improve=0.02085064, (15 missing)
+  Surrogate splits:
+      TypeHome splits as  RLRLL,     agree=0.610, adj=0.066, (1 split)
+      Occup    splits as  -R----L-R, agree=0.593, adj=0.026, (0 split)
+
+Node number 332: 67 observations
+  mean=2.895522, MSE=0.451771 
+
+Node number 333: 10 observations
+  mean=3.7, MSE=2.41 
+
+Node number 336: 316 observations,    complexity param=0.0003326935
+  mean=2.462025, MSE=0.6726086 
+  left son=672 (47 obs) right son=673 (269 obs)
+  Primary splits:
+      Persons  < 4.5 to the right, improve=0.031335540, (23 missing)
+      LiveBA   < 2.5 to the left,  improve=0.019905370, (29 missing)
+      DualInc  splits as  RLR,     improve=0.015322610, (0 missing)
+      Income   < 1.5 to the left,  improve=0.011628110, (11 missing)
+      TypeHome splits as  RLLRL,   improve=0.008196811, (0 missing)
+  Surrogate splits:
+      Under18 < 2.5 to the right,  agree=0.857, adj=0.106, (23 split)
+      Ethnic  splits as  RRR-RLRR, agree=0.843, adj=0.021, (0 split)
+
+Node number 337: 15 observations
+  mean=3.4, MSE=2.64 
+
+Node number 338: 97 observations,    complexity param=0.0001806509
+  mean=2.670103, MSE=0.4478691 
+  left son=676 (65 obs) right son=677 (32 obs)
+  Primary splits:
+      MarStat  splits as  -R--L,   improve=0.09803962, (0 missing)
+      DualInc  splits as  LRR,     improve=0.07478244, (0 missing)
+      Persons  < 4.5 to the right, improve=0.05640095, (0 missing)
+      LiveBA   < 3.5 to the left,  improve=0.04635896, (9 missing)
+      TypeHome splits as  RLRRL,   improve=0.04538530, (0 missing)
+  Surrogate splits:
+      DualInc splits as  LRR,       agree=0.784, adj=0.344, (0 split)
+      Ethnic  splits as  RLL-RLLR,  agree=0.722, adj=0.156, (0 split)
+      Edu     < 3.5 to the right,   agree=0.711, adj=0.125, (0 split)
+      Under18 < 0.5 to the left,    agree=0.711, adj=0.125, (0 split)
+      Occup   splits as  L-RLL----, agree=0.691, adj=0.063, (0 split)
+
+Node number 339: 144 observations,    complexity param=0.000243773
+  mean=3.013889, MSE=0.8053627 
+  left son=678 (125 obs) right son=679 (19 obs)
+  Primary splits:
+      HouseStat splits as  RL-,      improve=0.05256855, (5 missing)
+      TypeHome  splits as  RLLRL,    improve=0.03679682, (0 missing)
+      Ethnic    splits as  RRL-LLRL, improve=0.02744714, (2 missing)
+      LiveBA    < 4.5 to the left,   improve=0.02638305, (5 missing)
+      DualInc   splits as  RLR,      improve=0.01840837, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  LLLRL, agree=0.871, adj=0.053, (5 split)
+
+Node number 340: 109 observations
+  mean=2.66055, MSE=0.2609208 
+
+Node number 341: 14 observations
+  mean=3.214286, MSE=0.3112245 
+
+Node number 342: 77 observations,    complexity param=0.0001066353
+  mean=2.909091, MSE=0.8099174 
+  left son=684 (34 obs) right son=685 (43 obs)
+  Primary splits:
+      Income   < 3.5 to the left,    improve=0.04025944, (1 missing)
+      Ethnic   splits as  LLR-RL--,  improve=0.03084069, (0 missing)
+      Occup    splits as  R-LRL----, improve=0.02908163, (0 missing)
+      Edu      < 3.5 to the left,    improve=0.02551753, (0 missing)
+      TypeHome splits as  RLLLL,     improve=0.02501000, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  LRRLR,     agree=0.579, adj=0.059, (1 split)
+      Edu      < 3.5 to the left,    agree=0.579, adj=0.059, (0 split)
+      Occup    splits as  R-RLR----, agree=0.566, adj=0.029, (0 split)
+      MarStat  splits as  -L--R,     agree=0.566, adj=0.029, (0 split)
+      DualInc  splits as  R-L,       agree=0.566, adj=0.029, (0 split)
+
+Node number 343: 173 observations,    complexity param=0.0001884273
+  mean=3.312139, MSE=0.9199105 
+  left son=686 (158 obs) right son=687 (15 obs)
+  Primary splits:
+      TypeHome splits as  LLLRR,     improve=0.018308560, (0 missing)
+      Occup    splits as  L-LRR----, improve=0.018180600, (0 missing)
+      Edu      < 5.5 to the left,    improve=0.017680730, (0 missing)
+      sex      splits as  RL,        improve=0.011387810, (0 missing)
+      Income   < 1.5 to the right,   improve=0.007759342, (0 missing)
+
+Node number 346: 149 observations,    complexity param=0.0001090553
+  mean=3.040268, MSE=0.4279087 
+  left son=692 (13 obs) right son=693 (136 obs)
+  Primary splits:
+      Ethnic  splits as  LRL-R-RL, improve=0.04032680, (0 missing)
+      DualInc splits as  LR-,      improve=0.03197011, (0 missing)
+      Income  < 7.5 to the left,   improve=0.03109109, (4 missing)
+      MarStat splits as  -R--L,    improve=0.02777788, (0 missing)
+      LiveBA  < 1.5 to the left,   improve=0.02672068, (0 missing)
+
+Node number 347: 30 observations
+  mean=3.5, MSE=0.7166667 
+
+Node number 350: 255 observations,    complexity param=0.0002769005
+  mean=3.333333, MSE=0.7869281 
+  left son=700 (31 obs) right son=701 (224 obs)
+  Primary splits:
+      Edu      < 3.5 to the left,    improve=0.03258733, (3 missing)
+      Ethnic   splits as  LRLRRLRL,  improve=0.02515595, (1 missing)
+      Persons  < 1.5 to the right,   improve=0.01336256, (8 missing)
+      Occup    splits as  R-LLR----, improve=0.01221419, (0 missing)
+      TypeHome splits as  RRRRL,     improve=0.01031089, (0 missing)
+
+Node number 351: 200 observations,    complexity param=0.0004570409
+  mean=3.785, MSE=1.068775 
+  left son=702 (146 obs) right son=703 (54 obs)
+  Primary splits:
+      Edu      < 5.5 to the left,   improve=0.05253288, (2 missing)
+      Ethnic   splits as  RRR-LLRL, improve=0.04425005, (2 missing)
+      Lang     splits as  RLL,      improve=0.03527637, (6 missing)
+      TypeHome splits as  RLLLL,    improve=0.02701721, (0 missing)
+      Persons  < 2.5 to the right,  improve=0.02305502, (5 missing)
+  Surrogate splits:
+      Occup splits as  L-LLR----, agree=0.732, adj=0.019, (2 split)
+
+Node number 388: 140 observations,    complexity param=0.0003686234
+  mean=2.764286, MSE=0.7658673 
+  left son=776 (55 obs) right son=777 (85 obs)
+  Primary splits:
+      Occup   splits as  RLRRL---L, improve=0.08105607, (0 missing)
+      Edu     < 3.5 to the left,    improve=0.07277759, (2 missing)
+      Income  < 2.5 to the left,    improve=0.05561167, (2 missing)
+      sex     splits as  RL,        improve=0.05544715, (0 missing)
+      Under18 < 1.5 to the left,    improve=0.01978549, (0 missing)
+  Surrogate splits:
+      DualInc   splits as  RRL,     agree=0.686, adj=0.200, (0 split)
+      Edu       < 2.5 to the left,  agree=0.657, adj=0.127, (0 split)
+      Income    < 2.5 to the left,  agree=0.621, adj=0.036, (0 split)
+      HouseStat splits as  -RL,     agree=0.614, adj=0.018, (0 split)
+
+Node number 389: 98 observations,    complexity param=0.0002548985
+  mean=3.22449, MSE=1.051645 
+  left son=778 (69 obs) right son=779 (29 obs)
+  Primary splits:
+      DualInc splits as  RLR,       improve=0.04279543, (0 missing)
+      Occup   splits as  LLLLR---L, improve=0.03789975, (0 missing)
+      Income  < 2.5 to the right,   improve=0.01486412, (4 missing)
+      Edu     < 3.5 to the right,   improve=0.01442843, (0 missing)
+      Lang    splits as  LRR,       improve=0.01387835, (4 missing)
+  Surrogate splits:
+      Occup    splits as  LLLLR---R, agree=0.816, adj=0.379, (0 split)
+      TypeHome splits as  --L-R,     agree=0.714, adj=0.034, (0 split)
+
+Node number 390: 146 observations,    complexity param=0.0003102511
+  mean=3.239726, MSE=1.113764 
+  left son=780 (68 obs) right son=781 (78 obs)
+  Primary splits:
+      Ethnic   splits as  RLLLL-RR,  improve=0.04855949, (2 missing)
+      Edu      < 2.5 to the left,    improve=0.03245914, (2 missing)
+      LiveBA   < 3.5 to the left,    improve=0.02381235, (17 missing)
+      TypeHome splits as  LR-L-,     improve=0.01797597, (0 missing)
+      Occup    splits as  RLLRL---R, improve=0.01761589, (0 missing)
+  Surrogate splits:
+      Lang      splits as  RLL,       agree=0.694, adj=0.343, (2 split)
+      Occup     splits as  RRLRR---R, agree=0.625, adj=0.194, (0 split)
+      Edu       < 2.5 to the left,    agree=0.597, adj=0.134, (0 split)
+      Income    < 3.5 to the left,    agree=0.576, adj=0.090, (0 split)
+      HouseStat splits as  -RL,       agree=0.576, adj=0.090, (0 split)
+
+Node number 391: 15 observations
+  mean=4, MSE=2.266667 
+
+Node number 392: 94 observations,    complexity param=0.0001286468
+  mean=2.957447, MSE=0.5088275 
+  left son=784 (72 obs) right son=785 (22 obs)
+  Primary splits:
+      Under18 < 0.5 to the left,    improve=0.05969167, (0 missing)
+      Occup   splits as  LRRL-LL--, improve=0.04918114, (0 missing)
+      Edu     < 3.5 to the right,   improve=0.04632927, (1 missing)
+      Persons < 2.5 to the left,    improve=0.04241283, (0 missing)
+      Income  < 7.5 to the left,    improve=0.03637161, (4 missing)
+  Surrogate splits:
+      Persons < 2.5 to the left,  agree=0.979, adj=0.909, (0 split)
+
+Node number 393: 145 observations,    complexity param=0.0002376718
+  mean=3.37931, MSE=0.8837099 
+  left son=786 (129 obs) right son=787 (16 obs)
+  Primary splits:
+      Edu     < 5.5 to the left,    improve=0.04373047, (0 missing)
+      DualInc splits as  RLR,       improve=0.04373047, (0 missing)
+      Occup   splits as  LLRL-LR--, improve=0.02870695, (0 missing)
+      Ethnic  splits as  LRLLLRLR,  improve=0.02104629, (0 missing)
+      Under18 < 0.5 to the right,   improve=0.01289373, (0 missing)
+
+Node number 398: 38 observations,    complexity param=0.0002451757
+  mean=3.552632, MSE=1.089335 
+  left son=796 (10 obs) right son=797 (28 obs)
+  Primary splits:
+      Ethnic splits as  RLL-RLRL, improve=0.13964220, (0 missing)
+      LiveBA < 4.5 to the left,   improve=0.03403845, (2 missing)
+      Edu    < 5.5 to the right,  improve=0.02037589, (0 missing)
+      Income < 7.5 to the right,  improve=0.01306597, (1 missing)
+      sex    splits as  RL,       improve=0.01074380, (0 missing)
+  Surrogate splits:
+      Occup splits as  RRRRR-L--, agree=0.763, adj=0.1, (0 split)
+
+Node number 399: 62 observations,    complexity param=0.0002348903
+  mean=4.129032, MSE=0.6930281 
+  left son=798 (15 obs) right son=799 (47 obs)
+  Primary splits:
+      Occup   splits as  RLLRRRL-R, improve=0.12888630, (0 missing)
+      Income  < 7.5 to the left,    improve=0.07240703, (3 missing)
+      Ethnic  splits as  LLL-R-RL,  improve=0.05190479, (1 missing)
+      Edu     < 5.5 to the left,    improve=0.02223766, (0 missing)
+      Under18 < 0.5 to the right,   improve=0.02037422, (0 missing)
+  Surrogate splits:
+      DualInc splits as  LRR, agree=0.79, adj=0.133, (0 split)
+
+Node number 400: 34 observations,    complexity param=0.0001479955
+  mean=3.088235, MSE=0.5510381 
+  left son=800 (20 obs) right son=801 (14 obs)
+  Primary splits:
+      Ethnic   splits as  --L-L-RL, improve=0.21538460, (0 missing)
+      Income   < 2.5 to the left,   improve=0.12605120, (2 missing)
+      Edu      < 3.5 to the left,   improve=0.08606682, (0 missing)
+      Persons  < 2.5 to the right,  improve=0.01589482, (0 missing)
+      TypeHome splits as  LLRRL,    improve=0.00989011, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  LLLRL, agree=0.647, adj=0.143, (0 split)
+
+Node number 401: 59 observations
+  mean=3.457627, MSE=0.2821028 
+
+Node number 402: 13 observations
+  mean=3.307692, MSE=0.5207101 
+
+Node number 403: 29 observations
+  mean=4.206897, MSE=1.129608 
+
+Node number 404: 18 observations
+  mean=3.111111, MSE=0.7654321 
+
+Node number 405: 59 observations,    complexity param=0.0001109148
+  mean=3.745763, MSE=0.7997702 
+  left son=810 (35 obs) right son=811 (24 obs)
+  Primary splits:
+      Income   < 5.5 to the left,  improve=0.050552560, (1 missing)
+      TypeHome splits as  LLR-R,   improve=0.049839580, (0 missing)
+      Edu      < 3.5 to the right, improve=0.017104070, (0 missing)
+      LiveBA   < 1.5 to the left,  improve=0.011496970, (0 missing)
+      Persons  < 1.5 to the right, improve=0.009769239, (3 missing)
+  Surrogate splits:
+      Occup    splits as  R-LLL---L, agree=0.655, adj=0.167, (1 split)
+      TypeHome splits as  RLL-L,     agree=0.621, adj=0.083, (0 split)
+      sex      splits as  RL,        agree=0.621, adj=0.083, (0 split)
+      LiveBA   < 1.5 to the right,   agree=0.621, adj=0.083, (0 split)
+      Edu      < 4.5 to the left,    agree=0.603, adj=0.042, (0 split)
+
+Node number 406: 31 observations,    complexity param=0.000173446
+  mean=3.419355, MSE=0.9531738 
+  left son=812 (20 obs) right son=813 (11 obs)
+  Primary splits:
+      Occup   splits as  LLRLRL--R, improve=0.138393200, (0 missing)
+      Income  < 3.5 to the right,   improve=0.036770470, (3 missing)
+      Persons < 2.5 to the right,   improve=0.010072260, (3 missing)
+      sex     splits as  RL,        improve=0.007278020, (0 missing)
+      Edu     < 3.5 to the right,   improve=0.003249116, (0 missing)
+  Surrogate splits:
+      Edu      < 3.5 to the right,  agree=0.774, adj=0.364, (0 split)
+      TypeHome splits as  LLR-R,    agree=0.742, adj=0.273, (0 split)
+      Ethnic   splits as  -LR-L-LR, agree=0.710, adj=0.182, (0 split)
+      Lang     splits as  LRL,      agree=0.677, adj=0.091, (0 split)
+
+Node number 407: 262 observations,    complexity param=0.0005720349
+  mean=4.232824, MSE=1.216785 
+  left son=814 (120 obs) right son=815 (142 obs)
+  Primary splits:
+      sex     splits as  LR,        improve=0.040390710, (0 missing)
+      Ethnic  splits as  LLL-L-RR,  improve=0.024898660, (0 missing)
+      LiveBA  < 4.5 to the left,    improve=0.014637800, (16 missing)
+      Persons < 2.5 to the right,   improve=0.010356810, (14 missing)
+      Occup   splits as  LLLRLRL-L, improve=0.006360482, (0 missing)
+  Surrogate splits:
+      Occup    splits as  RLLRRRL-R, agree=0.656, adj=0.250, (0 split)
+      Income   < 5.5 to the right,   agree=0.622, adj=0.175, (0 split)
+      Ethnic   splits as  LLL-R-RL,  agree=0.580, adj=0.083, (0 split)
+      Edu      < 5.5 to the right,   agree=0.553, adj=0.025, (0 split)
+      TypeHome splits as  RRRLR,     agree=0.546, adj=0.008, (0 split)
+
+Node number 426: 117 observations
+  mean=3.846154, MSE=0.4549638 
+
+Node number 427: 17 observations
+  mean=4.529412, MSE=0.6020761 
+
+Node number 428: 466 observations,    complexity param=0.0003875818
+  mean=3.976395, MSE=0.6625329 
+  left son=856 (362 obs) right son=857 (104 obs)
+  Primary splits:
+      Edu     < 3.5 to the right,   improve=0.017162580, (1 missing)
+      Persons < 3.5 to the left,    improve=0.012489700, (3 missing)
+      Occup   splits as  RLRRRRR-R, improve=0.012222820, (0 missing)
+      Ethnic  splits as  RLL-L-LR,  improve=0.008347056, (2 missing)
+      Income  < 4.5 to the right,   improve=0.007098134, (12 missing)
+  Surrogate splits:
+      Ethnic splits as  RLL-L-LL, agree=0.778, adj=0.01, (1 split)
+
+Node number 429: 257 observations,    complexity param=0.0002407533
+  mean=4.190661, MSE=0.6368 
+  left son=858 (57 obs) right son=859 (200 obs)
+  Primary splits:
+      Income  < 6.5 to the left,    improve=0.03224367, (2 missing)
+      Occup   splits as  RLRLRRL-R, improve=0.03171054, (0 missing)
+      DualInc splits as  LLR,       improve=0.01695207, (0 missing)
+      Edu     < 5.5 to the left,    improve=0.01614985, (3 missing)
+      Ethnic  splits as  RLR-LLRL,  improve=0.01087539, (7 missing)
+  Surrogate splits:
+      Occup splits as  RRRLRRL-L, agree=0.796, adj=0.088, (2 split)
+      Edu   < 2.5 to the left,    agree=0.780, adj=0.018, (0 split)
+
+Node number 432: 103 observations,    complexity param=0.0001137134
+  mean=3.631068, MSE=0.757093 
+  left son=864 (86 obs) right son=865 (17 obs)
+  Primary splits:
+      Occup  splits as  LLRRLLR-L, improve=0.025108950, (0 missing)
+      Income < 8.5 to the left,    improve=0.022231320, (3 missing)
+      LiveBA < 2.5 to the left,    improve=0.020220070, (0 missing)
+      sex    splits as  RL,        improve=0.010190810, (0 missing)
+      Ethnic splits as  -RRRLLL-,  improve=0.003516464, (2 missing)
+  Surrogate splits:
+      TypeHome splits as  L-R-L,    agree=0.845, adj=0.059, (0 split)
+      Ethnic   splits as  -LLLLRL-, agree=0.845, adj=0.059, (0 split)
+
+Node number 433: 27 observations
+  mean=4.518519, MSE=1.58299 
+
+Node number 434: 64 observations,    complexity param=0.0001988346
+  mean=3.84375, MSE=1.256836 
+  left son=868 (13 obs) right son=869 (51 obs)
+  Primary splits:
+      Occup  splits as  RLRRR-R-L, improve=0.05827975, (0 missing)
+      Income < 5.5 to the left,    improve=0.03322458, (1 missing)
+      sex    splits as  RL,        improve=0.02846692, (0 missing)
+      Edu    < 3.5 to the left,    improve=0.02346965, (0 missing)
+      Ethnic splits as  LL--RR-L,  improve=0.02344399, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  RR-RL,   agree=0.812, adj=0.077, (0 split)
+      Income   < 3.5 to the left,  agree=0.812, adj=0.077, (0 split)
+
+Node number 435: 278 observations,    complexity param=0.000366115
+  mean=4.532374, MSE=1.277729 
+  left son=870 (233 obs) right son=871 (45 obs)
+  Primary splits:
+      Occup    splits as  LLLRRLL-R, improve=0.0243006700, (0 missing)
+      Edu      < 3.5 to the right,   improve=0.0116820600, (1 missing)
+      Income   < 5.5 to the left,    improve=0.0093561530, (10 missing)
+      TypeHome splits as  RL-RL,     improve=0.0081175670, (0 missing)
+      sex      splits as  RL,        improve=0.0008344495, (0 missing)
+
+Node number 438: 34 observations
+  mean=4.676471, MSE=0.9247405 
+
+Node number 439: 114 observations
+  mean=5.008772, MSE=0.6227301 
+
+Node number 440: 27 observations
+  mean=3.962963, MSE=0.8504801 
+
+Node number 441: 123 observations,    complexity param=0.0002266791
+  mean=4.650407, MSE=1.202988 
+  left son=882 (109 obs) right son=883 (14 obs)
+  Primary splits:
+      Edu     < 3.5 to the right,   improve=0.025892010, (0 missing)
+      Income  < 4.5 to the right,   improve=0.023926240, (4 missing)
+      Occup   splits as  R--L-LL-R, improve=0.020259740, (0 missing)
+      LiveBA  < 4.5 to the left,    improve=0.015568000, (9 missing)
+      Persons < 2.5 to the right,   improve=0.007469321, (7 missing)
+
+Node number 442: 11 observations
+  mean=4.727273, MSE=0.7438017 
+
+Node number 443: 20 observations
+  mean=5.4, MSE=0.44 
+
+Node number 444: 20 observations
+  mean=4.35, MSE=1.4275 
+
+Node number 445: 20 observations
+  mean=5.05, MSE=1.4475 
+
+Node number 446: 53 observations,    complexity param=0.000377893
+  mean=4.924528, MSE=1.654681 
+  left son=892 (12 obs) right son=893 (41 obs)
+  Primary splits:
+      Occup   splits as  RRLLRLL-L, improve=0.10159280, (0 missing)
+      sex     splits as  LR,        improve=0.08047915, (0 missing)
+      LiveBA  < 3.5 to the left,    improve=0.02841917, (1 missing)
+      DualInc splits as  R-L,       improve=0.01873741, (0 missing)
+      Income  < 5.5 to the left,    improve=0.01815142, (2 missing)
+  Surrogate splits:
+      Income < 6.5 to the left,   agree=0.849, adj=0.333, (0 split)
+      Ethnic splits as  ---L--R-, agree=0.792, adj=0.083, (0 split)
+
+Node number 447: 311 observations,    complexity param=0.0008652073
+  mean=5.758842, MSE=1.109046 
+  left son=894 (252 obs) right son=895 (59 obs)
+  Primary splits:
+      Income   < 4.5 to the right,   improve=0.06427090, (24 missing)
+      Persons  < 3.5 to the right,   improve=0.03462410, (12 missing)
+      TypeHome splits as  LR-RL,     improve=0.03171057, (0 missing)
+      Edu      < 3.5 to the right,   improve=0.02831996, (1 missing)
+      Occup    splits as  RLRRRRR-L, improve=0.01763938, (0 missing)
+  Surrogate splits:
+      Edu   < 2.5 to the right,   agree=0.812, adj=0.036, (24 split)
+      Occup splits as  LLLLLRL-L, agree=0.808, adj=0.018, (0 split)
+
+Node number 490: 84 observations
+  mean=6.404762, MSE=0.4790249 
+
+Node number 491: 117 observations
+  mean=6.649573, MSE=0.2789101 
+
+Node number 652: 129 observations,    complexity param=0.0001162266
+  mean=2.248062, MSE=0.341566 
+  left son=1304 (27 obs) right son=1305 (102 obs)
+  Primary splits:
+      Persons   < 3.5 to the right, improve=0.05341877, (13 missing)
+      TypeHome  splits as  LLRRL,   improve=0.05237078, (0 missing)
+      MarStat   splits as  -R--L,   improve=0.04098613, (0 missing)
+      Income    < 1.5 to the left,  improve=0.03025813, (3 missing)
+      HouseStat splits as  LR-,     improve=0.01918637, (26 missing)
+  Surrogate splits:
+      Under18 < 1.5 to the right, agree=0.784, adj=0.074, (13 split)
+
+Node number 653: 47 observations,    complexity param=0.0001148512
+  mean=2.638298, MSE=0.8691716 
+  left son=1306 (37 obs) right son=1307 (10 obs)
+  Primary splits:
+      TypeHome splits as  LRLRR,    improve=0.06628519, (0 missing)
+      LiveBA   < 4.5 to the left,   improve=0.04754255, (4 missing)
+      Ethnic   splits as  -LL-L-RL, improve=0.04566727, (0 missing)
+      sex      splits as  LR,       improve=0.03819541, (0 missing)
+      Persons  < 1.5 to the right,  improve=0.01643317, (6 missing)
+
+Node number 654: 76 observations
+  mean=2.407895, MSE=0.320464 
+
+Node number 655: 107 observations,    complexity param=0.000240501
+  mean=2.738318, MSE=0.679186 
+  left son=1310 (39 obs) right son=1311 (68 obs)
+  Primary splits:
+      Ethnic    splits as  LLLRLLRR, improve=0.08873793, (2 missing)
+      Income    < 6.5 to the left,   improve=0.05422783, (6 missing)
+      Persons   < 1.5 to the right,  improve=0.03500935, (3 missing)
+      HouseStat splits as  RL-,      improve=0.02958707, (4 missing)
+      sex       splits as  RL,       improve=0.02754219, (0 missing)
+  Surrogate splits:
+      Lang    splits as  RLL,     agree=0.686, adj=0.132, (1 split)
+      Under18 < 0.5 to the right, agree=0.676, adj=0.105, (1 split)
+      DualInc splits as  RRL,     agree=0.667, adj=0.079, (0 split)
+      Persons < 2.5 to the right, agree=0.648, adj=0.026, (0 split)
+
+Node number 672: 47 observations
+  mean=2.085106, MSE=0.2906292 
+
+Node number 673: 269 observations,    complexity param=0.0002380223
+  mean=2.527881, MSE=0.7101892 
+  left son=1346 (186 obs) right son=1347 (83 obs)
+  Primary splits:
+      TypeHome splits as  RLLRL,    improve=0.021033640, (0 missing)
+      LiveBA   < 2.5 to the left,   improve=0.019507310, (27 missing)
+      Ethnic   splits as  LLL-RLLL, improve=0.011512600, (0 missing)
+      DualInc  splits as  RLR,      improve=0.010777780, (0 missing)
+      Income   < 1.5 to the left,   improve=0.009053361, (6 missing)
+  Surrogate splits:
+      HouseStat splits as  RL-, agree=0.747, adj=0.181, (0 split)
+
+Node number 676: 65 observations,    complexity param=0.0001013765
+  mean=2.523077, MSE=0.3417751 
+  left son=1352 (16 obs) right son=1353 (49 obs)
+  Primary splits:
+      Under18 < 0.5 to the right,  improve=0.10758890, (0 missing)
+      Ethnic  splits as  -RR-LLLL, improve=0.10262480, (0 missing)
+      Persons < 4.5 to the right,  improve=0.06941063, (0 missing)
+      Edu     < 3.5 to the left,   improve=0.06764345, (2 missing)
+      LiveBA  < 4.5 to the left,   improve=0.02961986, (4 missing)
+  Surrogate splits:
+      Edu   < 3.5 to the left,    agree=0.800, adj=0.188, (0 split)
+      Occup splits as  R-RRL----, agree=0.769, adj=0.063, (0 split)
+
+Node number 677: 32 observations
+  mean=2.96875, MSE=0.5302734 
+
+Node number 678: 125 observations,    complexity param=0.0001743296
+  mean=2.936, MSE=0.715904 
+  left son=1356 (33 obs) right son=1357 (92 obs)
+  Primary splits:
+      Ethnic splits as  RRL-LLRL,  improve=0.03416544, (1 missing)
+      Occup  splits as  L-LRL----, improve=0.02348064, (0 missing)
+      sex    splits as  RL,        improve=0.01675687, (0 missing)
+      LiveBA < 4.5 to the left,    improve=0.01532079, (4 missing)
+      Edu    < 3.5 to the left,    improve=0.01531326, (0 missing)
+  Surrogate splits:
+      Lang     splits as  RLR,   agree=0.758, adj=0.091, (1 split)
+      TypeHome splits as  RRRLR, agree=0.742, adj=0.030, (0 split)
+      DualInc  splits as  RRL,   agree=0.742, adj=0.030, (0 split)
+
+Node number 679: 19 observations
+  mean=3.526316, MSE=1.091413 
+
+Node number 684: 34 observations
+  mean=2.705882, MSE=0.7958478 
+
+Node number 685: 43 observations,    complexity param=0.0001065509
+  mean=3.069767, MSE=0.7625744 
+  left son=1370 (28 obs) right son=1371 (15 obs)
+  Primary splits:
+      Ethnic splits as  LLR-LL--,  improve=0.076610940, (0 missing)
+      Occup  splits as  L-LRL----, improve=0.073554700, (0 missing)
+      Income < 4.5 to the right,   improve=0.058814590, (1 missing)
+      Edu    < 3.5 to the left,    improve=0.012620970, (0 missing)
+      sex    splits as  LR,        improve=0.009762203, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  LLL-R, agree=0.674, adj=0.067, (0 split)
+
+Node number 686: 158 observations,    complexity param=0.0001884273
+  mean=3.272152, MSE=0.8309966 
+  left son=1372 (112 obs) right son=1373 (46 obs)
+  Primary splits:
+      Occup  splits as  L-LRR----, improve=0.03638518, (0 missing)
+      Edu    < 5.5 to the left,    improve=0.02960822, (0 missing)
+      sex    splits as  RL,        improve=0.01986450, (0 missing)
+      LiveBA < 4.5 to the right,   improve=0.01256020, (17 missing)
+      Income < 4.5 to the right,   improve=0.01021331, (0 missing)
+
+Node number 687: 15 observations
+  mean=3.733333, MSE=1.662222 
+
+Node number 692: 13 observations
+  mean=2.615385, MSE=0.3905325 
+
+Node number 693: 136 observations,    complexity param=0.0001024992
+  mean=3.080882, MSE=0.4125757 
+  left son=1386 (25 obs) right son=1387 (111 obs)
+  Primary splits:
+      LiveBA  < 1.5 to the left,  improve=0.04306875, (0 missing)
+      DualInc splits as  LR-,     improve=0.02978101, (0 missing)
+      Edu     < 5.5 to the left,  improve=0.02307148, (2 missing)
+      MarStat splits as  -R--L,   improve=0.02189356, (0 missing)
+      Income  < 7.5 to the left,  improve=0.02034615, (4 missing)
+
+Node number 700: 31 observations,    complexity param=0.000176057
+  mean=2.903226, MSE=1.442248 
+  left son=1400 (14 obs) right son=1401 (17 obs)
+  Primary splits:
+      Income   < 6.5 to the right, improve=0.092840170, (0 missing)
+      sex      splits as  LR,      improve=0.081481480, (0 missing)
+      TypeHome splits as  RLL-L,   improve=0.052660060, (0 missing)
+      Persons  < 1.5 to the right, improve=0.000405926, (2 missing)
+  Surrogate splits:
+      Ethnic   splits as  R-L-LRR-,  agree=0.710, adj=0.357, (0 split)
+      MarStat  splits as  -R--L,     agree=0.677, adj=0.286, (0 split)
+      Occup    splits as  R-LRR----, agree=0.581, adj=0.071, (0 split)
+      TypeHome splits as  RRL-R,     agree=0.581, adj=0.071, (0 split)
+      sex      splits as  LR,        agree=0.581, adj=0.071, (0 split)
+
+Node number 701: 224 observations,    complexity param=0.0002100568
+  mean=3.392857, MSE=0.6670918 
+  left son=1402 (90 obs) right son=1403 (134 obs)
+  Primary splits:
+      Income  < 6.5 to the left,    improve=0.01813240, (9 missing)
+      Ethnic  splits as  LRLRLLRL,  improve=0.01666355, (1 missing)
+      Persons < 1.5 to the right,   improve=0.01536490, (6 missing)
+      Edu     < 5.5 to the left,    improve=0.01391506, (3 missing)
+      Occup   splits as  R-LLR----, improve=0.00745449, (0 missing)
+  Surrogate splits:
+      Ethnic   splits as  RLRRRRRL,  agree=0.614, adj=0.078, (9 split)
+      Occup    splits as  R-LLR----, agree=0.600, adj=0.044, (0 split)
+      TypeHome splits as  RRRLR,     agree=0.586, adj=0.011, (0 split)
+      Persons  < 1.5 to the left,    agree=0.586, adj=0.011, (0 split)
+
+Node number 702: 146 observations,    complexity param=0.0004106217
+  mean=3.643836, MSE=1.03753 
+  left son=1404 (34 obs) right son=1405 (112 obs)
+  Primary splits:
+      TypeHome splits as  RLLRL,    improve=0.06391053, (0 missing)
+      MarStat  splits as  -R--L,    improve=0.03687512, (0 missing)
+      Under18  < 0.5 to the left,   improve=0.03000875, (0 missing)
+      Lang     splits as  RLL,      improve=0.02305762, (4 missing)
+      Ethnic   splits as  RRR-LLRL, improve=0.02221070, (1 missing)
+
+Node number 703: 54 observations,    complexity param=0.0001640538
+  mean=4.166667, MSE=0.9537037 
+  left son=1406 (14 obs) right son=1407 (40 obs)
+  Primary splits:
+      LiveBA   < 4.5 to the left,  improve=0.078301620, (2 missing)
+      Persons  < 2.5 to the right, improve=0.072646410, (1 missing)
+      sex      splits as  LR,      improve=0.063926360, (0 missing)
+      TypeHome splits as  RLRLL,   improve=0.006472492, (0 missing)
+      Income   < 7.5 to the right, improve=0.005476562, (1 missing)
+  Surrogate splits:
+      TypeHome splits as  RRRRL,    agree=0.75, adj=0.071, (2 split)
+      Ethnic   splits as  -RR--RRL, agree=0.75, adj=0.071, (0 split)
+
+Node number 776: 55 observations,    complexity param=0.000132048
+  mean=2.454545, MSE=0.5024793 
+  left son=1552 (23 obs) right son=1553 (32 obs)
+  Primary splits:
+      Income  < 2.5 to the left,   improve=0.09953198, (2 missing)
+      Under18 < 1.5 to the left,   improve=0.08906250, (0 missing)
+      Ethnic  splits as  --R--LL-, improve=0.03700658, (0 missing)
+      Persons < 3.5 to the left,   improve=0.02372217, (0 missing)
+      LiveBA  < 2.5 to the left,   improve=0.01277090, (4 missing)
+  Surrogate splits:
+      Persons  < 2.5 to the right, agree=0.679, adj=0.190, (2 split)
+      TypeHome splits as  --R-L,   agree=0.642, adj=0.095, (0 split)
+      Edu      < 3.5 to the left,  agree=0.642, adj=0.095, (0 split)
+      DualInc  splits as  RRL,     agree=0.623, adj=0.048, (0 split)
+      Under18  < 0.5 to the right, agree=0.623, adj=0.048, (0 split)
+
+Node number 777: 85 observations,    complexity param=0.0002276906
+  mean=2.964706, MSE=0.8340484 
+  left son=1554 (29 obs) right son=1555 (56 obs)
+  Primary splits:
+      Edu     < 3.5 to the left,   improve=0.07348125, (0 missing)
+      DualInc splits as  LLR,      improve=0.06214751, (0 missing)
+      Ethnic  splits as  --L--RR-, improve=0.03025403, (1 missing)
+      sex     splits as  RL,       improve=0.02678704, (0 missing)
+      Income  < 3.5 to the left,   improve=0.02231157, (0 missing)
+  Surrogate splits:
+      Income   < 1.5 to the left,  agree=0.694, adj=0.103, (0 split)
+      TypeHome splits as  --R-L,   agree=0.682, adj=0.069, (0 split)
+
+Node number 778: 69 observations,    complexity param=0.0002548985
+  mean=3.086957, MSE=0.7460618 
+  left son=1556 (45 obs) right son=1557 (24 obs)
+  Primary splits:
+      Under18 < 1.5 to the left,    improve=0.14780640, (0 missing)
+      Persons < 4.5 to the left,    improve=0.13166870, (3 missing)
+      sex     splits as  RL,        improve=0.06738617, (0 missing)
+      Income  < 4.5 to the left,    improve=0.04783935, (2 missing)
+      Occup   splits as  LRLLL---R, improve=0.03434905, (0 missing)
+  Surrogate splits:
+      Persons < 3.5 to the left,    agree=0.768, adj=0.333, (0 split)
+      Edu     < 1.5 to the right,   agree=0.696, adj=0.125, (0 split)
+      Occup   splits as  LLLLL---R, agree=0.667, adj=0.042, (0 split)
+
+Node number 779: 29 observations
+  mean=3.551724, MSE=1.626635 
+
+Node number 780: 68 observations
+  mean=3, MSE=0.7058824 
+
+Node number 781: 78 observations,    complexity param=0.0002658227
+  mean=3.448718, MSE=1.375575 
+  left son=1562 (38 obs) right son=1563 (40 obs)
+  Primary splits:
+      Occup    splits as  RLLRL---R, improve=0.05841137, (0 missing)
+      LiveBA   < 3.5 to the left,    improve=0.03845016, (6 missing)
+      TypeHome splits as  LR-L-,     improve=0.01319224, (0 missing)
+      Under18  < 0.5 to the right,   improve=0.01259628, (0 missing)
+      Income   < 2.5 to the right,   improve=0.01014022, (2 missing)
+  Surrogate splits:
+      DualInc splits as  -RL,     agree=0.654, adj=0.289, (0 split)
+      Edu     < 3.5 to the left,  agree=0.628, adj=0.237, (0 split)
+      sex     splits as  RL,      agree=0.577, adj=0.132, (0 split)
+      Under18 < 1.5 to the right, agree=0.577, adj=0.132, (0 split)
+      Persons < 3.5 to the right, agree=0.564, adj=0.105, (0 split)
+
+Node number 784: 72 observations,    complexity param=0.0001286468
+  mean=2.861111, MSE=0.4529321 
+  left son=1568 (60 obs) right son=1569 (12 obs)
+  Primary splits:
+      Occup  splits as  LRRL-LL--, improve=0.098466780, (0 missing)
+      Income < 7.5 to the left,    improve=0.061078920, (3 missing)
+      LiveBA < 1.5 to the left,    improve=0.019197120, (1 missing)
+      sex    splits as  RL,        improve=0.016231120, (0 missing)
+      Edu    < 5.5 to the left,    improve=0.009384113, (0 missing)
+
+Node number 785: 22 observations
+  mean=3.272727, MSE=0.5619835 
+
+Node number 786: 129 observations,    complexity param=0.0001587965
+  mean=3.310078, MSE=0.8185806 
+  left son=1572 (39 obs) right son=1573 (90 obs)
+  Primary splits:
+      Income  < 6.5 to the left,    improve=0.03487796, (2 missing)
+      Ethnic  splits as  LRLLLRLR,  improve=0.03430537, (0 missing)
+      Occup   splits as  RLRR-LR--, improve=0.03160368, (0 missing)
+      DualInc splits as  RLR,       improve=0.02886285, (0 missing)
+      sex     splits as  RL,        improve=0.01905960, (0 missing)
+  Surrogate splits:
+      Occup   splits as  RLRR-LR--, agree=0.732, adj=0.128, (2 split)
+      Edu     < 2.5 to the left,    agree=0.709, adj=0.051, (0 split)
+      Under18 < 2.5 to the right,   agree=0.701, adj=0.026, (0 split)
+
+Node number 787: 16 observations
+  mean=3.9375, MSE=1.058594 
+
+Node number 796: 10 observations
+  mean=2.9, MSE=0.49 
+
+Node number 797: 28 observations
+  mean=3.785714, MSE=1.096939 
+
+Node number 798: 15 observations
+  mean=3.6, MSE=0.24 
+
+Node number 799: 47 observations
+  mean=4.297872, MSE=0.7197827 
+
+Node number 800: 20 observations
+  mean=2.8, MSE=0.36 
+
+Node number 801: 14 observations
+  mean=3.5, MSE=0.5357143 
+
+Node number 810: 35 observations
+  mean=3.571429, MSE=0.7020408 
+
+Node number 811: 24 observations
+  mean=4, MSE=0.8333333 
+
+Node number 812: 20 observations
+  mean=3.15, MSE=0.8275 
+
+Node number 813: 11 observations
+  mean=3.909091, MSE=0.8099174 
+
+Node number 814: 120 observations,    complexity param=0.0002282839
+  mean=3.991667, MSE=0.8082639 
+  left son=1628 (32 obs) right son=1629 (88 obs)
+  Primary splits:
+      Edu      < 3.5 to the left,    improve=0.036039550, (4 missing)
+      Income   < 4.5 to the left,    improve=0.019466770, (4 missing)
+      TypeHome splits as  LLRRR,     improve=0.014124220, (0 missing)
+      Ethnic   splits as  LLR-L-LR,  improve=0.009000863, (0 missing)
+      Occup    splits as  RRRLR-R-L, improve=0.003182797, (0 missing)
+  Surrogate splits:
+      Occup    splits as  RRRRL-R-R, agree=0.741, adj=0.063, (4 split)
+      TypeHome splits as  RRRLR,     agree=0.741, adj=0.063, (0 split)
+
+Node number 815: 142 observations,    complexity param=0.0005720349
+  mean=4.43662, MSE=1.471335 
+  left son=1630 (35 obs) right son=1631 (107 obs)
+  Primary splits:
+      Ethnic   splits as  --L-L-RR, improve=0.06747250, (0 missing)
+      LiveBA   < 3.5 to the left,   improve=0.02786415, (10 missing)
+      Persons  < 2.5 to the right,  improve=0.02740635, (9 missing)
+      Income   < 6.5 to the left,   improve=0.01773043, (3 missing)
+      TypeHome splits as  RRRLL,    improve=0.01417141, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  RRRLR, agree=0.761, adj=0.029, (0 split)
+
+Node number 856: 362 observations,    complexity param=0.0003875818
+  mean=3.91989, MSE=0.5764552 
+  left son=1712 (129 obs) right son=1713 (233 obs)
+  Primary splits:
+      Persons < 3.5 to the left,    improve=0.028693070, (1 missing)
+      Edu     < 4.5 to the left,    improve=0.024238230, (1 missing)
+      Occup   splits as  RLLRRLR-R, improve=0.023997630, (0 missing)
+      Income  < 8.5 to the left,    improve=0.004924086, (11 missing)
+      Ethnic  splits as  RRR-L-RL,  improve=0.002495256, (1 missing)
+  Surrogate splits:
+      Under18  < 1.5 to the left,  agree=0.845, adj=0.566, (1 split)
+      MarStat  splits as  R-LR-,   agree=0.690, adj=0.132, (0 split)
+      DualInc  splits as  LRR,     agree=0.679, adj=0.101, (0 split)
+      TypeHome splits as  RL--R,   agree=0.662, adj=0.054, (0 split)
+
+Node number 857: 104 observations,    complexity param=0.0003197411
+  mean=4.173077, MSE=0.9123521 
+  left son=1714 (52 obs) right son=1715 (52 obs)
+  Primary splits:
+      DualInc splits as  RLR,       improve=0.07944872, (0 missing)
+      Income  < 4.5 to the right,   improve=0.05373305, (1 missing)
+      Occup   splits as  LLRLRRL-L, improve=0.04936223, (0 missing)
+      Ethnic  splits as  RLR-L-RR,  improve=0.03608016, (1 missing)
+      Under18 < 2.5 to the right,   improve=0.03605261, (0 missing)
+  Surrogate splits:
+      Occup   splits as  LLLLRRL-R, agree=0.808, adj=0.615, (0 split)
+      Ethnic  splits as  LLL-L-RR,  agree=0.606, adj=0.212, (0 split)
+      Income  < 6.5 to the right,   agree=0.577, adj=0.154, (0 split)
+      MarStat splits as  L-RR-,     agree=0.567, adj=0.135, (0 split)
+      Persons < 3.5 to the left,    agree=0.538, adj=0.077, (0 split)
+
+Node number 858: 57 observations,    complexity param=0.0001507802
+  mean=3.912281, MSE=0.9572176 
+  left son=1716 (35 obs) right son=1717 (22 obs)
+  Primary splits:
+      Ethnic  splits as  LLR-RLLR,  improve=0.09917735, (3 missing)
+      Edu     < 4.5 to the left,    improve=0.07503790, (1 missing)
+      Occup   splits as  LRRL--L-R, improve=0.05230797, (0 missing)
+      Persons < 3.5 to the left,    improve=0.03551800, (1 missing)
+      DualInc splits as  LLR,       improve=0.03088042, (0 missing)
+  Surrogate splits:
+      Income  < 3.5 to the right,   agree=0.704, adj=0.238, (3 split)
+      Lang    splits as  LR-,       agree=0.704, adj=0.238, (0 split)
+      Occup   splits as  LRLR--L-L, agree=0.667, adj=0.143, (0 split)
+      Edu     < 2.5 to the right,   agree=0.667, adj=0.143, (0 split)
+      DualInc splits as  RLL,       agree=0.648, adj=0.095, (0 split)
+
+Node number 859: 200 observations,    complexity param=0.000134545
+  mean=4.27, MSE=0.5171 
+  left son=1718 (105 obs) right son=1719 (95 obs)
+  Primary splits:
+      Under18 < 1.5 to the right,   improve=0.024974930, (0 missing)
+      Ethnic  splits as  RLL-LRRL,  improve=0.024279780, (4 missing)
+      Occup   splits as  RLRLRL--R, improve=0.024151480, (0 missing)
+      DualInc splits as  LLR,       improve=0.015779540, (0 missing)
+      Income  < 8.5 to the right,   improve=0.007770177, (2 missing)
+  Surrogate splits:
+      Persons  < 3.5 to the right,  agree=0.845, adj=0.674, (0 split)
+      Income   < 8.5 to the left,   agree=0.570, adj=0.095, (0 split)
+      Ethnic   splits as  RRL-LLRL, agree=0.550, adj=0.053, (0 split)
+      TypeHome splits as  LR--R,    agree=0.545, adj=0.042, (0 split)
+      Edu      < 3.5 to the right,  agree=0.545, adj=0.042, (0 split)
+
+Node number 864: 86 observations,    complexity param=0.0001137134
+  mean=3.569767, MSE=0.7102488 
+  left son=1728 (24 obs) right son=1729 (62 obs)
+  Primary splits:
+      LiveBA < 2.5 to the left,    improve=0.055728520, (0 missing)
+      Income < 8.5 to the left,    improve=0.054130650, (3 missing)
+      Occup  splits as  RL--LL--L, improve=0.018220120, (0 missing)
+      Edu    < 4.5 to the left,    improve=0.009068601, (0 missing)
+      sex    splits as  RL,        improve=0.008231295, (0 missing)
+  Surrogate splits:
+      Edu    < 3.5 to the left,   agree=0.733, adj=0.042, (0 split)
+      Ethnic splits as  -RRLL-R-, agree=0.733, adj=0.042, (0 split)
+
+Node number 865: 17 observations
+  mean=3.941176, MSE=0.8788927 
+
+Node number 868: 13 observations
+  mean=3.307692, MSE=0.6745562 
+
+Node number 869: 51 observations,    complexity param=0.0001029119
+  mean=3.980392, MSE=1.313341 
+  left son=1738 (37 obs) right son=1739 (14 obs)
+  Primary splits:
+      Occup  splits as  L-RRR-R--, improve=0.026857490, (0 missing)
+      sex    splits as  RL,        improve=0.023435720, (0 missing)
+      Ethnic splits as  LL--RR-R,  improve=0.019364750, (0 missing)
+      Income < 7.5 to the right,   improve=0.007286034, (1 missing)
+      Edu    < 4.5 to the left,    improve=0.002541146, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  LL-R-,    agree=0.765, adj=0.143, (0 split)
+      Edu      < 2.5 to the right,  agree=0.765, adj=0.143, (0 split)
+      Ethnic   splits as  LR--LL-L, agree=0.745, adj=0.071, (0 split)
+
+Node number 870: 233 observations,    complexity param=0.0002040916
+  mean=4.454936, MSE=1.175008 
+  left son=1740 (15 obs) right son=1741 (218 obs)
+  Primary splits:
+      Income   < 5.5 to the left,    improve=0.014854320, (4 missing)
+      Edu      < 3.5 to the right,   improve=0.013816350, (1 missing)
+      Occup    splits as  RRL--LL--, improve=0.008210513, (0 missing)
+      sex      splits as  RL,        improve=0.006042898, (0 missing)
+      TypeHome splits as  RL-LL,     improve=0.002529347, (0 missing)
+  Surrogate splits:
+      Occup splits as  RRR--LR--, agree=0.939, adj=0.067, (4 split)
+
+Node number 871: 45 observations,    complexity param=0.0001509647
+  mean=4.933333, MSE=1.617778 
+  left son=1742 (27 obs) right son=1743 (18 obs)
+  Primary splits:
+      Income < 7.5 to the right, improve=0.03905341, (6 missing)
+      Edu    < 4.5 to the left,  improve=0.02303579, (0 missing)
+  Surrogate splits:
+      Edu      < 3.5 to the right, agree=0.692, adj=0.250, (6 split)
+      TypeHome splits as  LL-R-,   agree=0.615, adj=0.063, (0 split)
+      Lang     splits as  L-R,     agree=0.615, adj=0.063, (0 split)
+
+Node number 882: 109 observations,    complexity param=0.0002266791
+  mean=4.587156, MSE=1.196532 
+  left son=1764 (19 obs) right son=1765 (90 obs)
+  Primary splits:
+      Occup   splits as  R--L-LL-R, improve=0.032510980, (0 missing)
+      Income  < 5.5 to the right,   improve=0.016901560, (3 missing)
+      LiveBA  < 4.5 to the left,    improve=0.007102999, (8 missing)
+      Persons < 2.5 to the right,   improve=0.005043442, (6 missing)
+      Edu     < 4.5 to the left,    improve=0.004397049, (0 missing)
+
+Node number 883: 14 observations
+  mean=5.142857, MSE=0.9795918 
+
+Node number 892: 12 observations
+  mean=4.166667, MSE=1.638889 
+
+Node number 893: 41 observations,    complexity param=0.0002396844
+  mean=5.146341, MSE=1.441999 
+  left son=1786 (31 obs) right son=1787 (10 obs)
+  Primary splits:
+      Income < 7.5 to the right,   improve=0.1105061000, (1 missing)
+      LiveBA < 3.5 to the left,    improve=0.0410520900, (0 missing)
+      Edu    < 4.5 to the right,   improve=0.0010106270, (0 missing)
+      Occup  splits as  LR--R----, improve=0.0004044522, (0 missing)
+  Surrogate splits:
+      DualInc  splits as  R-L,       agree=0.900, adj=0.6, (1 split)
+      MarStat  splits as  L--R-,     agree=0.875, adj=0.5, (0 split)
+      TypeHome splits as  LL-RL,     agree=0.800, adj=0.2, (0 split)
+      Occup    splits as  LR--L----, agree=0.775, adj=0.1, (0 split)
+      Persons  < 1.5 to the right,   agree=0.775, adj=0.1, (0 split)
+
+Node number 894: 252 observations,    complexity param=0.0003267613
+  mean=5.634921, MSE=1.088939 
+  left son=1788 (239 obs) right son=1789 (13 obs)
+  Primary splits:
+      TypeHome splits as  LR-LL,     improve=0.02807442, (0 missing)
+      Persons  < 3.5 to the right,   improve=0.02152507, (6 missing)
+      Occup    splits as  RLLRR-R-L, improve=0.01577358, (0 missing)
+      Edu      < 3.5 to the right,   improve=0.01572413, (1 missing)
+      Ethnic   splits as  ---LL-R-,  improve=0.01500890, (1 missing)
+
+Node number 895: 59 observations,    complexity param=0.000361266
+  mean=6.288136, MSE=0.8491813 
+  left son=1790 (19 obs) right son=1791 (40 obs)
+  Primary splits:
+      Occup    splits as  RLRLRRL-L, improve=0.17000390, (0 missing)
+      Persons  < 2.5 to the right,   improve=0.16572260, (6 missing)
+      MarStat  splits as  L--R-,     improve=0.07126239, (0 missing)
+      TypeHome splits as  LR-RR,     improve=0.03272491, (0 missing)
+      Income   < 3.5 to the right,   improve=0.01868989, (3 missing)
+  Surrogate splits:
+      Ethnic splits as  ---RL-R-, agree=0.712, adj=0.105, (0 split)
+
+Node number 1304: 27 observations
+  mean=2, MSE=0.07407407 
+
+Node number 1305: 102 observations,    complexity param=0.0001162266
+  mean=2.313725, MSE=0.3917724 
+  left son=2610 (53 obs) right son=2611 (49 obs)
+  Primary splits:
+      TypeHome  splits as  LLRRL,   improve=0.07315756, (0 missing)
+      MarStat   splits as  -R--L,   improve=0.05343673, (0 missing)
+      LiveBA    < 4.5 to the left,  improve=0.04264349, (10 missing)
+      Income    < 1.5 to the left,  improve=0.02075667, (3 missing)
+      HouseStat splits as  LR-,     improve=0.02030883, (26 missing)
+  Surrogate splits:
+      Occup   splits as  -R----L--, agree=0.676, adj=0.327, (0 split)
+      MarStat splits as  -R--L,     agree=0.608, adj=0.184, (0 split)
+      sex     splits as  LR,        agree=0.598, adj=0.163, (0 split)
+      LiveBA  < 2.5 to the left,    agree=0.569, adj=0.102, (0 split)
+      Ethnic  splits as  RLR-R-LL,  agree=0.569, adj=0.102, (0 split)
+
+Node number 1306: 37 observations
+  mean=2.513514, MSE=0.4660336 
+
+Node number 1307: 10 observations
+  mean=3.1, MSE=2.09 
+
+Node number 1310: 39 observations
+  mean=2.410256, MSE=0.3957922 
+
+Node number 1311: 68 observations,    complexity param=0.0001578526
+  mean=2.926471, MSE=0.7445934 
+  left son=2622 (29 obs) right son=2623 (39 obs)
+  Primary splits:
+      sex       splits as  RL,      improve=0.07350349, (0 missing)
+      Income    < 6.5 to the left,  improve=0.05824299, (5 missing)
+      LiveBA    < 4.5 to the left,  improve=0.04212668, (5 missing)
+      HouseStat splits as  RL-,     improve=0.02711423, (4 missing)
+      Persons   < 1.5 to the right, improve=0.01241633, (2 missing)
+  Surrogate splits:
+      DualInc splits as  RL-,       agree=0.632, adj=0.138, (0 split)
+      Occup   splits as  -L----R-R, agree=0.618, adj=0.103, (0 split)
+      Income  < 7.5 to the right,   agree=0.603, adj=0.069, (0 split)
+      MarStat splits as  -L--R,     agree=0.588, adj=0.034, (0 split)
+      Ethnic  splits as  ---R--RL,  agree=0.588, adj=0.034, (0 split)
+
+Node number 1346: 186 observations,    complexity param=0.0002186211
+  mean=2.446237, MSE=0.4621633 
+  left son=2692 (146 obs) right son=2693 (40 obs)
+  Primary splits:
+      Ethnic  splits as  RLL-RLLL, improve=0.05469942, (0 missing)
+      MarStat splits as  -L--R,    improve=0.01837856, (0 missing)
+      Lang    splits as  LRL,      improve=0.01815530, (3 missing)
+      Income  < 1.5 to the left,   improve=0.01588520, (3 missing)
+      Under18 < 0.5 to the left,   improve=0.01401580, (0 missing)
+  Surrogate splits:
+      Lang    splits as  LRL,     agree=0.833, adj=0.225, (0 split)
+      Edu     < 1.5 to the right, agree=0.801, adj=0.075, (0 split)
+      Under18 < 2.5 to the left,  agree=0.790, adj=0.025, (0 split)
+
+Node number 1347: 83 observations,    complexity param=0.0002380223
+  mean=2.710843, MSE=1.217593 
+  left son=2694 (15 obs) right son=2695 (68 obs)
+  Primary splits:
+      LiveBA  < 2.5 to the left,   improve=0.05683966, (10 missing)
+      Under18 < 0.5 to the right,  improve=0.04886719, (0 missing)
+      MarStat splits as  -R--L,    improve=0.01622911, (0 missing)
+      Ethnic  splits as  LLR-LLRR, improve=0.01201261, (0 missing)
+      Persons < 2.5 to the right,  improve=0.01015704, (9 missing)
+
+Node number 1352: 16 observations
+  mean=2.1875, MSE=0.2773438 
+
+Node number 1353: 49 observations
+  mean=2.632653, MSE=0.3140358 
+
+Node number 1356: 33 observations
+  mean=2.666667, MSE=0.5858586 
+
+Node number 1357: 92 observations,    complexity param=0.0001743296
+  mean=3.032609, MSE=0.7271975 
+  left son=2714 (62 obs) right son=2715 (30 obs)
+  Primary splits:
+      Occup    splits as  L-LRL----, improve=0.07425417, (0 missing)
+      LiveBA   < 4.5 to the left,    improve=0.06263213, (3 missing)
+      TypeHome splits as  RLR-R,     improve=0.03138515, (0 missing)
+      sex      splits as  RL,        improve=0.02963944, (0 missing)
+      Edu      < 3.5 to the left,    improve=0.02172164, (0 missing)
+
+Node number 1370: 28 observations
+  mean=2.892857, MSE=0.6670918 
+
+Node number 1371: 15 observations
+  mean=3.4, MSE=0.7733333 
+
+Node number 1372: 112 observations,    complexity param=0.0001838682
+  mean=3.160714, MSE=0.7598852 
+  left son=2744 (19 obs) right son=2745 (93 obs)
+  Primary splits:
+      Edu       < 3.5 to the left,  improve=0.037053870, (0 missing)
+      Income    < 4.5 to the right, improve=0.026926600, (0 missing)
+      sex       splits as  RL,      improve=0.025549520, (0 missing)
+      HouseStat splits as  RL-,     improve=0.012374250, (0 missing)
+      LiveBA    < 4.5 to the right, improve=0.002418692, (13 missing)
+  Surrogate splits:
+      MarStat splits as  -L--R, agree=0.839, adj=0.053, (0 split)
+      DualInc splits as  R-L,   agree=0.839, adj=0.053, (0 split)
+
+Node number 1373: 46 observations,    complexity param=0.0001884273
+  mean=3.543478, MSE=0.9002836 
+  left son=2746 (24 obs) right son=2747 (22 obs)
+  Primary splits:
+      Income < 3.5 to the left,  improve=0.13610510, (0 missing)
+      sex    splits as  RL,      improve=0.09644160, (0 missing)
+      Edu    < 4.5 to the left,  improve=0.03293706, (0 missing)
+  Surrogate splits:
+      Edu      < 3.5 to the right,  agree=0.630, adj=0.227, (0 split)
+      sex      splits as  RL,       agree=0.587, adj=0.136, (0 split)
+      TypeHome splits as  RLL--,    agree=0.565, adj=0.091, (0 split)
+      Ethnic   splits as  ------RL, agree=0.543, adj=0.045, (0 split)
+
+Node number 1386: 25 observations
+  mean=2.8, MSE=0.48 
+
+Node number 1387: 111 observations
+  mean=3.144144, MSE=0.3756189 
+
+Node number 1400: 14 observations
+  mean=2.5, MSE=1.392857 
+
+Node number 1401: 17 observations
+  mean=3.235294, MSE=1.238754 
+
+Node number 1402: 90 observations
+  mean=3.244444, MSE=0.4735802 
+
+Node number 1403: 134 observations,    complexity param=0.0002100568
+  mean=3.492537, MSE=0.7723324 
+  left son=2806 (84 obs) right son=2807 (50 obs)
+  Primary splits:
+      Persons  < 1.5 to the right,  improve=0.06989297, (3 missing)
+      Under18  < 0.5 to the right,  improve=0.02132538, (0 missing)
+      MarStat  splits as  -L--R,    improve=0.01681979, (0 missing)
+      Ethnic   splits as  LRRRLLRL, improve=0.01633577, (0 missing)
+      TypeHome splits as  LRRRL,    improve=0.01397477, (0 missing)
+  Surrogate splits:
+      MarStat  splits as  -L--R,    agree=0.802, adj=0.48, (3 split)
+      Edu      < 5.5 to the left,   agree=0.679, adj=0.16, (0 split)
+      TypeHome splits as  LLLRL,    agree=0.626, adj=0.02, (0 split)
+      Ethnic   splits as  LRLLLLLL, agree=0.626, adj=0.02, (0 split)
+
+Node number 1404: 34 observations,    complexity param=0.0001247489
+  mean=3.176471, MSE=0.6747405 
+  left son=2808 (17 obs) right son=2809 (17 obs)
+  Primary splits:
+      Edu     < 4.5 to the left,  improve=0.1107275000, (1 missing)
+      Persons < 1.5 to the right, improve=0.0325805800, (1 missing)
+      MarStat splits as  -L--R,   improve=0.0285714300, (0 missing)
+      sex     splits as  LR,      improve=0.0011721610, (0 missing)
+      Income  < 7.5 to the left,  improve=0.0006477733, (0 missing)
+  Surrogate splits:
+      Persons  < 1.5 to the right,   agree=0.667, adj=0.312, (1 split)
+      MarStat  splits as  -L--R,     agree=0.636, adj=0.250, (0 split)
+      TypeHome splits as  -RL-L,     agree=0.606, adj=0.188, (0 split)
+      Ethnic   splits as  RRL-L-LL,  agree=0.576, adj=0.125, (0 split)
+      Occup    splits as  R-LL-----, agree=0.545, adj=0.062, (0 split)
+
+Node number 1405: 112 observations,    complexity param=0.0003934431
+  mean=3.785714, MSE=1.061224 
+  left son=2810 (66 obs) right son=2811 (46 obs)
+  Primary splits:
+      MarStat splits as  -R--L,    improve=0.07804424, (0 missing)
+      Under18 < 0.5 to the left,   improve=0.02023411, (0 missing)
+      Edu     < 3.5 to the left,   improve=0.01736467, (1 missing)
+      Persons < 3.5 to the right,  improve=0.01717970, (3 missing)
+      Ethnic  splits as  RRL-LLLL, improve=0.01610209, (0 missing)
+  Surrogate splits:
+      DualInc splits as  LRR,     agree=0.768, adj=0.435, (0 split)
+      Under18 < 0.5 to the left,  agree=0.696, adj=0.261, (0 split)
+      Persons < 1.5 to the left,  agree=0.625, adj=0.087, (0 split)
+      sex     splits as  LR,      agree=0.607, adj=0.043, (0 split)
+
+Node number 1406: 14 observations
+  mean=3.714286, MSE=0.4897959 
+
+Node number 1407: 40 observations
+  mean=4.325, MSE=1.019375 
+
+Node number 1552: 23 observations
+  mean=2.173913, MSE=0.2306238 
+
+Node number 1553: 32 observations
+  mean=2.65625, MSE=0.6005859 
+
+Node number 1554: 29 observations
+  mean=2.62069, MSE=0.5802616 
+
+Node number 1555: 56 observations,    complexity param=0.0002276906
+  mean=3.142857, MSE=0.872449 
+  left son=3110 (44 obs) right son=3111 (12 obs)
+  Primary splits:
+      DualInc splits as  LLR,       improve=0.08576998, (0 missing)
+      sex     splits as  RL,        improve=0.06925208, (0 missing)
+      Under18 < 0.5 to the left,    improve=0.04555248, (0 missing)
+      Occup   splits as  R-RL-----, improve=0.03289474, (0 missing)
+      Persons < 3.5 to the left,    improve=0.02948343, (2 missing)
+
+Node number 1556: 45 observations
+  mean=2.844444, MSE=0.6646914 
+
+Node number 1557: 24 observations
+  mean=3.541667, MSE=0.5815972 
+
+Node number 1562: 38 observations
+  mean=3.157895, MSE=1.448753 
+
+Node number 1563: 40 observations,    complexity param=0.0001502306
+  mean=3.725, MSE=1.149375 
+  left son=3126 (27 obs) right son=3127 (13 obs)
+  Primary splits:
+      Edu     < 3.5 to the right, improve=0.08059006, (1 missing)
+      sex     splits as  LR,      improve=0.03483777, (0 missing)
+      Income  < 4.5 to the right, improve=0.03346447, (1 missing)
+      Under18 < 1.5 to the left,  improve=0.03167986, (0 missing)
+      Persons < 3.5 to the left,  improve=0.01908785, (1 missing)
+  Surrogate splits:
+      Income    < 1.5 to the right,   agree=0.718, adj=0.154, (1 split)
+      Occup     splits as  L--L----R, agree=0.692, adj=0.077, (0 split)
+      HouseStat splits as  -LR,       agree=0.692, adj=0.077, (0 split)
+
+Node number 1568: 60 observations
+  mean=2.766667, MSE=0.3122222 
+
+Node number 1569: 12 observations
+  mean=3.333333, MSE=0.8888889 
+
+Node number 1572: 39 observations
+  mean=3.051282, MSE=0.4589086 
+
+Node number 1573: 90 observations
+  mean=3.422222, MSE=0.9328395 
+
+Node number 1628: 32 observations,    complexity param=0.0002282839
+  mean=3.71875, MSE=0.8896484 
+  left son=3256 (10 obs) right son=3257 (22 obs)
+  Primary splits:
+      Occup  splits as  LRRLR-L-R, improve=0.26394570, (0 missing)
+      LiveBA < 4.5 to the right,   improve=0.02664749, (3 missing)
+      Income < 5.5 to the left,    improve=0.01878255, (1 missing)
+  Surrogate splits:
+      Income < 6.5 to the right, agree=0.719, adj=0.1, (0 split)
+      LiveBA < 3.5 to the left,  agree=0.719, adj=0.1, (0 split)
+
+Node number 1629: 88 observations
+  mean=4.090909, MSE=0.7417355 
+
+Node number 1630: 35 observations,    complexity param=0.000158348
+  mean=3.885714, MSE=1.01551 
+  left son=3260 (21 obs) right son=3261 (14 obs)
+  Primary splits:
+      Income  < 4.5 to the left,    improve=0.12541380, (1 missing)
+      LiveBA  < 4.5 to the right,   improve=0.08837690, (4 missing)
+      Persons < 1.5 to the right,   improve=0.07011326, (5 missing)
+      Occup   splits as  LRLRR-R-L, improve=0.02418274, (0 missing)
+      Edu     < 4.5 to the left,    improve=0.01808682, (0 missing)
+  Surrogate splits:
+      Edu   < 4.5 to the left,    agree=0.706, adj=0.286, (1 split)
+      Occup splits as  RLLLL-L-L, agree=0.676, adj=0.214, (0 split)
+
+Node number 1631: 107 observations,    complexity param=0.0004936945
+  mean=4.616822, MSE=1.488689 
+  left son=3262 (15 obs) right son=3263 (92 obs)
+  Primary splits:
+      LiveBA   < 3.5 to the left,  improve=0.07686133, (6 missing)
+      TypeHome splits as  RRR-L,   improve=0.02707928, (0 missing)
+      Persons  < 2.5 to the right, improve=0.01820176, (4 missing)
+      Edu      < 3.5 to the right, improve=0.01218976, (2 missing)
+      Income   < 1.5 to the left,  improve=0.01057955, (2 missing)
+  Surrogate splits:
+      Occup splits as  RRRRRRL-R, agree=0.861, adj=0.067, (6 split)
+
+Node number 1712: 129 observations,    complexity param=0.0001167623
+  mean=3.744186, MSE=0.4849468 
+  left son=3424 (34 obs) right son=3425 (95 obs)
+  Primary splits:
+      Occup   splits as  RLRRLL---, improve=0.04400509, (0 missing)
+      DualInc splits as  RRL,       improve=0.03103728, (0 missing)
+      Ethnic  splits as  -RL-L-RR,  improve=0.02311582, (1 missing)
+      Edu     < 5.5 to the left,    improve=0.02087771, (0 missing)
+      Under18 < 1.5 to the left,    improve=0.01642799, (0 missing)
+  Surrogate splits:
+      DualInc splits as  RRL, agree=0.845, adj=0.412, (0 split)
+
+Node number 1713: 233 observations,    complexity param=0.0003875818
+  mean=4.017167, MSE=0.6005637 
+  left son=3426 (191 obs) right son=3427 (42 obs)
+  Primary splits:
+      Under18 < 1.5 to the right,   improve=0.132640800, (0 missing)
+      Occup   splits as  RLLRRLR-R, improve=0.034828780, (0 missing)
+      Edu     < 4.5 to the left,    improve=0.031115860, (1 missing)
+      Persons < 4.5 to the left,    improve=0.016573000, (1 missing)
+      Income  < 7.5 to the left,    improve=0.008262117, (9 missing)
+  Surrogate splits:
+      TypeHome splits as  LL--R, agree=0.824, adj=0.024, (0 split)
+
+Node number 1714: 52 observations
+  mean=3.903846, MSE=0.5869083 
+
+Node number 1715: 52 observations,    complexity param=0.0002305007
+  mean=4.442308, MSE=1.092825 
+  left son=3430 (11 obs) right son=3431 (41 obs)
+  Primary splits:
+      Under18 < 2.5 to the right, improve=0.09563182, (0 missing)
+      Income  < 5.5 to the right, improve=0.04037026, (1 missing)
+      Persons < 4.5 to the right, improve=0.03442347, (1 missing)
+  Surrogate splits:
+      Persons < 5.5 to the right, agree=0.846, adj=0.273, (0 split)
+      Edu     < 1.5 to the left,  agree=0.827, adj=0.182, (0 split)
+
+Node number 1716: 35 observations
+  mean=3.714286, MSE=0.8326531 
+
+Node number 1717: 22 observations
+  mean=4.227273, MSE=0.9938017 
+
+Node number 1718: 105 observations
+  mean=4.161905, MSE=0.3833107 
+
+Node number 1719: 95 observations,    complexity param=0.000134545
+  mean=4.389474, MSE=0.6377839 
+  left son=3438 (66 obs) right son=3439 (29 obs)
+  Primary splits:
+      DualInc splits as  RLR,      improve=0.06207951, (0 missing)
+      Persons < 3.5 to the left,   improve=0.04233472, (1 missing)
+      Income  < 8.5 to the right,  improve=0.02494829, (1 missing)
+      Ethnic  splits as  RLL-L-R-, improve=0.02488888, (1 missing)
+      Edu     < 3.5 to the right,  improve=0.01777308, (2 missing)
+  Surrogate splits:
+      MarStat  splits as  L-R--,     agree=0.758, adj=0.207, (0 split)
+      Occup    splits as  LLRL----R, agree=0.726, adj=0.103, (0 split)
+      Persons  < 2.5 to the right,   agree=0.726, adj=0.103, (0 split)
+      TypeHome splits as  LL--R,     agree=0.705, adj=0.034, (0 split)
+
+Node number 1728: 24 observations
+  mean=3.25, MSE=0.5208333 
+
+Node number 1729: 62 observations,    complexity param=0.000100058
+  mean=3.693548, MSE=0.7286681 
+  left son=3458 (36 obs) right son=3459 (26 obs)
+  Primary splits:
+      Income < 8.5 to the left,  improve=0.064128120, (2 missing)
+      Edu    < 5.5 to the right, improve=0.004325364, (0 missing)
+      sex    splits as  RL,      improve=0.004094677, (0 missing)
+      LiveBA < 3.5 to the left,  improve=0.002904125, (0 missing)
+  Surrogate splits:
+      Edu < 5.5 to the left,  agree=0.717, adj=0.32, (2 split)
+
+Node number 1738: 37 observations,    complexity param=0.0001029119
+  mean=3.864865, MSE=1.197955 
+  left son=3476 (20 obs) right son=3477 (17 obs)
+  Primary splits:
+      sex    splits as  RL,       improve=0.068895270, (0 missing)
+      Ethnic splits as  LL--RR-L, improve=0.043750950, (0 missing)
+      Edu    < 4.5 to the left,   improve=0.022357720, (0 missing)
+      Income < 7.5 to the left,   improve=0.001300813, (0 missing)
+  Surrogate splits:
+      Ethnic splits as  RL--LL-R, agree=0.676, adj=0.294, (0 split)
+      Income < 6.5 to the left,   agree=0.622, adj=0.176, (0 split)
+      Edu    < 3.5 to the left,   agree=0.595, adj=0.118, (0 split)
+
+Node number 1739: 14 observations
+  mean=4.285714, MSE=1.489796 
+
+Node number 1740: 15 observations
+  mean=3.933333, MSE=0.5955556 
+
+Node number 1741: 218 observations,    complexity param=0.0002040916
+  mean=4.490826, MSE=1.19487 
+  left son=3482 (196 obs) right son=3483 (22 obs)
+  Primary splits:
+      Edu      < 3.5 to the right,   improve=0.020821500, (1 missing)
+      Income   < 6.5 to the right,   improve=0.007056203, (4 missing)
+      sex      splits as  RL,        improve=0.006975828, (0 missing)
+      TypeHome splits as  RL-RL,     improve=0.003800900, (0 missing)
+      Occup    splits as  RRL---L--, improve=0.003107327, (0 missing)
+
+Node number 1742: 27 observations
+  mean=4.703704, MSE=1.319616 
+
+Node number 1743: 18 observations
+  mean=5.277778, MSE=1.867284 
+
+Node number 1764: 19 observations
+  mean=4.157895, MSE=1.185596 
+
+Node number 1765: 90 observations,    complexity param=0.0002266791
+  mean=4.677778, MSE=1.151728 
+  left son=3530 (73 obs) right son=3531 (17 obs)
+  Primary splits:
+      Income   < 4.5 to the right, improve=0.083215610, (3 missing)
+      TypeHome splits as  RLLRL,   improve=0.016411120, (0 missing)
+      Persons  < 1.5 to the left,  improve=0.007328984, (4 missing)
+      LiveBA   < 4.5 to the left,  improve=0.006548353, (6 missing)
+      Edu      < 4.5 to the left,  improve=0.003342461, (0 missing)
+
+Node number 1786: 31 observations
+  mean=4.935484, MSE=1.479709 
+
+Node number 1787: 10 observations
+  mean=5.8, MSE=0.76 
+
+Node number 1788: 239 observations,    complexity param=0.0002657807
+  mean=5.594142, MSE=1.094694 
+  left son=3576 (12 obs) right son=3577 (227 obs)
+  Primary splits:
+      Ethnic  splits as  ---LL-R-,  improve=0.02260955, (1 missing)
+      Persons < 3.5 to the right,   improve=0.01948463, (6 missing)
+      Occup   splits as  RLLRR-R-L, improve=0.01717726, (0 missing)
+      DualInc splits as  L-R,       improve=0.01644279, (0 missing)
+      Edu     < 3.5 to the right,   improve=0.01620359, (1 missing)
+
+Node number 1789: 13 observations
+  mean=6.384615, MSE=0.3905325 
+
+Node number 1790: 19 observations
+  mean=5.736842, MSE=1.141274 
+
+Node number 1791: 40 observations
+  mean=6.55, MSE=0.4975 
+
+Node number 2610: 53 observations
+  mean=2.150943, MSE=0.1658953 
+
+Node number 2611: 49 observations,    complexity param=0.0001162266
+  mean=2.489796, MSE=0.5764265 
+  left son=5222 (27 obs) right son=5223 (22 obs)
+  Primary splits:
+      LiveBA  < 4.5 to the left,    improve=0.094349090, (5 missing)
+      MarStat splits as  -R--L,     improve=0.054154450, (0 missing)
+      Income  < 1.5 to the left,    improve=0.025144300, (2 missing)
+      Ethnic  splits as  L-R-R-LL,  improve=0.009295308, (0 missing)
+      Occup   splits as  -R----L--, improve=0.006930549, (0 missing)
+  Surrogate splits:
+      Occup   splits as  -R----L--, agree=0.636, adj=0.158, (5 split)
+      MarStat splits as  -R--L,     agree=0.636, adj=0.158, (0 split)
+      Ethnic  splits as  L-R-L-LL,  agree=0.636, adj=0.158, (0 split)
+      DualInc splits as  LRL,       agree=0.591, adj=0.053, (0 split)
+
+Node number 2622: 29 observations
+  mean=2.655172, MSE=0.5707491 
+
+Node number 2623: 39 observations,    complexity param=0.0001286291
+  mean=3.128205, MSE=0.7784352 
+  left son=5246 (19 obs) right son=5247 (20 obs)
+  Primary splits:
+      LiveBA   < 4.5 to the left,    improve=0.105166400, (2 missing)
+      Occup    splits as  -R----L-R, improve=0.048506600, (0 missing)
+      Income   < 4.5 to the left,    improve=0.023527990, (3 missing)
+      TypeHome splits as  RLL-L,     improve=0.001450619, (0 missing)
+      Persons  < 1.5 to the left,    improve=0.001147952, (2 missing)
+  Surrogate splits:
+      Occup     splits as  -R----L-R, agree=0.676, adj=0.333, (2 split)
+      TypeHome  splits as  RRR-L,     agree=0.595, adj=0.167, (0 split)
+      Income    < 6.5 to the right,   agree=0.568, adj=0.111, (0 split)
+      Persons   < 1.5 to the left,    agree=0.541, adj=0.056, (0 split)
+      HouseStat splits as  RL-,       agree=0.541, adj=0.056, (0 split)
+
+Node number 2692: 146 observations
+  mean=2.363014, MSE=0.3134265 
+
+Node number 2693: 40 observations,    complexity param=0.0002186211
+  mean=2.75, MSE=0.8875 
+  left son=5386 (15 obs) right son=5387 (25 obs)
+  Primary splits:
+      MarStat splits as  -L--R,     improve=0.15793430, (0 missing)
+      Edu     < 2.5 to the right,   improve=0.05365526, (0 missing)
+      Occup   splits as  L-RLR----, improve=0.05205144, (0 missing)
+      Persons < 2.5 to the left,    improve=0.03940485, (5 missing)
+      Under18 < 0.5 to the left,    improve=0.03018109, (0 missing)
+  Surrogate splits:
+      DualInc splits as  RL-, agree=0.8, adj=0.467, (0 split)
+
+Node number 2694: 15 observations
+  mean=2.133333, MSE=0.7822222 
+
+Node number 2695: 68 observations,    complexity param=0.0002380223
+  mean=2.838235, MSE=1.223832 
+  left son=5390 (17 obs) right son=5391 (51 obs)
+  Primary splits:
+      Under18 < 0.5 to the right,   improve=0.08063851, (0 missing)
+      Ethnic  splits as  LLR-LLLR,  improve=0.03003942, (0 missing)
+      Income  < 2.5 to the right,   improve=0.01399638, (2 missing)
+      Edu     < 3.5 to the right,   improve=0.01331442, (0 missing)
+      Occup   splits as  L-LRR----, improve=0.01243132, (0 missing)
+  Surrogate splits:
+      Edu    < 2.5 to the left,   agree=0.794, adj=0.176, (0 split)
+      Ethnic splits as  RRL-LRRR, agree=0.779, adj=0.118, (0 split)
+
+Node number 2714: 62 observations,    complexity param=0.000134085
+  mean=2.870968, MSE=0.6930281 
+  left son=5428 (31 obs) right son=5429 (31 obs)
+  Primary splits:
+      sex      splits as  RL,      improve=0.07357357, (0 missing)
+      LiveBA   < 4.5 to the left,  improve=0.05409086, (3 missing)
+      Income   < 4.5 to the left,  improve=0.02655452, (0 missing)
+      Edu      < 3.5 to the left,  improve=0.02189913, (0 missing)
+      TypeHome splits as  RLL-L,   improve=0.01763679, (0 missing)
+  Surrogate splits:
+      Occup    splits as  L-R-L----, agree=0.677, adj=0.355, (0 split)
+      LiveBA   < 4.5 to the left,    agree=0.613, adj=0.226, (0 split)
+      Edu      < 4.5 to the right,   agree=0.597, adj=0.194, (0 split)
+      TypeHome splits as  RLL-L,     agree=0.581, adj=0.161, (0 split)
+      Income   < 4.5 to the left,    agree=0.565, adj=0.129, (0 split)
+
+Node number 2715: 30 observations
+  mean=3.366667, MSE=0.6322222 
+
+Node number 2744: 19 observations
+  mean=2.789474, MSE=0.3767313 
+
+Node number 2745: 93 observations,    complexity param=0.0001838682
+  mean=3.236559, MSE=0.8042548 
+  left son=5490 (29 obs) right son=5491 (64 obs)
+  Primary splits:
+      sex    splits as  RL,        improve=0.052591660, (0 missing)
+      Income < 4.5 to the right,   improve=0.041390170, (0 missing)
+      Edu    < 5.5 to the left,    improve=0.023852830, (0 missing)
+      Occup  splits as  L-R------, improve=0.005057879, (0 missing)
+      LiveBA < 4.5 to the right,   improve=0.003618753, (12 missing)
+
+Node number 2746: 24 observations
+  mean=3.208333, MSE=0.8315972 
+
+Node number 2747: 22 observations
+  mean=3.909091, MSE=0.7190083 
+
+Node number 2806: 84 observations,    complexity param=0.0002044991
+  mean=3.321429, MSE=0.6228741 
+  left son=5612 (14 obs) right son=5613 (70 obs)
+  Primary splits:
+      Occup    splits as  R-LLR----, improve=0.09215017, (0 missing)
+      TypeHome splits as  LRL-L,     improve=0.04968914, (0 missing)
+      sex      splits as  RL,        improve=0.04012135, (0 missing)
+      Ethnic   splits as  LLRRLLLL,  improve=0.03109307, (0 missing)
+      Under18  < 0.5 to the right,   improve=0.01516875, (0 missing)
+
+Node number 2807: 50 observations,    complexity param=0.0002100568
+  mean=3.78, MSE=0.8916 
+  left son=5614 (15 obs) right son=5615 (35 obs)
+  Primary splits:
+      TypeHome splits as  LLRRL,   improve=0.126663700, (0 missing)
+      sex      splits as  LR,      improve=0.019256120, (0 missing)
+      LiveBA   < 4.5 to the left,  improve=0.012853650, (5 missing)
+      Edu      < 5.5 to the left,  improve=0.006052929, (0 missing)
+      Income   < 7.5 to the left,  improve=0.001262225, (3 missing)
+  Surrogate splits:
+      Ethnic splits as  LRL-R-RL, agree=0.76, adj=0.2, (0 split)
+
+Node number 2808: 17 observations
+  mean=2.882353, MSE=0.4567474 
+
+Node number 2809: 17 observations
+  mean=3.470588, MSE=0.7197232 
+
+Node number 2810: 66 observations,    complexity param=0.000312326
+  mean=3.545455, MSE=1.157025 
+  left son=5620 (18 obs) right son=5621 (48 obs)
+  Primary splits:
+      Persons < 2.5 to the right,   improve=0.094517180, (1 missing)
+      Ethnic  splits as  RRR-LLLL,  improve=0.069056960, (0 missing)
+      Income  < 8.5 to the right,   improve=0.054848900, (1 missing)
+      Occup   splits as  L-LRL----, improve=0.013432100, (0 missing)
+      Edu     < 4.5 to the left,    improve=0.008154706, (0 missing)
+  Surrogate splits:
+      Under18 < 1.5 to the right,   agree=0.754, adj=0.111, (1 split)
+      Occup   splits as  R-LRR----, agree=0.738, adj=0.056, (0 split)
+
+Node number 2811: 46 observations
+  mean=4.130435, MSE=0.7221172 
+
+Node number 3110: 44 observations,    complexity param=0.0002276906
+  mean=3, MSE=0.7727273 
+  left son=6220 (30 obs) right son=6221 (14 obs)
+  Primary splits:
+      sex     splits as  RL,      improve=0.19719890, (0 missing)
+      Under18 < 0.5 to the left,  improve=0.11560360, (0 missing)
+      Persons < 2.5 to the left,  improve=0.03717866, (1 missing)
+      LiveBA  < 3.5 to the left,  improve=0.01588235, (4 missing)
+      Edu     < 4.5 to the left,  improve=0.01426025, (0 missing)
+  Surrogate splits:
+      Occup   splits as  L-RL-----, agree=0.795, adj=0.357, (0 split)
+      DualInc splits as  RL-,       agree=0.705, adj=0.071, (0 split)
+      Persons < 1.5 to the right,   agree=0.705, adj=0.071, (0 split)
+      Lang    splits as  LLR,       agree=0.705, adj=0.071, (0 split)
+
+Node number 3111: 12 observations
+  mean=3.666667, MSE=0.8888889 
+
+Node number 3126: 27 observations
+  mean=3.518519, MSE=0.9903978 
+
+Node number 3127: 13 observations
+  mean=4.153846, MSE=1.207101 
+
+Node number 3256: 10 observations
+  mean=3, MSE=0.2 
+
+Node number 3257: 22 observations
+  mean=4.045455, MSE=0.8615702 
+
+Node number 3260: 21 observations
+  mean=3.619048, MSE=1.092971 
+
+Node number 3261: 14 observations
+  mean=4.285714, MSE=0.6326531 
+
+Node number 3262: 15 observations
+  mean=3.8, MSE=2.426667 
+
+Node number 3263: 92 observations,    complexity param=0.0001470601
+  mean=4.75, MSE=1.209239 
+  left son=6526 (19 obs) right son=6527 (73 obs)
+  Primary splits:
+      TypeHome splits as  RLR-L,     improve=0.016433500, (0 missing)
+      Occup    splits as  LRRLLLR-L, improve=0.015335230, (0 missing)
+      Edu      < 4.5 to the right,   improve=0.011610780, (1 missing)
+      Income   < 6.5 to the left,    improve=0.005510095, (2 missing)
+      Persons  < 1.5 to the right,   improve=0.000113651, (4 missing)
+
+Node number 3424: 34 observations
+  mean=3.5, MSE=0.3676471 
+
+Node number 3425: 95 observations
+  mean=3.831579, MSE=0.4979501 
+
+Node number 3426: 191 observations,    complexity param=0.0002166681
+  mean=3.884817, MSE=0.5312354 
+  left son=6852 (21 obs) right son=6853 (170 obs)
+  Primary splits:
+      Occup   splits as  RLLRRLR-R, improve=0.04840388, (0 missing)
+      Edu     < 4.5 to the left,    improve=0.04338285, (0 missing)
+      Persons < 5.5 to the left,    improve=0.04237010, (1 missing)
+      Income  < 7.5 to the left,    improve=0.01348265, (5 missing)
+      Ethnic  splits as  RRR-L-LL,  improve=0.01029587, (0 missing)
+
+Node number 3427: 42 observations,    complexity param=0.0001256994
+  mean=4.619048, MSE=0.4739229 
+  left son=6854 (25 obs) right son=6855 (17 obs)
+  Primary splits:
+      Occup   splits as  LLRRR-R-L, improve=0.148888300, (0 missing)
+      DualInc splits as  RLR,       improve=0.101076600, (0 missing)
+      Income  < 7.5 to the right,   improve=0.009580327, (4 missing)
+      Edu     < 4.5 to the left,    improve=0.005221045, (1 missing)
+  Surrogate splits:
+      DualInc splits as  RLR,      agree=0.690, adj=0.235, (0 split)
+      Ethnic  splits as  -LL-R-LR, agree=0.690, adj=0.235, (0 split)
+      Persons < 4.5 to the left,   agree=0.643, adj=0.118, (0 split)
+      Edu     < 4.5 to the right,  agree=0.619, adj=0.059, (0 split)
+      Lang    splits as  LR-,      agree=0.619, adj=0.059, (0 split)
+
+Node number 3430: 11 observations
+  mean=3.818182, MSE=0.8760331 
+
+Node number 3431: 41 observations
+  mean=4.609756, MSE=1.018441 
+
+Node number 3438: 66 observations
+  mean=4.257576, MSE=0.6457759 
+
+Node number 3439: 29 observations
+  mean=4.689655, MSE=0.489893 
+
+Node number 3458: 36 observations
+  mean=3.527778, MSE=0.4158951 
+
+Node number 3459: 26 observations
+  mean=3.923077, MSE=1.071006 
+
+Node number 3476: 20 observations
+  mean=3.6, MSE=0.84 
+
+Node number 3477: 17 observations
+  mean=4.176471, MSE=1.439446 
+
+Node number 3482: 196 observations,    complexity param=0.0001903739
+  mean=4.438776, MSE=1.174823 
+  left son=6964 (11 obs) right son=6965 (185 obs)
+  Primary splits:
+      Occup  splits as  RRL---L--, improve=0.019492310, (0 missing)
+      sex    splits as  RL,        improve=0.010057490, (0 missing)
+      Income < 8.5 to the left,    improve=0.009732279, (3 missing)
+      Edu    < 5.5 to the left,    improve=0.005700056, (1 missing)
+      Ethnic splits as  --R---L-,  improve=0.002562050, (1 missing)
+
+Node number 3483: 22 observations
+  mean=4.954545, MSE=1.134298 
+
+Node number 3530: 73 observations,    complexity param=0.000104498
+  mean=4.534247, MSE=1.098142 
+  left son=7060 (16 obs) right son=7061 (57 obs)
+  Primary splits:
+      Income   < 6.5 to the left,  improve=0.025266370, (3 missing)
+      Edu      < 5.5 to the left,  improve=0.019892710, (0 missing)
+      TypeHome splits as  RLLLL,   improve=0.011434150, (0 missing)
+      Persons  < 1.5 to the left,  improve=0.010712570, (1 missing)
+      sex      splits as  RL,      improve=0.003626291, (0 missing)
+
+Node number 3531: 17 observations
+  mean=5.294118, MSE=0.9134948 
+
+Node number 3576: 12 observations
+  mean=4.916667, MSE=1.743056 
+
+Node number 3577: 227 observations,    complexity param=0.0002657807
+  mean=5.629956, MSE=1.034874 
+  left son=7154 (210 obs) right son=7155 (17 obs)
+  Primary splits:
+      Occup   splits as  LLLRL-R-L, improve=0.02866411, (0 missing)
+      Persons < 3.5 to the right,   improve=0.02684865, (5 missing)
+      Edu     < 3.5 to the right,   improve=0.01975431, (1 missing)
+      DualInc splits as  L-R,       improve=0.01602063, (0 missing)
+      sex     splits as  RL,        improve=0.00923103, (0 missing)
+
+Node number 5222: 27 observations
+  mean=2.259259, MSE=0.266118 
+
+Node number 5223: 22 observations
+  mean=2.772727, MSE=0.8119835 
+
+Node number 5246: 19 observations
+  mean=2.842105, MSE=0.3434903 
+
+Node number 5247: 20 observations
+  mean=3.4, MSE=1.04 
+
+Node number 5386: 15 observations
+  mean=2.266667, MSE=0.1955556 
+
+Node number 5387: 25 observations
+  mean=3.04, MSE=1.0784 
+
+Node number 5390: 17 observations
+  mean=2.294118, MSE=0.6782007 
+
+Node number 5391: 51 observations,    complexity param=0.0001914173
+  mean=3.019608, MSE=1.274125 
+  left son=10782 (28 obs) right son=10783 (23 obs)
+  Primary splits:
+      Edu     < 3.5 to the right,   improve=0.069451730, (0 missing)
+      Occup   splits as  L-LRR----, improve=0.045316410, (0 missing)
+      Income  < 2.5 to the right,   improve=0.037792670, (2 missing)
+      sex     splits as  LR,        improve=0.016040180, (0 missing)
+      Persons < 2.5 to the left,    improve=0.007202422, (6 missing)
+  Surrogate splits:
+      Occup     splits as  L-RRR----, agree=0.608, adj=0.130, (0 split)
+      HouseStat splits as  RL-,       agree=0.608, adj=0.130, (0 split)
+      DualInc   splits as  LLR,       agree=0.569, adj=0.043, (0 split)
+      Ethnic    splits as  LLR-LLLL,  agree=0.569, adj=0.043, (0 split)
+
+Node number 5428: 31 observations
+  mean=2.645161, MSE=0.3579605 
+
+Node number 5429: 31 observations
+  mean=3.096774, MSE=0.9261186 
+
+Node number 5490: 29 observations
+  mean=2.931034, MSE=0.6159334 
+
+Node number 5491: 64 observations,    complexity param=0.0001838682
+  mean=3.375, MSE=0.828125 
+  left son=10982 (18 obs) right son=10983 (46 obs)
+  Primary splits:
+      Income   < 4.5 to the right,   improve=0.111658000, (0 missing)
+      Edu      < 5.5 to the left,    improve=0.017120300, (0 missing)
+      TypeHome splits as  RLL--,     improve=0.010413960, (0 missing)
+      Occup    splits as  L-R------, improve=0.003087479, (0 missing)
+      LiveBA   < 4.5 to the right,   improve=0.002418739, (6 missing)
+  Surrogate splits:
+      TypeHome splits as  RLR--, agree=0.734, adj=0.056, (0 split)
+      Lang     splits as  R-L,   agree=0.734, adj=0.056, (0 split)
+
+Node number 5612: 14 observations
+  mean=2.785714, MSE=0.4540816 
+
+Node number 5613: 70 observations
+  mean=3.428571, MSE=0.5877551 
+
+Node number 5614: 15 observations
+  mean=3.266667, MSE=0.3288889 
+
+Node number 5615: 35 observations
+  mean=4, MSE=0.9714286 
+
+Node number 5620: 18 observations
+  mean=3, MSE=1 
+
+Node number 5621: 48 observations
+  mean=3.75, MSE=1.0625 
+
+Node number 6220: 30 observations
+  mean=2.733333, MSE=0.4622222 
+
+Node number 6221: 14 observations
+  mean=3.571429, MSE=0.9591837 
+
+Node number 6526: 19 observations
+  mean=4.473684, MSE=1.407202 
+
+Node number 6527: 73 observations,    complexity param=0.0001470601
+  mean=4.821918, MSE=1.13267 
+  left son=13054 (52 obs) right son=13055 (21 obs)
+  Primary splits:
+      Edu      < 3.5 to the right,   improve=0.0617546200, (0 missing)
+      Occup    splits as  LRRLRLR-L, improve=0.0450637600, (0 missing)
+      Income   < 2.5 to the right,   improve=0.0177672200, (2 missing)
+      TypeHome splits as  R-L--,     improve=0.0113071600, (0 missing)
+      Persons  < 1.5 to the left,    improve=0.0001947719, (4 missing)
+  Surrogate splits:
+      Occup splits as  LLRLLLL-L, agree=0.74, adj=0.095, (0 split)
+
+Node number 6852: 21 observations
+  mean=3.428571, MSE=0.6258503 
+
+Node number 6853: 170 observations,    complexity param=0.0002166681
+  mean=3.941176, MSE=0.4906574 
+  left son=13706 (121 obs) right son=13707 (49 obs)
+  Primary splits:
+      Persons < 4.5 to the left,   improve=0.051196830, (1 missing)
+      Edu     < 4.5 to the left,   improve=0.031276800, (0 missing)
+      Ethnic  splits as  LRR-L-LL, improve=0.012044510, (0 missing)
+      Income  < 7.5 to the left,   improve=0.009385106, (5 missing)
+      DualInc splits as  RRL,      improve=0.007834625, (0 missing)
+  Surrogate splits:
+      Under18 < 2.5 to the left,    agree=0.905, adj=0.673, (1 split)
+      MarStat splits as  L-LR-,     agree=0.722, adj=0.041, (0 split)
+      Occup   splits as  L--LL-L-R, agree=0.716, adj=0.020, (0 split)
+
+Node number 6854: 25 observations
+  mean=4.4, MSE=0.32 
+
+Node number 6855: 17 observations
+  mean=4.941176, MSE=0.5259516 
+
+Node number 6964: 11 observations
+  mean=3.818182, MSE=0.5123967 
+
+Node number 6965: 185 observations
+  mean=4.475676, MSE=1.189949 
+
+Node number 7060: 16 observations
+  mean=4.1875, MSE=1.277344 
+
+Node number 7061: 57 observations
+  mean=4.631579, MSE=1.004617 
+
+Node number 7154: 210 observations,    complexity param=0.0002138858
+  mean=5.580952, MSE=1.033923 
+  left son=14308 (17 obs) right son=14309 (193 obs)
+  Primary splits:
+      Persons < 3.5 to the right,   improve=0.024450150, (3 missing)
+      Edu     < 3.5 to the right,   improve=0.016798560, (1 missing)
+      Occup   splits as  RLL-R---L, improve=0.016385450, (0 missing)
+      DualInc splits as  L-R,       improve=0.013280100, (0 missing)
+      MarStat splits as  R--L-,     improve=0.006589272, (0 missing)
+
+Node number 7155: 17 observations
+  mean=6.235294, MSE=0.650519 
+
+Node number 10782: 28 observations
+  mean=2.75, MSE=0.6160714 
+
+Node number 10783: 23 observations
+  mean=3.347826, MSE=1.879017 
+
+Node number 10982: 18 observations
+  mean=2.888889, MSE=0.3209877 
+
+Node number 10983: 46 observations
+  mean=3.565217, MSE=0.8979206 
+
+Node number 13054: 52 observations,    complexity param=0.0001470601
+  mean=4.653846, MSE=1.110947 
+  left son=26108 (42 obs) right son=26109 (10 obs)
+  Primary splits:
+      Occup    splits as  LLRLRRR-R, improve=0.063927460, (0 missing)
+      TypeHome splits as  R-L--,     improve=0.035952060, (0 missing)
+      Persons  < 1.5 to the left,    improve=0.024278320, (2 missing)
+      Income   < 2.5 to the right,   improve=0.015733640, (0 missing)
+      Edu      < 4.5 to the right,   improve=0.009468856, (0 missing)
+  Surrogate splits:
+      Income < 2.5 to the right,  agree=0.865, adj=0.3, (0 split)
+      Ethnic splits as  ------LR, agree=0.827, adj=0.1, (0 split)
+
+Node number 13055: 21 observations
+  mean=5.238095, MSE=0.9433107 
+
+Node number 13706: 121 observations,    complexity param=0.0002166681
+  mean=3.842975, MSE=0.4133597 
+  left son=27412 (61 obs) right son=27413 (60 obs)
+  Primary splits:
+      Edu     < 4.5 to the left,    improve=0.11906720, (0 missing)
+      Income  < 7.5 to the left,    improve=0.03090677, (5 missing)
+      Occup   splits as  R--RL-R--, improve=0.02991081, (0 missing)
+      DualInc splits as  RRL,       improve=0.02791805, (0 missing)
+      Ethnic  splits as  RRL-L-RL,  improve=0.01135882, (0 missing)
+  Surrogate splits:
+      Occup    splits as  R--LL-R--, agree=0.678, adj=0.350, (0 split)
+      Income   < 7.5 to the left,    agree=0.645, adj=0.283, (0 split)
+      DualInc  splits as  LRL,       agree=0.587, adj=0.167, (0 split)
+      Ethnic   splits as  LRR-L-RR,  agree=0.587, adj=0.167, (0 split)
+      TypeHome splits as  LR---,     agree=0.521, adj=0.033, (0 split)
+
+Node number 13707: 49 observations,    complexity param=0.0002166681
+  mean=4.183673, MSE=0.5989171 
+  left son=27414 (35 obs) right son=27415 (14 obs)
+  Primary splits:
+      Under18 < 2.5 to the right,   improve=0.18803890, (0 missing)
+      Ethnic  splits as  -RR-R-L-,  improve=0.05418562, (0 missing)
+      Persons < 5.5 to the left,    improve=0.03447190, (0 missing)
+      Income  < 6.5 to the right,   improve=0.02434530, (0 missing)
+      Occup   splits as  L--LR---R, improve=0.01303894, (0 missing)
+  Surrogate splits:
+      Income < 8.5 to the left,    agree=0.816, adj=0.357, (0 split)
+      Occup  splits as  L--LL---R, agree=0.735, adj=0.071, (0 split)
+
+Node number 14308: 17 observations
+  mean=5.058824, MSE=0.8788927 
+
+Node number 14309: 193 observations,    complexity param=0.0001903997
+  mean=5.626943, MSE=1.02145 
+  left son=28618 (21 obs) right son=28619 (172 obs)
+  Primary splits:
+      Occup   splits as  RLL-R---L, improve=0.022770680, (0 missing)
+      DualInc splits as  L-R,       improve=0.021812600, (0 missing)
+      MarStat splits as  R--L-,     improve=0.012097920, (0 missing)
+      Edu     < 3.5 to the right,   improve=0.011182460, (1 missing)
+      Income  < 8.5 to the right,   improve=0.003136987, (17 missing)
+
+Node number 26108: 42 observations,    complexity param=0.0001470601
+  mean=4.52381, MSE=0.9637188 
+  left son=52216 (32 obs) right son=52217 (10 obs)
+  Primary splits:
+      TypeHome splits as  R-L--,     improve=1.482647e-01, (0 missing)
+      Persons  < 1.5 to the left,    improve=2.491176e-02, (2 missing)
+      Occup    splits as  RR-L-----, improve=1.505882e-02, (0 missing)
+      Income   < 4.5 to the left,    improve=1.071834e-02, (0 missing)
+      Edu      < 4.5 to the left,    improve=5.228758e-05, (0 missing)
+  Surrogate splits:
+      Income < 6.5 to the left,  agree=0.857, adj=0.4, (0 split)
+
+Node number 26109: 10 observations
+  mean=5.2, MSE=1.36 
+
+Node number 27412: 61 observations
+  mean=3.622951, MSE=0.3332438 
+
+Node number 27413: 60 observations
+  mean=4.066667, MSE=0.3955556 
+
+Node number 27414: 35 observations,    complexity param=0.0001046641
+  mean=3.971429, MSE=0.484898 
+  left son=54828 (24 obs) right son=54829 (11 obs)
+  Primary splits:
+      Persons < 5.5 to the left,    improve=0.145399700, (0 missing)
+      DualInc splits as  RRL,       improve=0.024242420, (0 missing)
+      Edu     < 4.5 to the left,    improve=0.013562200, (0 missing)
+      Occup   splits as  R--RL----, improve=0.002849003, (0 missing)
+      Income  < 7.5 to the right,   improve=0.001417686, (0 missing)
+  Surrogate splits:
+      Under18 < 3.5 to the left,   agree=0.829, adj=0.455, (0 split)
+      Ethnic  splits as  -RL-L-L-, agree=0.714, adj=0.091, (0 split)
+
+Node number 27415: 14 observations
+  mean=4.714286, MSE=0.4897959 
+
+Node number 28618: 21 observations
+  mean=5.190476, MSE=1.297052 
+
+Node number 28619: 172 observations,    complexity param=0.0001478928
+  mean=5.680233, MSE=0.9617023 
+  left son=57238 (19 obs) right son=57239 (153 obs)
+  Primary splits:
+      MarStat splits as  R--L-,     improve=0.017150660, (0 missing)
+      DualInc splits as  L-R,       improve=0.014920570, (0 missing)
+      Edu     < 3.5 to the right,   improve=0.013270970, (1 missing)
+      Occup   splits as  L---R----, improve=0.007170299, (0 missing)
+      Income  < 8.5 to the right,   improve=0.003878153, (17 missing)
+  Surrogate splits:
+      Persons < 1.5 to the left,  agree=0.948, adj=0.526, (0 split)
+
+Node number 52216: 32 observations
+  mean=4.3125, MSE=0.7148438 
+
+Node number 52217: 10 observations
+  mean=5.2, MSE=1.16 
+
+Node number 54828: 24 observations
+  mean=3.791667, MSE=0.4149306 
+
+Node number 54829: 11 observations
+  mean=4.363636, MSE=0.4132231 
+
+Node number 57238: 19 observations
+  mean=5.315789, MSE=1.163435 
+
+Node number 57239: 153 observations,    complexity param=0.0001478928
+  mean=5.72549, MSE=0.9181084 
+  left son=114478 (102 obs) right son=114479 (51 obs)
+  Primary splits:
+      Edu     < 4.5 to the left,    improve=0.007796531, (1 missing)
+      sex     splits as  RL,        improve=0.006421769, (0 missing)
+      Income  < 8.5 to the right,   improve=0.004588729, (14 missing)
+      Persons < 2.5 to the right,   improve=0.001787199, (2 missing)
+      Occup   splits as  L---R----, improve=0.001453337, (0 missing)
+  Surrogate splits:
+      sex splits as  RL, agree=0.697, adj=0.098, (1 split)
+
+Node number 114478: 102 observations,    complexity param=0.0001046662
+  mean=5.666667, MSE=0.8888889 
+  left son=228956 (78 obs) right son=228957 (24 obs)
+  Primary splits:
+      Income  < 6.5 to the right,   improve=0.0312945600, (12 missing)
+      Edu     < 3.5 to the right,   improve=0.0297764800, (1 missing)
+      Persons < 2.5 to the right,   improve=0.0115783500, (1 missing)
+      sex     splits as  RL,        improve=0.0019054880, (0 missing)
+      Occup   splits as  R---L----, improve=0.0004734848, (0 missing)
+  Surrogate splits:
+      Edu < 2.5 to the right, agree=0.756, adj=0.083, (12 split)
+
+Node number 114479: 51 observations,    complexity param=0.0001478928
+  mean=5.843137, MSE=0.9557862 
+  left son=228958 (16 obs) right son=228959 (35 obs)
+  Primary splits:
+      Income < 7.5 to the left,    improve=0.1237181000, (2 missing)
+      Occup  splits as  L---R----, improve=0.0581255000, (0 missing)
+      sex    splits as  RL,        improve=0.0059434370, (0 missing)
+      Edu    < 5.5 to the left,    improve=0.0003335292, (0 missing)
+
+Node number 228956: 78 observations,    complexity param=0.0001046662
+  mean=5.589744, MSE=0.8573307 
+  left son=457912 (53 obs) right son=457913 (25 obs)
+  Primary splits:
+      Edu     < 3.5 to the right,   improve=0.036162060, (1 missing)
+      Persons < 2.5 to the right,   improve=0.022830190, (1 missing)
+      Occup   splits as  R---L----, improve=0.012468540, (0 missing)
+      Income  < 8.5 to the right,   improve=0.008097156, (12 missing)
+      sex     splits as  RL,        improve=0.001067851, (0 missing)
+  Surrogate splits:
+      TypeHome splits as  L--RL, agree=0.714, adj=0.12, (1 split)
+      DualInc  splits as  R-L,   agree=0.688, adj=0.04, (0 split)
+
+Node number 228957: 24 observations
+  mean=5.916667, MSE=0.9097222 
+
+Node number 228958: 16 observations
+  mean=5.3125, MSE=1.589844 
+
+Node number 228959: 35 observations
+  mean=6.085714, MSE=0.4783673 
+
+Node number 457912: 53 observations,    complexity param=0.0001046662
+  mean=5.471698, MSE=0.8907084 
+  left son=915824 (17 obs) right son=915825 (36 obs)
+  Primary splits:
+      Income  < 8.5 to the right,   improve=0.057449620, (7 missing)
+      Occup   splits as  R---L----, improve=0.052027920, (0 missing)
+      Persons < 2.5 to the right,   improve=0.019273880, (0 missing)
+      sex     splits as  RL,        improve=0.004095098, (0 missing)
+
+Node number 457913: 25 observations
+  mean=5.84, MSE=0.6944 
+
+Node number 915824: 17 observations
+  mean=5.117647, MSE=0.4567474 
+
+Node number 915825: 36 observations,    complexity param=0.0001046662
+  mean=5.638889, MSE=1.008488 
+  left son=1831650 (22 obs) right son=1831651 (14 obs)
+  Primary splits:
+      Occup splits as  R---L----, improve=0.0822842, (0 missing)
+  Surrogate splits:
+      sex splits as  RL, agree=0.861, adj=0.643, (0 split)
+
+Node number 1831650: 22 observations
+  mean=5.409091, MSE=1.150826 
+
+Node number 1831651: 14 observations
+  mean=6, MSE=0.5714286 
+
