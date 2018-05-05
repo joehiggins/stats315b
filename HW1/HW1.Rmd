@@ -53,7 +53,7 @@ rpart.plot(fit)
 
 (a) Were surrogate splits used in the construction of the optimal tree you obtained? What does a surrogate split mean? Give an example of a surrogate split from your optimal decision tree. Which variable is the split on? Which variable(s) is the surrogate split on?
 
-Yes there were surrogate splits used. You can see them by calling $\texttt{summary()}$ on the model. Surrogates are variables used to classify data points that have missing values for a given primary split feature. They are used to predict the primary split feature. One example in our data set is that the top surrogate for a split on Householder status is whether or not the example has no people under 18 in the household. Intuitively, this makes sense. The surrrogate of the surrogate is Education.
+Yes there were surrogate splits used. You can see them by calling $\texttt{summary()}$ on the model. Surrogates are variables used to classify data points that have missing values for a given primary split feature. They are used to predict the primary split feature. One example in our data set is that the top surrogate for a split on Householder status is whether or not the example has no people under 18 in the household. Intuitively, this makes sense.  In our dataset, there were 92 observations with missing values for "HouseStat", and all 92 used the Under18 feature as a surrogate.
 
   $\texttt{Primary splits:}\\$
       $\texttt{HouseStat splits as  RRL,       improve=0.2932322, (92 missing)}\\$
@@ -92,8 +92,9 @@ Result: 2.8, on the upper end of 18 through 24. I'm 29. Gotcha tree!
 #Question 2
 ##Multi-Class Classification: Marketing Data. 
 
-The data set housetype_stats315B.csv comes from the same marketing database that was used for problem 1. Refer to the documentation housetype_stats315B.txt for attributes names and order. From the original pool of 9409 questionnaires, those with non-missing answers to the question “What is your type of home?” were selected. There are 9013 such questionnaires.
-The goal in this problem is to construct a classification tree to predict the type of home from the other 13 demographics attributes. Give an estimate of the misclassification error of an optimal tree. Plot the optimal tree if possible (otherwise plot a smaller tree) and interpret the results.
+###The data set housetype_stats315B.csv comes from the same marketing database that was used for problem 1. Refer to the documentation housetype_stats315B.txt for attributes names and order. From the original pool of 9409 questionnaires, those with non-missing answers to the question “What is your type of home?” were selected. There are 9013 such questionnaires.
+
+###The goal in this problem is to construct a classification tree to predict the type of home from the other 13 demographics attributes. Give an estimate of the misclassification error of an optimal tree. Plot the optimal tree if possible (otherwise plot a smaller tree) and interpret the results.
 
 The misclassification rate is approximately 26.1%.
 
@@ -349,7 +350,7 @@ Let $y^*$ be the outcome of the one observation that is changing sides. Without 
 $$
 \begin{aligned}
 Improvement &= S_m - S_{lr} - (S_m - S_{lr\_new}) \\
-&=  \frac{n_ln_r}{n}(\bar{y}_l - \bar{y}_r)^2 -  \frac{(n_l - 1) * (n_r + 1)}{n}\big(\frac{n_l(\bar{y}_l - y^*)}{n_l - 1} - \frac{n_r\bar{y}_r + y^*}{n_r + 1}\big)^2
+&=  \frac{n_ln_r}{n}(\bar{y}_l - \bar{y}_r)^2 -  \frac{(n_l - 1) * (n_r + 1)}{n}\big(\frac{n_l\bar{y}_l - y^*}{n_l - 1} - \frac{n_r\bar{y}_r + y^*}{n_r + 1}\big)^2
 \end{aligned}
 $$
 
