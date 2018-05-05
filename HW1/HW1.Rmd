@@ -22,9 +22,9 @@ library(rpart.plot)
 
   The first primary split of the tree to predict age was on Marital Status. It split people into two groups of roughly equal size (49% and 51% of the total) comprised of mostly younger folks in one group, and mostly older in the other. 
   
-  The younger side of the first primary split belonged to set {2. Living together, not married 5. Single, never married}. Intuitively, this makes sense and gels with our outside knowledge: people who have never been married tend to be younger and vice versa. Within the younger group of the primary split, the next split was on householder status, specifically whether or not a person was in the set {3. Live with Parents/Family}. Those who lived with their parents were younger, and those who owned or rented were older within this younger primary split. Those who lived with their parents and had yet to graduate high school were the youngest 10% of our tree. There is also a small terminal node of (1% of the total) the oldest subset of those never married: these people were never married $\rightarrow$ don't live with their parents $\rightarrow$ are retired.
+  The younger side of the first primary split belonged to set {2. Living together, not married 5. Single, never married}. Intuitively, this makes sense and gels with our outside knowledge: people who have never been married tend to be younger and vice versa. Within the younger group of the primary split, the next split was on householder status, specifically whether or not a person was in the set {3. Live with Parents/Family}. Those who lived with their parents were younger, and those who owned or rented were older within this younger primary split. Those who lived with their parents and had yet to graduate high school were the youngest 10% of our tree. The next split (1% of the total) represents the oldest subset of those never married: these people were never married $\rightarrow$ don't live with their parents $\rightarrow$ are retired.
   
-  The older side of the first primary split belonged to the set {1. Married, 3. Divorced or separated, 4. Widowed}. The next split within the older group defines oldest leaf in our tree, those who are retired. For those that are in the older primary split node but not retired, there are two other variables that further predict our age groups: home ownership, and whether or not there is at least one person in the house under 18.
+  The older side of the first primary split belonged to the set {1. Married, 3. Divorced or separated, 4. Widowed}. The next split within the older group defines oldest leaf in our tree, those who are retired. For those that are in the older primary split node but not retired, the most important variables that further predict our age groups are home ownership and whether or not there is at least one person in the house under 18.
   
   Overall, the splits gel with common sense understanding of age: marriage, home ownership, education level and retirement status all intuitively are good indicators of a person's age.  Our best fit tree had 42 splits, but for visualization purposes, we are plotting one with just 7.
   
@@ -47,7 +47,12 @@ factor_columns <- c(
   'Lang'
 )
 age_data[factor_columns] <- lapply(age_data[factor_columns], as.factor)
-fit <- rpart(age ~ ., data = age_data, method = "anova", control=rpart.control(minbucket = 10, xval = 10, maxsurrogate = 5, usesurrogate = 2, cp=0.0001))
+fit <- rpart(age ~ ., data = age_data, method = "anova", 
+             control=rpart.control(minbucket = 10, 
+                                   xval = 10, 
+                                   maxsurrogate = 5, 
+                                   usesurrogate = 2, 
+                                   cp=0.0001))
 
 # Find the minimum cross-validation error + one SD
 min_error_window <- min(fit$cptable[,"xerror"] + fit$cptable[,"xstd"])
@@ -134,7 +139,11 @@ factor_columns <- c(
 )
 
 house_data[factor_columns] <- lapply(house_data[factor_columns], as.factor)
-fit <- rpart(TypeHome ~ ., data = house_data, method = 'class', control=rpart.control(minbucket = 10, xval = 10, maxsurrogate = 5, usesurrogate = 2, cp=0.0001))
+fit <- rpart(TypeHome ~ ., data = house_data, method = 'class', 
+             control=rpart.control(minbucket = 10, 
+                      xval = 10, 
+                      maxsurrogate = 5, 
+                      usesurrogate = 2, cp=0.0001))
 
 # Find the minimum cross-validation error + one SD
 min_error_window <- min(fit$cptable[,"xerror"] + fit$cptable[,"xstd"])
