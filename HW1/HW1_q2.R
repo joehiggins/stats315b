@@ -25,13 +25,18 @@ factor_columns <- c(
   'Lang'
 )
 house_data[factor_columns] <- lapply(house_data[factor_columns], as.factor)
-fit <- rpart(TypeHome ~ ., data = house_data, method = 'class')
-rpart.plot(fit)
+fit <- rpart(TypeHome ~ ., data = house_data, method = 'class', control=rpart.control(minbucket = 10, xval = 10, maxsurrogate = 5, usesurrogate = 2, cp=0.0001))
 
-#say something here
+# Find the minimum cross-validation error + one SD
+min_error_window <- min(fit$cptable[,"xerror"] + fit$cptable[,"xstd"])
+# Find the simplest model with xerror within the min_error_window
+best_cp <- first(fit$cptable[which(fit$cptable[,"xerror"] < min_error_window),"CP"])
+best_fit <- prune(fit, cp = best_cp)
+
+rpart.plot(best_fit)
 
 #misclassification
-y_hat <- predict(fit, house_data)
+y_hat <- predict(best_fit, house_data)
 y_hat_max_p <- apply(y_hat,1,which.max)
 y <- house_data$TypeHome
 correct <- y == y_hat_max_p
