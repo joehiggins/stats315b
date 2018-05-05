@@ -102,7 +102,7 @@ The first primary split of the tree divides our population into 2 groups: those 
 
 The other half of the first primary split, renters, has two other variables it splits on to predict houses vs. apartments: having fewer than 3 people living in a household was indicative of apartments. If there were more than 3 people in the household, then relatively lower income was indicative of an apartment.
 
-The terminal nodes in this example can only classify 2 out of the 5 potential classes: houses (class 1) and apartments (class 3). These two classes make up the vast majority of the examples in the data (see barplot), and there were no terminal nodes that had a majority vote for any of the 3 smallest classes.
+Across all future observations, terminal nodes in our tree will only predict 2 out of the 5 potential classes: houses (class 1) and apartments (class 3). Given our training data, this makes sense; these two classes make up the vast majority of the examples in the data (see barplot).
 
 ```{r results="hold"}
 rm(list = ls())
@@ -139,6 +139,7 @@ pct_correct <- sum(correct)/length(correct)
 
 ```{r}
 barplot(prop.table(table(house_data['TypeHome'])))
+title(main="Num observations by Home Type", xlab="class", ylab="Num observations")
 ```
 
 \pagebreak
