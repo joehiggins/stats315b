@@ -346,12 +346,12 @@ $$
 
 #Question 13
 ###Derive an updating formula for calculating the change in the improvement in prediction risk as the result of a split when the split is modified by one observation changing sides.
-Suppose that we have an existing split of $R_m$ into $R_l$ and $R_r$, with $n$, $n_l$, $n_r$ as well as $\bar{y}_l$ and $\bar{y}_r$ defined as in the question 12. \\
-Let $y^*$ be the outcome of the one observation that is changing sides. Without loss of generality, we can assume that the observation belonged to $R_l$, and after the new switch will belong to $R_n$.  Then the improvement from this swap can be written as:
+Suppose that we have an existing split of $R_m$ into $R_l$ and $R_r$, with $n$, $n_l$, $n_r$ as well as $\bar{y}_l$ and $\bar{y}_r$ defined as in the question 12.  
+Let $y^*$ be the outcome of the one observation that is changing sides. Without loss of generality, we can assume that the observation belonged to $R_l$, and after the new switch will belong to $R_r$.  Then the improvement from this swap can be written as:
 $$
 \begin{aligned}
 Improvement &= S_m - S_{lr} - (S_m - S_{lr\_new}) \\
-&=  \frac{n_ln_r}{n}(\bar{y}_l - \bar{y}_r)^2 -  \frac{(n_l - 1) * (n_r + 1)}{n}\big(\frac{n_l\bar{y}_l - y^*}{n_l - 1} - \frac{n_r\bar{y}_r + y^*}{n_r + 1}\big)^2
+&=  \frac{n_ln_r}{n}(\bar{y}_l - \bar{y}_r)^2 -  \frac{(n_l - 1)(n_r + 1)}{n}\big(\frac{n_l\bar{y}_l - y^*}{n_l - 1} - \frac{n_r\bar{y}_r + y^*}{n_r + 1}\big)^2
 \end{aligned}
 $$
 
