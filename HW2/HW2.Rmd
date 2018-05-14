@@ -11,6 +11,8 @@ library(ggplot2)
 library(dplyr)
 library(knitr)
 library(gbm)
+library(rpart)
+library(rpart.plot)
 ```
 
 # Question 1
@@ -255,6 +257,136 @@ factor_columns <- c(
 )
 age_data[factor_columns] <- lapply(age_data[factor_columns], as.factor)
 
+#fit a GBM model
+set.seed(444) # random for bag.fraction
+model_gbm <- gbm(age~., data=age_data, train.fraction=1,
+            interaction.depth=4, shrinkage=.05,
+            n.trees=2500, bag.fraction=0.5, cv.folds=5,
+            distribution="gaussian", verbose=T)
+
+#fit a tree
+model_tree <- rpart(age ~ ., data = age_data, method = "anova", 
+                    control=rpart.control(minbucket = 10, 
+                                          xval = 10, 
+                                          maxsurrogate = 5, 
+                                          usesurrogate = 2, 
+                                          cp=0.0001))
+
+# Find the minimum cross-validation error + one SD
+min_error_window <- min(model_tree$cptable[,"xerror"] + model_tree$cptable[,"xstd"])
+
+# Find the simplest model with xerror within the min_error_window
+best_cp <- first(model_tree$cptable[which(model_tree$cptable[,"xerror"] < min_error_window),"CP"])
+best_single_tree <- prune(model_tree, cp = best_cp)
+
+#Make predictions
+y_hat_gbm <- predict(model_gbm, age_data, type="response", n.trees=300)
+y_hat_tree <- predict(best_single_tree, age_data)
+
+#Compare errors
+y <- age_data$age
+MSE_gbm <- sum((y_hat_gbm - y)^2)/length(y)
+MSE_tree <- sum((y_hat_tree - y)^2)/length(y)
+
+MSE_gbm
+MSE_tree
+
 ```
 
 ### (b) Identify the most important variables.
+
+```{r}
+top4 <-summary(model_gbm,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
+top4
+```
+
+# Question 9
+### Multiclass classification: marketing data. The data set occup_stats315B.csv comes from the same marketing database used in Homework 1. The description of the attributes can be found in occup_stats315B.txt. The goal in this problem is to fit a gbm model to predict the type of occupation from the 13 other demographic variables.
+
+### (a) Report the test set misclassification error for gbm on the data set, and also the misclassification error for each class.
+
+```{r}
+rm(list = ls())
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
+
+#Read and type data
+labels <-c(
+  "Occup", 
+  "TypeHome",
+  "sex",
+  "MarStat",
+  "age",
+  "Edu",
+  "Income",
+  "LiveBA",
+  "DualInc",
+  "Persons",
+  "Under18",
+  "HouseStat",
+  "Ethnic",
+  "Lang"
+)
+factor_columns <- c(
+  'TypeHome',
+  'sex',
+  'MarStat',
+  'Occup',
+  'LiveBA',
+  'DualInc',
+  'HouseStat',
+  'Ethnic',
+  'Lang'
+)
+
+occup_labels <- c(
+  "Professional/Managerial",
+  "Sales Worker",
+  "Factory Worker/Laborer/Driver",
+  "Clerical/Service Worker",
+  "Homemaker",
+  "Student, HS or College",
+  "Military",
+  "Retired",
+  "Unemployed"
+)
+
+#load the data
+house_data <- read.csv('occup_stats315B.csv', header=FALSE, sep=",")
+colnames(house_data) <- labels
+house_data[factor_columns] <- lapply(house_data[factor_columns], as.factor)
+
+#fit GBM model for occupation
+set.seed(444) # random for bag.fraction
+model <- gbm(Occup ~ ., data=house_data, train.fraction=1,
+            interaction.depth=4, shrinkage=.05,
+            n.trees=2500, bag.fraction=0.5, cv.folds=5,
+            distribution="multinomial", verbose=T)
+
+#determine misclassification rate
+y_hat <- predict(model, house_data, type="response", n.trees=300)
+y_hat_max_p <- apply(y_hat,1,which.max)
+y <- house_data$Occup
+correct <- y == y_hat_max_p
+
+#overall
+pct_correct <- sum(correct)/length(correct)
+1-pct_correct
+
+for(occupation in levels(house_data$Occup)){
+  occupation_i <- strtoi(occupation)
+  print(occup_labels[occupation_i])
+  correct_in_class <- correct[y==occupation_i]
+  pct_correct_in_class <- sum(correct_in_class)/length(correct_in_class)
+  print(1-pct_correct_in_class)
+}
+
+```
+
+
+### (b) Identify the most important variables.
+
+```{r}
+top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
+top4
+```
