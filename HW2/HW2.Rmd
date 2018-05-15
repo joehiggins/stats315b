@@ -71,7 +71,13 @@ $$
 Therefore, $argmax_{1 \leq j \leq J}\ |E[yx_j]| = argmin_{1 \leq j \leq J}\  min_{\rho}E[y - \rho x_j]^2$, so the base learner most correlated with the generalized residual is the one that best predicts it with squared—error loss. $\blacksquare$
 
 # Question 5
+Let $\mathbf{z}_l = \{z_1, ..., z_l\}$ be a subset of the predictor variables $\mathbf{x} = \{x_1, ..., x_n\}$ and $\mathbf{z}_{\backslash l}$ the complement subset, i.e. $\mathbf{z}_l \cup \mathbf{z}_{\backslash l} = \mathbf{x}$. Show that if a function $F(\mathbf{x})$ is additive in $\mathbf{z}_l$ and $\mathbf{z}_{\backslash l}$, i.e.
+$$
+F(\mathbf{x}) = F_l(\mathbf{z}_l) + F_{\backslash l}(\mathbf{z}_{\backslash l})
+$$
+then the partial dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ is $F_l(\mathbf{z}_l)$ up to an additive constant. This is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ accounting for the effect of the other variables $\mathbf{z}_{\backslash l}$. Show that this need not be the case for $E[F(\mathbf{x})\ |\ \mathbf{z}_l]$ which is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ ignoring the other variables $\mathbf{z}_{\backslash l}$. Under what conditions would the two be the same?
 
+# Question 6
 ### Binary classification: Spam Email. The data set for this problem is spam_stats315B.csv, with documentation files spam_stats315B_info.txt and spam_stats315B_names,txt. The data set is a collection of 4601 emails of which 1813 were considered spam, i.e. unsolicited commercial email. The data set consists of 58 attributes of which 57 are continuous predictors and one is a class label that indicates whether the email was considered spam (1) or not (0). Among the 57 predictor attributes are: percentage of the word “free” in the email, percentage of exclamation marks in the email, etc. See file spam_stats315B_names.txt for the full list of attributes. The goal is, of course, to predict whether or not an email is “spam”. This data set is used for illustration in the tutorial Boosting with R Programming. The data set spam_stats315B_train.csv represents a subsample of these emails randomly selected from spam_stats315B.csv to be used for training. The file spam_stats315B_test.csv contains the remaining emails to be used for evaluating results.
 
 ### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
