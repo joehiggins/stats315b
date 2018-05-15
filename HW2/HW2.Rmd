@@ -31,6 +31,14 @@ Another way to inject randomness into the process and de-correlate the trees is 
 # Question 2
 ### Why is it necessary to use regularization in linear regression when the number of predictor variables is greater than the number of observations in the training sample? Explain how regularization helps in this case. Are there other situations where regularization might help? What is the potential disadvantage of introducing regularization? Why is sparsity a reasonable assumption in the boosting context. Is it always? If not, why not?
 
+If the number of predictor variables $n$ is greater than the number of observations in the training sample $N$, then there is an infinite number of solutions that will satisfy the linear regression problem -- and there will be very high variance in the solution derived from that training sample.  Regularization helps in this situation because it decreases the size of the function class, reducing variance.  Regularization will help in any situation where we have a reason to favor sparse solutions by both encouraging sparsity and preventing high variance.
+
+A potential disadvantage of regularization is that it could increase bias - especially if you have chosen a penalty that doesn't align with the best answer for the problem.
+
+In the boosting context, each predictor is a possible tree that could be built on the training data from the set of all possible trees.  It is reasonable to assume that most trees - out of the set of all possible trees (All combinations of variables and all possible splits) - will do very poorly on the overall prediction problem.  So we would want most of our coefficients in the linear regression to be 0.
+
+Sparsity is not always a necessary assumption in linear regression, especially if your feature space is small.  For example, if we were predicting house prices from zip code and square footage, we would expect both variables to be important.
+
 # Question 3
 ### Show that the convex members of the power family of penalties, except for the lasso, have the property that solutions to $\hat{a}(\lambda) = argmin_a \hat{R}(a) + \lambda P_{\gamma}(a)$ have nonzero values for all coefficients at each path point indexed by $\lambda$. By contrast the convex members of the elastic net (except ridge) can produce solutions with many zero valued coefficients at various path points.
 
