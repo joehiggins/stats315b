@@ -25,7 +25,50 @@ library(rpart.plot)
 ### Show that the convex members of the power family of penalties, except for the lasso, have the property that solutions to $\hat{a}(\lambda) = argmin_a \hat{R}(a) + \lambda P_{\gamma}(a)$ have nonzero values for all coefficients at each path point indexed by $\lambda$. By contrast the convex members of the elastic net (except ridge) can produce solutions with many zero valued coefficients at various path points.
 
 # Question 4
-### Show that the variable $x_{j*}$ that has the maximum absolute correlation with $j^{*} = argmax_{1 \leq j \leq J} |E(y x_j )|$ is the same as the one that best predicts y using squared—error loss. This shows that the base learner most correlated with the generalized residual is the one that best predicts it with squared—error loss.
+### Show that the variable $x_{j^{*}}$ that has the maximum absolute correlation with $j^{*} = argmax_{1 \leq j \leq J} |E(y x_j )|$ is the same as the one that best predicts y using squared—error loss $j^{*} = argmin_{1 \leq j \leq J}\  min_{\rho}E[y - \rho x_j]^2$. This shows that the base learner most correlated with the generalized residual is the one that best predicts it with squared—error loss.  
+  
+Let $f(\rho,\  x_j, \ y) = E[y - \rho x_j]^2$. We first find $min_{\rho}\ f(\rho,\ x_j, \ y)$ by taking the partial derivative of $f$ with respect to $\rho$ and setting it equal to 0:
+
+$$
+\begin{aligned}
+f(\rho,\  x_j, \ y) &= E[y - \rho x_j]^2 \\
+&= E[y^2 -2\rho yx_j + \rho^2x_j^2] \\
+&= E[y^2] - 2\rho E[yx_j] + \rho^2E[x_j^2]  \\
+&= E[y^2] - 2\rho E[yx_j] + \rho^2 \qquad \text{since } E[x_j^2] = 1\\
+\\
+\implies \frac{\partial f}{\partial \rho} &= -2E[yx_j]+2\rho \\
+\implies 0 &= -2E[yx_j]+2\rho^* \\
+\implies \rho^* &= E[yx_j] \\
+\\
+\implies min_{\rho}\ f(\rho,\ x_j, \ y) &= f(\rho^*,\ x_j, \ y) \\
+&= E[y - \rho^*x_j]^2 \\
+&= E[y^2] - 2\rho^* E[yx_j] + \rho^{*^2} \\
+&= E[y^2] - 2E[yx_j]E[yx_j] + (E[yx_j])^2 \\
+&= E[y^2] - (E[yx_j])^2 \\
+\end{aligned}
+$$
+Note that this is a unique minimum value because $f$ is strictly convex in $\rho$. We know this because $\frac{\partial^2 f}{\partial \rho^2} > 0$:
+
+$$
+\begin{aligned}
+\frac{\partial f}{\partial \rho} &= -2E[yx_j]+2\rho \\
+\implies \frac{\partial^2 f}{\partial \rho^2} &= 2 \\
+&> 0
+\end{aligned}
+$$
+Then:
+
+$$
+\begin{aligned}
+argmin_{1 \leq j \leq J}\  min_{\rho}E[y - \rho x_j]^2 &= argmin_{1 \leq j \leq J}\ (E[y^2] - (E[yx_j])^2) \\
+&= argmin_{1 \leq j \leq J}\ -(E[yx_j])^2 \\
+&= argmax_{1 \leq j \leq J}\ (E[yx_j])^2 \\
+&= argmax_{1 \leq j \leq J}\ |E[yx_j]|^2 \\
+&= argmax_{1 \leq j \leq J}\ |E[yx_j]|\qquad \text{since } f(x) = \sqrt{x} \text{ is monotonically increasing for } x>0
+\end{aligned}
+$$
+
+Therefore, $argmax_{1 \leq j \leq J}\ |E[yx_j]| = argmin_{1 \leq j \leq J}\  min_{\rho}E[y - \rho x_j]^2$, so the base learner most correlated with the generalized residual is the one that best predicts it with squared—error loss. $\blacksquare$
 
 # Question 5
 
@@ -33,7 +76,7 @@ library(rpart.plot)
 
 ### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
 
-```{r}
+```{r, eval = FALSE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -98,7 +141,7 @@ pct_nonspam_correct <- sum(nonspam_correct)/length(nonspam_correct)
 
 ### (b) Your classifier in part (a) can be used as a spam filter. One of the possible disadvantages of such a spam filter is that it might filter out too many good (non-spam) emails. Therefore, a better spam filter might be the one that penalizes misclassifying non-spam emails more heavily than the spam ones. Suppose that you want to build a spam filter that “throws out” no more that 0.3% of the good (non-spam) emails. You have to find and use a cost matrix that penalizes misclassifying “good” emails as“spam” more than misclassifying “spam” emails as “good” by the method of trial and error. Once you have constructed your final spam filter with the property described above, answer the following questions:
 
-```{r}
+```{r, eval = FALSE}
 w <- x$type
 w[w == 1] <- 9
 w[w == 0] <- 1
@@ -129,7 +172,7 @@ pct_nonspam_correct_train <- sum(nonspam_correct_train)/length(nonspam_correct_t
 ```
 ### (i) What is the overall misclassification error of your final filter and what is the percentage of good emails and spam emails that were misclassified respectively?
 
-```{r}
+```{r, eval = FALSE}
 #misclassification rate on training set
 y_hat_test <- predict(gbm1, test, type="response", n.trees=300)
 y_hat_test[y_hat_test > 0.5] <- 1
@@ -158,13 +201,13 @@ pct_nonspam_correct_test <- sum(nonspam_correct_test)/length(nonspam_correct_tes
 ```
 
 ### (ii) What are the important variables in discriminating good emails from spam for your spam filter?
-```{r}
+```{r, eval = FALSE}
 top5 <-summary(gbm1,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:5]
 ```
 
 ###(iii) Using the interpreting tools provided by gbm, describe the dependence of the response on the most important attributes.
 
-```{r}
+```{r, eval = FALSE}
 best.iter <- gbm.perf(gbm1,method="OOB")#Best iteration by OOB
 top5 <- gsub("`","",top5)
 top5_indexes <- match(top5, rflabs)
@@ -177,7 +220,7 @@ for(i in top5_indexes){
 ### Regression: California Housing. The data set calif_stats315B.csv consists of aggregated data from 20,640 California census blocks (from the 1990 census). The goal is to predict the median house value in each neighborhood from the others described in calif_stats315B.txt. Fit a gbm model to the data and write a short report that should include at least
 
 ### (a) The prediction accuracy of gbm on the data set.
-```{r}
+```{r, eval = FALSE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -213,12 +256,12 @@ MSE <- sum((y_hat - y)^2)/length(y)
 
 ### (b) Identification of the most important variables.
 
-```{r}
+```{r, eval = FALSE}
 top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
 ```
 ### (c) Comments on the dependence of the response on the most important variables (you may want to consider partial dependence plots (plot) on single and pairs of variables, etc.).
 
-```{r}
+```{r, eval = FALSE}
 best.iter <- gbm.perf(model,method="OOB")#Best iteration by OOB
 top4 <- gsub("`","",top4)
 top4_indexes <- match(top4, labels) - 1 #-1 because first label is response var
@@ -238,7 +281,7 @@ plot(model,c(8,7),best.iter)
 
 ### (a) Fit a gbm model for predicting age form the other demographic attributes and compare the accuracy with the accuracy of your best single tree from Homework 1.
 
-```{r}
+```{r, eval = FALSE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -295,7 +338,7 @@ MSE_tree
 
 ### (b) Identify the most important variables.
 
-```{r}
+```{r, eval = FALSE}
 top4 <-summary(model_gbm,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
 top4
 ```
@@ -305,7 +348,7 @@ top4
 
 ### (a) Report the test set misclassification error for gbm on the data set, and also the misclassification error for each class.
 
-```{r}
+```{r, eval = FALSE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -386,7 +429,7 @@ for(occupation in levels(house_data$Occup)){
 
 ### (b) Identify the most important variables.
 
-```{r}
+```{r, eval = FALSE}
 top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
 top4
 ```
