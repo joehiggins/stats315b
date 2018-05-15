@@ -18,6 +18,16 @@ library(rpart.plot)
 # Question 1
 ### Random forests predict with an ensemble of bagged trees each trained on a bootstrap sample randomly drawn from the original training data. Additional random variation among the trees is induced by choosing the variable for each split from a small randomly chosen subset of all of the predictor variables when building each tree. What are the advantages and disadvantages of this random variable selection strategy? How can one introduce additional tree variation in the forest without randomly selecting subsets of variables?
 
+The advantages of choosing a random subset of predictor variables are:
+\begin{itemize}
+\item Because we are no longer doing an exhaustive search over all predictor variables, each split requires less processing power during the training process.  Given modern computer architecture, this advantage matters less since each tree in the ensemble is independent and can be computed simultaneously in a different parallel process.
+\item The random variation introduced by choosing the variable for each split from a randomly chosen subset de-correlates the resulting trees in the forest, forcing them to be different from each other.  This has the effect of decreasing the variance of the ensemble's estimate, since the variance of the mean of a collection random variables is directly related to the correlation of those variables.  Decreasing the correlation of the trees therefore decreases the variance of the forest.
+
+\end{itemize}
+The disadvantage of this approach is that it can result in trees with very weak predictive power.  Suppose that none of the best predictors were available for a given tree's first several splits -- this would result in a highly sub-optimal tree.
+
+Another way to inject randomness into the process and de-correlate the trees is to decrease the size of the bootstrapped sample of the training data.  Each individual tree is now more likely to overfit the smaller sample, increasing tree variation within the forest.
+
 # Question 2
 ### Why is it necessary to use regularization in linear regression when the number of predictor variables is greater than the number of observations in the training sample? Explain how regularization helps in this case. Are there other situations where regularization might help? What is the potential disadvantage of introducing regularization? Why is sparsity a reasonable assumption in the boosting context. Is it always? If not, why not?
 
