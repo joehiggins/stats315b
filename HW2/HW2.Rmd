@@ -1,7 +1,7 @@
 ---
 title: "Stats 315B: Homework 1"
 author: "Joe Higgins, Austin Wang, Jessica Wetstone"
-date: "Due 5/19/2018"
+date: "Due 5/20/2018"
 output: pdf_document
 ---
 
@@ -100,7 +100,7 @@ then the partial dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ is $F_l(\mathbf
 
 ### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
 
-```{r, eval = FALSE}
+```{r, eval = TRUE, results="hold"}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -122,6 +122,11 @@ test <- read.csv(file="spam_stats315B_test.csv", header=FALSE, sep=",")
 colnames(train)<-rflabs
 colnames(test)<-rflabs
 
+#set labels to avoid confusion
+spam <- 1
+nonspam <- 0
+threshold = 0.5
+
 #randomize order of data
 set.seed(131)
 x <- train[sample(nrow(train)),]
@@ -131,120 +136,135 @@ set.seed(444) # random for bag.fraction
 gbm0 <- gbm(type~., data=x, train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
-            distribution="bernoulli", verbose=T)
+            distribution="bernoulli", verbose=F)
 
-#estimate of misclassification rate
-y_hat_train <- predict(gbm0, x, type="response", n.trees=300)
-y_hat_train[y_hat_train > 0.5] <- 1
-y_hat_train[y_hat_train <= 0.5] <- 0
-y <- x$type
-correct <- y == y_hat_train
-pct_correct <- sum(correct)/length(correct)
+bestTreeForPrediction = gbm.perf(gbm0)
+
+#Training misclassification rate
+y_hat_train <- predict(gbm0, x, type="response", n.trees=bestTreeForPrediction)
+y_hat_train[y_hat_train > threshold] <- spam
+y_hat_train[y_hat_train <= threshold] <- nonspam
+y_train <- x$type
+correct_train <- y_train == y_hat_train
+pct_correct_train <- sum(correct_train)/length(correct_train)
 
 #What is your estimate of the misclassification rate? 
-1-pct_correct
+print("Training overall misclassification rate:")
+1-pct_correct_train
 
 #misclassification rate test
-y_hat_test <- predict(gbm0, test, type="response", n.trees=300)
-y_hat_test[y_hat_test > 0.5] <- 1
-y_hat_test[y_hat_test <= 0.5] <- 0
-y <- test$type
-correct <- y == y_hat_test
+y_hat_test <- predict(gbm0, test, type="response", n.trees=bestTreeForPrediction)
+y_hat_test[y_hat_test > threshold] <- spam
+y_hat_test[y_hat_test <= threshold] <- nonspam
+y_test <- test$type
+correct <- y_test == y_hat_test
+pct_correct_test <- sum(correct)/length(correct)
+
+#Overall
+print("Estimate of overall misclassification rate on test set:")
+1-pct_correct_test
 
 #Of all the spam emails of the test set what percentage was misclassified?
-spam_correct <- correct[y==1]
-pct_spam_correct <- sum(spam_correct)/length(spam_correct)
-1-pct_spam_correct
+spam_correct_test <- correct[y_test==spam]
+pct_spam_correct_test <- sum(spam_correct_test)/length(spam_correct_test)
+print("Test spam misclassification rate:")
+1-pct_spam_correct_test
 
 #Of all the non-spam emails in the test set what percentage was misclassified?
-nonspam_correct <- correct[y==0]
-pct_nonspam_correct <- sum(nonspam_correct)/length(nonspam_correct)
-1-pct_nonspam_correct
+nonspam_correct_test <- correct[y_test==nonspam]
+pct_nonspam_correct_test <- sum(nonspam_correct_test)/length(nonspam_correct_test)
+print("Test nonspam misclassification rate:")
+1-pct_nonspam_correct_test
 
 ```
 
 ### (b) Your classifier in part (a) can be used as a spam filter. One of the possible disadvantages of such a spam filter is that it might filter out too many good (non-spam) emails. Therefore, a better spam filter might be the one that penalizes misclassifying non-spam emails more heavily than the spam ones. Suppose that you want to build a spam filter that “throws out” no more that 0.3% of the good (non-spam) emails. You have to find and use a cost matrix that penalizes misclassifying “good” emails as“spam” more than misclassifying “spam” emails as “good” by the method of trial and error. Once you have constructed your final spam filter with the property described above, answer the following questions:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE, results="hold"}
 w <- x$type
-w[w == 1] <- 9
-w[w == 0] <- 1
+w[x$type == spam] <- 1
+w[x$type == nonspam] <- 2 #100
 
 gbm1 <- gbm(type~., data=x , train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
-            distribution="bernoulli", verbose=T,
+            distribution="bernoulli", verbose=F,
             weights = w)
 
-#misclassification rate on training set
-y_hat_train <- predict(gbm1, x, type="response", n.trees=300)
-y_hat_train[y_hat_train > 0.5] <- 1
-y_hat_train[y_hat_train <= 0.5] <- 0
-y <- x$type
-correct_train <- y == y_hat_train
-
-#Of all the spam emails of the test set what percentage was misclassified?
-spam_correct_train <- correct_train[y==1]
-pct_spam_correct_train <- sum(spam_correct_train)/length(spam_correct_train)
-1-pct_spam_correct_train
-
-#Of all the non-spam emails in the test set what percentage was misclassified?
-nonspam_correct_train <- correct_train[y==0]
-pct_nonspam_correct_train <- sum(nonspam_correct_train)/length(nonspam_correct_train)
-1-pct_nonspam_correct_train
-
+bestTreeForPrediction <- gbm.perf(gbm1, plot.it=FALSE,method="cv")#method={"OOB","test","cv"}
 ```
 ### (i) What is the overall misclassification error of your final filter and what is the percentage of good emails and spam emails that were misclassified respectively?
 
-```{r, eval = FALSE}
+```{r, eval = TRUE, results = "hold"}
 #misclassification rate on training set
-y_hat_test <- predict(gbm1, test, type="response", n.trees=300)
-y_hat_test[y_hat_test > 0.5] <- 1
-y_hat_test[y_hat_test <= 0.5] <- 0
-y <- test$type
-correct_test <- y == y_hat_test
-spam_correct_test <- correct_test[y==1]
-nonspam_correct_test <- correct_test[y==0]
+y_hat_train <- predict(gbm1, x, type="response", n.trees=bestTreeForPrediction)
+y_hat_train[y_hat_train > threshold] <- spam
+y_hat_train[y_hat_train <= threshold] <- nonspam
+y_train <- x$type
+correct_train <- y_train == y_hat_train
+spam_correct_train <- correct_train[y_train==spam]
+nonspam_correct_train <- correct_train[y_train==nonspam]
+
+pct_correct_train <- sum(correct_train)/length(correct_train)
+pct_spam_correct_train <- sum(spam_correct_train)/length(spam_correct_train)
+pct_nonspam_correct_train <- sum(nonspam_correct_train)/length(nonspam_correct_train)
+
+#misclassification rate on test set
+y_hat_test <- predict(gbm1, test, type="response", n.trees=bestTreeForPrediction)
+y_hat_test[y_hat_test > threshold] <- spam
+y_hat_test[y_hat_test <= threshold] <- nonspam
+y_test <- test$type
+correct_test <- y_test == y_hat_test
+spam_correct_test <- correct_test[y_test==spam]
+nonspam_correct_test <- correct_test[y_test==nonspam]
+
+pct_correct_test <- sum(correct_test)/length(correct_test)
+pct_spam_correct_test <- sum(spam_correct_test)/length(spam_correct_test)
+pct_nonspam_correct_test <- sum(nonspam_correct_test)/length(nonspam_correct_test)
 
 #Overall misclassification:
-pct_correct_train <- sum(correct_train)/length(correct_train)
-pct_correct_test <- sum(correct_test)/length(correct_test)
+print("Train/test overall misclassification rate:")
 1-pct_correct_train
 1-pct_correct_test
 
 #Spam misclassification:
-pct_spam_correct_test <- sum(spam_correct_test)/length(spam_correct_test)
+print("Train/test spam misclassification rate:")
 1-pct_spam_correct_train
 1-pct_spam_correct_test
 
 #Nonspam misclassification:
-pct_nonspam_correct_test <- sum(nonspam_correct_test)/length(nonspam_correct_test)
+print("Train/test nonspam misclassification rate:")
 1-pct_nonspam_correct_train
 1-pct_nonspam_correct_test
 
 ```
 
 ### (ii) What are the important variables in discriminating good emails from spam for your spam filter?
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 top5 <-summary(gbm1,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:5]
+top5 <- gsub("`","",top5)
+print(top5)
 ```
 
 ###(iii) Using the interpreting tools provided by gbm, describe the dependence of the response on the most important attributes.
 
-```{r, eval = FALSE}
-best.iter <- gbm.perf(gbm1,method="OOB")#Best iteration by OOB
-top5 <- gsub("`","",top5)
+Partial dependence plots show what the average change in the value of our model's output is when varying a subset of variables. In this case, we are looking at single variables. Looking at the long run dependence, we can understand what the effect of increasing or decreasing that variable's value is on the model's output (holding all other variables constant). This gives us a better understanding of the behavior of otherwise "black box" models.
+
+Looking at the variable with the most dependence, "remove", we can see that as we increase the frequency of the word remove as a proportion of an email's length, it increases the average score of the output of our model. This means that emails with a high frequency of "remove" relative to their length are indicative of spam since spam is the positve class and nonspam is the zero class.
+
+We see opposite behavior in "hp". Since George and his colleagues worked at Hewlett-Packard, emails with "hp" display the opposite effect and the higher we move "hp" in frequency the more likely it is that the email is legitimate and non-spam (according to our model).
+
+
+```{r, eval = TRUE}
 top5_indexes <- match(top5, rflabs)
 for(i in top5_indexes){
-  plot(gbm1,i,best.iter)
+  plot(gbm1,i,bestTreeForPrediction)
 }
 ```
 
 # Question 7
 ### Regression: California Housing. The data set calif_stats315B.csv consists of aggregated data from 20,640 California census blocks (from the 1990 census). The goal is to predict the median house value in each neighborhood from the others described in calif_stats315B.txt. Fit a gbm model to the data and write a short report that should include at least
-
-### (a) The prediction accuracy of gbm on the data set.
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -271,23 +291,45 @@ set.seed(444) # random for bag.fraction
 model <- gbm(house_value~., data=data, train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
-            distribution="gaussian", verbose=T)
+            distribution="gaussian", verbose=F)
 
+bestTreeForPrediction <- gbm.perf(model, plot.it=FALSE,method="cv")#method={"OOB","test","cv"}
+```
+### (a) The prediction accuracy of gbm on the data set.
+
+The MSE of the response variable house_value is $\sim0.15$. Since the response is in units of \$100,000, this means on average the squared error of the median house_value predicted by our model is $\sim0.154 \times \$100,000$, or $\sim \$15,400$
+
+```{r, eval = TRUE}
+#MSE for accuracy
 y <- data$house_value
-y_hat <- predict(model, data, type="response", n.trees=300)
+y_hat <- predict(model, data, type="response", n.trees=bestTreeForPrediction)
 MSE <- sum((y_hat - y)^2)/length(y)
+MSE
 ```
 
 ### (b) Identification of the most important variables.
 
-```{r, eval = FALSE}
+The most important variable for predicting house_value for a particular neighborhood in California is median_income, which intuitively makes sense.
+
+The second-tier of variables in terms of importance had similar levels of importance: average_occupancy, latitude and longitude. 
+
+The 4 variables that all had the similar levels of insignificance in predicting house_value for a given neighborhood: housing_median_age, average_no_rooms, population, average_no_bedrooms.
+
+```{r, eval = TRUE}
 top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
+top4 <- gsub("`","",top4)
+print(top4)
 ```
 ### (c) Comments on the dependence of the response on the most important variables (you may want to consider partial dependence plots (plot) on single and pairs of variables, etc.).
 
-```{r, eval = FALSE}
-best.iter <- gbm.perf(model,method="OOB")#Best iteration by OOB
-top4 <- gsub("`","",top4)
+We can see from the individual dependence plots that as median_income increases holding other variables constant, our model's output for home_value also increases.
+
+The interaction effects between latitude and longitude are enlightening. The border between the pink and blue zones have interior corner points at the Bay Area ($latlng = (38.0,-122.0)$) and Los Angeles ($latlng = (34.0, -118.0)$). It is unsurprising that these major metropolitan areas are correlated with home_value. 
+
+The univariate dependence plots show that home_value tends to decrease as homes get further from the coast. It also shows that home_value tends to decrease as homes get further north (which makes sense since the Bay area is at the $\sim$half way mark of California in terms of latitude). However, there is important nuance in the interaction effects between these two variables as discussed in the paragraph above.
+
+```{r, eval = TRUE}
+best.iter <- gbm.perf(model, plot.it=FALSE, method ='cv')
 top4_indexes <- match(top4, labels) - 1 #-1 because first label is response var
 
 #main effects
@@ -305,7 +347,7 @@ plot(model,c(8,7),best.iter)
 
 ### (a) Fit a gbm model for predicting age form the other demographic attributes and compare the accuracy with the accuracy of your best single tree from Homework 1.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -329,7 +371,7 @@ set.seed(444) # random for bag.fraction
 model_gbm <- gbm(age~., data=age_data, train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
-            distribution="gaussian", verbose=T)
+            distribution="gaussian", verbose=F)
 
 #fit a tree
 model_tree <- rpart(age ~ ., data = age_data, method = "anova", 
@@ -346,8 +388,10 @@ min_error_window <- min(model_tree$cptable[,"xerror"] + model_tree$cptable[,"xst
 best_cp <- first(model_tree$cptable[which(model_tree$cptable[,"xerror"] < min_error_window),"CP"])
 best_single_tree <- prune(model_tree, cp = best_cp)
 
+bestTreeForPrediction <- gbm.perf(model_gbm, method='cv', plot.it=FALSE)#method={"OOB","test","cv"}
+
 #Make predictions
-y_hat_gbm <- predict(model_gbm, age_data, type="response", n.trees=300)
+y_hat_gbm <- predict(model_gbm, age_data, type="response", n.trees=bestTreeForPrediction)
 y_hat_tree <- predict(best_single_tree, age_data)
 
 #Compare errors
@@ -362,17 +406,18 @@ MSE_tree
 
 ### (b) Identify the most important variables.
 
-```{r, eval = FALSE}
+The most important variables were also identified as the most important in our tree from homework 1: MarStat, Occup, HouseStat, and Edu
+
+```{r, eval = TRUE}
 top4 <-summary(model_gbm,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
-top4
+top4 <- gsub("`","",top4)
+print(top4)
 ```
 
 # Question 9
 ### Multiclass classification: marketing data. The data set occup_stats315B.csv comes from the same marketing database used in Homework 1. The description of the attributes can be found in occup_stats315B.txt. The goal in this problem is to fit a gbm model to predict the type of occupation from the 13 other demographic variables.
 
-### (a) Report the test set misclassification error for gbm on the data set, and also the misclassification error for each class.
-
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -428,16 +473,23 @@ set.seed(444) # random for bag.fraction
 model <- gbm(Occup ~ ., data=house_data, train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
-            distribution="multinomial", verbose=T)
+            distribution="multinomial", verbose=F)
+```
+
+### (a) Report the test set misclassification error for gbm on the data set, and also the misclassification error for each class.
+
+```{r, eval = TRUE}
+bestTreeForPrediction <- gbm.perf(model, method='cv')#method={"OOB","test","cv"}
 
 #determine misclassification rate
-y_hat <- predict(model, house_data, type="response", n.trees=300)
+y_hat <- predict(model, house_data, type="response", n.trees=bestTreeForPrediction)
 y_hat_max_p <- apply(y_hat,1,which.max)
 y <- house_data$Occup
 correct <- y == y_hat_max_p
 
 #overall
 pct_correct <- sum(correct)/length(correct)
+print("Overall misclassification rate:")
 1-pct_correct
 
 for(occupation in levels(house_data$Occup)){
@@ -447,13 +499,12 @@ for(occupation in levels(house_data$Occup)){
   pct_correct_in_class <- sum(correct_in_class)/length(correct_in_class)
   print(1-pct_correct_in_class)
 }
-
 ```
-
 
 ### (b) Identify the most important variables.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
-top4
+top4 <- gsub("`","",top4)
+print(top4)
 ```
