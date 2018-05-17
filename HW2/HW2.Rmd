@@ -185,6 +185,7 @@ w <- x$type
 w[x$type == spam] <- 1
 w[x$type == nonspam] <- 2 #100
 
+set.seed(444) # random for bag.fraction
 gbm1 <- gbm(type~., data=x , train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
@@ -246,11 +247,11 @@ top5 <- gsub("`","",top5)
 print(top5)
 ```
 
-###(iii) Using the interpreting tools provided by gbm, describe the dependence of the response on the most important attributes.
+### (iii) Using the interpreting tools provided by gbm, describe the dependence of the response on the most important attributes.
 
-Partial dependence plots show what the average change in the value of our model's output is when varying a subset of variables. In this case, we are looking at single variables. Looking at the long run dependence, we can understand what the effect of increasing or decreasing that variable's value is on the model's output (holding all other variables constant). This gives us a better understanding of the behavior of otherwise "black box" models.
+Partial dependence plots show what the average change in the value of our model's output is when varying a subset of variables. In this case, we are looking at single variables. Looking at the partial dependence, we can understand what the effect of increasing or decreasing that variable's value is on the model's output (holding all other variables constant). This gives us a better understanding of the behavior of otherwise "black box" models.
 
-Looking at the variable with the most dependence, "remove", we can see that as we increase the frequency of the word remove as a proportion of an email's length, it increases the average score of the output of our model. This means that emails with a high frequency of "remove" relative to their length are indicative of spam since spam is the positve class and nonspam is the zero class.
+Looking at the variable with the most relative influence, "remove", we can see that as we increase the frequency of the word remove as a proportion of an email's length, it increases the average score of the model's output. This means that emails with a high frequency of "remove" relative to their length are indicative of spam since spam is the positve class and nonspam is the zero class.
 
 We see opposite behavior in "hp". Since George and his colleagues worked at Hewlett-Packard, emails with "hp" display the opposite effect and the higher we move "hp" in frequency the more likely it is that the email is legitimate and non-spam (according to our model).
 
@@ -297,7 +298,7 @@ bestTreeForPrediction <- gbm.perf(model, plot.it=FALSE,method="cv")#method={"OOB
 ```
 ### (a) The prediction accuracy of gbm on the data set.
 
-The MSE of the response variable house_value is $\sim0.15$. Since the response is in units of \$100,000, this means on average the squared error of the median house_value predicted by our model is $\sim0.154 \times \$100,000$, or $\sim \$15,400$
+The MSE of the response variable house_value is $\sim0.15$. Since the response is in units of \$100,000, this means on average the squared error of the median house_value predicted by our model is $\sim0.154 \times \$100,000$, or $\sim \$15,400$.
 
 ```{r, eval = TRUE}
 #MSE for accuracy
