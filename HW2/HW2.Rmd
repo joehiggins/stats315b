@@ -13,31 +13,39 @@ library(knitr)
 library(gbm)
 library(rpart)
 library(rpart.plot)
+library(ModelMetrics)
 ```
 
 # Question 1
 ### Random forests predict with an ensemble of bagged trees each trained on a bootstrap sample randomly drawn from the original training data. Additional random variation among the trees is induced by choosing the variable for each split from a small randomly chosen subset of all of the predictor variables when building each tree. What are the advantages and disadvantages of this random variable selection strategy? How can one introduce additional tree variation in the forest without randomly selecting subsets of variables?
 
 The advantages of choosing a random subset of predictor variables are:
+
 \begin{itemize}
-\item Because we are no longer doing an exhaustive search over all predictor variables, each split requires less processing power during the training process.  Given modern computer architecture, this advantage matters less since each tree in the ensemble is independent and can be computed simultaneously in a different parallel process.
+
 \item The random variation introduced by choosing the variable for each split from a randomly chosen subset de-correlates the resulting trees in the forest, forcing them to be different from each other.  This has the effect of decreasing the variance of the ensemble's estimate, since the variance of the mean of a collection random variables is directly related to the correlation of those variables.  Decreasing the correlation of the trees therefore decreases the variance of the forest.
+
+\item Because we are no longer doing an exhaustive search over all predictor variables, each split requires less processing power during the training process.  Given modern computer architecture, this advantage matters less since each tree in the ensemble is independent and can be computed simultaneously in a different parallel process.
 
 \end{itemize}
 The disadvantage of this approach is that it can result in trees with very weak predictive power.  Suppose that none of the best predictors were available for a given tree's first several splits -- this would result in a highly sub-optimal tree.
 
 Another way to inject randomness into the process and de-correlate the trees is to decrease the size of the bootstrapped sample of the training data.  Each individual tree is now more likely to overfit the smaller sample, increasing tree variation within the forest.
 
+--NOTE: add statement on bias/variance tradeoff for MSE decomposition
+
 # Question 2
 ### Why is it necessary to use regularization in linear regression when the number of predictor variables is greater than the number of observations in the training sample? Explain how regularization helps in this case. Are there other situations where regularization might help? What is the potential disadvantage of introducing regularization? Why is sparsity a reasonable assumption in the boosting context. Is it always? If not, why not?
 
-If the number of predictor variables $n$ is greater than the number of observations in the training sample $N$, then there is an infinite number of solutions that will satisfy the linear regression problem -- and there will be very high variance in the solution derived from that training sample.  Regularization helps in this situation because it decreases the size of the function class, reducing variance.  Regularization will help in any situation where we have a reason to favor sparse solutions by both encouraging sparsity and preventing high variance.
+If the number of predictor variables $n$ is greater than the number of observations in the training sample $N$, then there is an infinite number of solutions that will satisfy the linear regression problem -- and there will be very high variance in the solution derived from that training sample.  There are certain penalties (L1) that will set coefficients equal to zero, reducing the number of predictor variables in the solution.
 
-A potential disadvantage of regularization is that it could increase bias - especially if you have chosen a penalty that doesn't align with the best answer for the problem.
+Regularization always decreases the size of the function class, reducing variance.  Therefore, in situations where our model is likely to have high variance, such as when we have a small training set, regularization would help.
 
-In the boosting context, each predictor is a possible tree that could be built on the training data from the set of all possible trees.  It is reasonable to assume that most trees - out of the set of all possible trees (All combinations of variables and all possible splits) - will do very poorly on the overall prediction problem.  So we would want most of our coefficients in the linear regression to be 0.
+A potential disadvantage of regularization is that it could increase bias - with strong penalties, the increase in squared bias could overtake the decrease in variance, ultimately increasing the mean-squared error.
 
-Sparsity is not always a necessary assumption in linear regression, especially if your feature space is small.  For example, if we were predicting house prices from zip code and square footage, we would expect both variables to be important.
+In the boosting context, each predictor is a possible tree that could be built on the training data from the set of all possible trees.  It is reasonable to assume that most trees - out of the set of all possible trees (all combinations of variables and all possible splits) - will do very poorly on the overall prediction problem.  So we would want most of our coefficients in the linear regression to be 0.
+
+Sparsity is not always a necessary assumption in linear regression, especially if your feature space is small.  For example, if we were predicting house prices from zip code and square footage, we would expect both variables to be important. 
 
 # Question 3
 ### Show that the convex members of the power family of penalties, except for the lasso, have the property that solutions to $\hat{a}(\lambda) = argmin_a \hat{R}(a) + \lambda P_{\gamma}(a)$ have nonzero values for all coefficients at each path point indexed by $\lambda$. By contrast the convex members of the elastic net (except ridge) can produce solutions with many zero valued coefficients at various path points.
@@ -95,15 +103,21 @@ F(\mathbf{x}) = F_l(\mathbf{z}_l) + F_{\backslash l}(\mathbf{z}_{\backslash l})
 $$
 then the partial dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ is $F_l(\mathbf{z}_l)$ up to an additive constant. This is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ accounting for the effect of the other variables $\mathbf{z}_{\backslash l}$. Show that this need not be the case for $E[F(\mathbf{x})\ |\ \mathbf{z}_l]$ which is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ ignoring the other variables $\mathbf{z}_{\backslash l}$. Under what conditions would the two be the same?
 
+```{r}
+#Useful functions for coding portion
+misclassification_rate <- function(y_hat, y){
+  correct <- y_hat == y
+  pct_correct = sum(correct)/length(correct)
+  return(1 - pct_correct)
+}
+```
+
 # Question 6
 ### Binary classification: Spam Email. The data set for this problem is spam_stats315B.csv, with documentation files spam_stats315B_info.txt and spam_stats315B_names,txt. The data set is a collection of 4601 emails of which 1813 were considered spam, i.e. unsolicited commercial email. The data set consists of 58 attributes of which 57 are continuous predictors and one is a class label that indicates whether the email was considered spam (1) or not (0). Among the 57 predictor attributes are: percentage of the word “free” in the email, percentage of exclamation marks in the email, etc. See file spam_stats315B_names.txt for the full list of attributes. The goal is, of course, to predict whether or not an email is “spam”. This data set is used for illustration in the tutorial Boosting with R Programming. The data set spam_stats315B_train.csv represents a subsample of these emails randomly selected from spam_stats315B.csv to be used for training. The file spam_stats315B_test.csv contains the remaining emails to be used for evaluating results.
 
-### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
-
-```{r, eval = TRUE, results="hold"}
-rm(list = ls())
-data_path <- paste(getwd(),'/data',sep='')
-setwd(data_path)
+```{r}
+#remove all variables except for functions
+rm(list = setdiff(ls(), lsf.str()))
 
 #data labels
 rflabs<-c("make", "address", "all", "3d", "our", "over", "remove",
@@ -117,20 +131,26 @@ rflabs<-c("make", "address", "all", "3d", "our", "over", "remove",
   "CAPAVE", "CAPMAX", "CAPTOT","type")
 
 #load the data
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
 train <- read.csv(file="spam_stats315B_train.csv", header=FALSE, sep=",")
 test <- read.csv(file="spam_stats315B_test.csv", header=FALSE, sep=",")
 colnames(train)<-rflabs
 colnames(test)<-rflabs
 
-#set labels to avoid confusion
+#set labels and variables to avoid confusion
 spam <- 1
 nonspam <- 0
-threshold = 0.5
+threshold = 0.50
 
 #randomize order of data
 set.seed(131)
 x <- train[sample(nrow(train)),]
+```
 
+### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
+
+```{r, eval = TRUE, results="hold"}
 #fit model on training data
 set.seed(444) # random for bag.fraction
 gbm0 <- gbm(type~., data=x, train.fraction=1,
@@ -138,44 +158,37 @@ gbm0 <- gbm(type~., data=x, train.fraction=1,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
             distribution="bernoulli", verbose=F)
 
-bestTreeForPrediction = gbm.perf(gbm0)
-
-#Training misclassification rate
-y_hat_train <- predict(gbm0, x, type="response", n.trees=bestTreeForPrediction)
-y_hat_train[y_hat_train > threshold] <- spam
-y_hat_train[y_hat_train <= threshold] <- nonspam
+#Ground truths
 y_train <- x$type
-correct_train <- y_train == y_hat_train
-pct_correct_train <- sum(correct_train)/length(correct_train)
-
-#What is your estimate of the misclassification rate? 
-print("Training overall misclassification rate:")
-1-pct_correct_train
-
-#misclassification rate test
-y_hat_test <- predict(gbm0, test, type="response", n.trees=bestTreeForPrediction)
-y_hat_test[y_hat_test > threshold] <- spam
-y_hat_test[y_hat_test <= threshold] <- nonspam
 y_test <- test$type
-correct <- y_test == y_hat_test
-pct_correct_test <- sum(correct)/length(correct)
 
-#Overall
-print("Estimate of overall misclassification rate on test set:")
-1-pct_correct_test
+#Predictions 
+nTreesForPrediction = gbm.perf(gbm0, plot.it=FALSE, method="cv")
+y_hat_train <- predict(gbm0, x, type="response", n.trees=nTreesForPrediction)
+y_hat_test <- predict(gbm0, test, type="response", n.trees=nTreesForPrediction)
 
-#Of all the spam emails of the test set what percentage was misclassified?
-spam_correct_test <- correct[y_test==spam]
-pct_spam_correct_test <- sum(spam_correct_test)/length(spam_correct_test)
-print("Test spam misclassification rate:")
-1-pct_spam_correct_test
+y_hat_train[y_hat_train >  threshold] <- spam
+y_hat_train[y_hat_train <= threshold] <- nonspam
+y_hat_test[y_hat_test >  threshold] <- spam
+y_hat_test[y_hat_test <= threshold] <- nonspam
 
-#Of all the non-spam emails in the test set what percentage was misclassified?
-nonspam_correct_test <- correct[y_test==nonspam]
-pct_nonspam_correct_test <- sum(nonspam_correct_test)/length(nonspam_correct_test)
-print("Test nonspam misclassification rate:")
-1-pct_nonspam_correct_test
+#Training misclassification rates:
+cat("TRAIN overall misclassification rate: ", 
+    misclassification_rate(y_hat_train, y_train), "\n")
+cat("TRAIN overall misclassification rate: ", 
+    misclassification_rate(y_hat_train[y_train==spam], y_train[y_train==spam]), "\n")
+cat("TRAIN overall misclassification rate: ", 
+    misclassification_rate(y_hat_train[y_train==nonspam], y_train[y_train==nonspam]), "\n")
 
+
+#Spam misclassification rates:
+cat("TEST  overall misclassification rate: ", 
+    misclassification_rate(y_hat_test, y_test), "\n")
+cat("TEST  overall misclassification rate: ", 
+    misclassification_rate(y_hat_test[y_test==spam], y_test[y_test==spam]), "\n")
+#Non-Spam misclassiciation rates:
+cat("TEST  overall misclassification rate: ", 
+    misclassification_rate(y_hat_test[y_test==nonspam], y_test[y_test==nonspam]), "\n")
 ```
 
 ### (b) Your classifier in part (a) can be used as a spam filter. One of the possible disadvantages of such a spam filter is that it might filter out too many good (non-spam) emails. Therefore, a better spam filter might be the one that penalizes misclassifying non-spam emails more heavily than the spam ones. Suppose that you want to build a spam filter that “throws out” no more that 0.3% of the good (non-spam) emails. You have to find and use a cost matrix that penalizes misclassifying “good” emails as“spam” more than misclassifying “spam” emails as “good” by the method of trial and error. Once you have constructed your final spam filter with the property described above, answer the following questions:
@@ -183,12 +196,14 @@ print("Test nonspam misclassification rate:")
 ```{r, eval = TRUE, results="hold"}
 w <- x$type
 w[x$type == spam] <- 1
-w[x$type == nonspam] <- 2 #100
+w[x$type == nonspam] <- 200
 
 set.seed(444) # random for bag.fraction
-gbm1 <- gbm(type~., data=x , train.fraction=1,
-            interaction.depth=4, shrinkage=.05,
-            n.trees=2500, bag.fraction=0.5, cv.folds=5,
+gbm1 <- gbm(type ~ ., data=x,  cv.folds=20, train.fraction=1,
+            interaction.depth=1,
+            shrinkage=.05,
+            n.trees=3000, 
+            bag.fraction=0.5,
             distribution="bernoulli", verbose=F,
             weights = w)
 
@@ -259,7 +274,7 @@ We see opposite behavior in "hp". Since George and his colleagues worked at Hewl
 ```{r, eval = TRUE}
 top5_indexes <- match(top5, rflabs)
 for(i in top5_indexes){
-  plot(gbm1,i,bestTreeForPrediction)
+  plot(gbm1,i,bestTreeForPrediction,type="response")
 }
 ```
 
@@ -326,6 +341,9 @@ print(top4)
 We can see from the individual dependence plots that as median_income increases holding other variables constant, our model's output for home_value also increases.
 
 The interaction effects between latitude and longitude are enlightening. The border between the pink and blue zones have interior corner points at the Bay Area ($latlng = (38.0,-122.0)$) and Los Angeles ($latlng = (34.0, -118.0)$). It is unsurprising that these major metropolitan areas are correlated with home_value. 
+
+JCH: talk about what pink and blue zones means. these are the most influential in changing how house value changes
+
 
 The univariate dependence plots show that home_value tends to decrease as homes get further from the coast. It also shows that home_value tends to decrease as homes get further north (which makes sense since the Bay area is at the $\sim$half way mark of California in terms of latitude). However, there is important nuance in the interaction effects between these two variables as discussed in the paragraph above.
 
@@ -504,8 +522,11 @@ for(occupation in levels(house_data$Occup)){
 
 ### (b) Identify the most important variables.
 
+JCH: Look for importance variables by class
+
 ```{r, eval = TRUE}
 top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
 top4 <- gsub("`","",top4)
 print(top4)
 ```
+
