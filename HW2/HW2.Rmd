@@ -105,10 +105,14 @@ then the partial dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ is $F_l(\mathbf
 
 ```{r}
 #Useful functions for coding portion
-misclassification_rate <- function(y_hat, y){
+misclass_rate <- function(y_hat, y){
   correct <- y_hat == y
   pct_correct = sum(correct)/length(correct)
   return(1 - pct_correct)
+}
+
+percent <- function(x, digits = 1, format = "f", ...) {
+  paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
 }
 ```
 
@@ -150,7 +154,7 @@ x <- train[sample(nrow(train)),]
 
 ### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
 
-```{r, eval = TRUE, results="hold"}
+```{r, eval = FALSE, results="hold"}
 #fit model on training data
 set.seed(444) # random for bag.fraction
 gbm0 <- gbm(type~., data=x, train.fraction=1,
@@ -163,9 +167,9 @@ y_train <- x$type
 y_test <- test$type
 
 #Predictions 
-nTreesForPrediction = gbm.perf(gbm0, plot.it=FALSE, method="cv")
-y_hat_train <- predict(gbm0, x, type="response", n.trees=nTreesForPrediction)
-y_hat_test <- predict(gbm0, test, type="response", n.trees=nTreesForPrediction)
+nTreesForPrediction0 <- gbm.perf(gbm0, plot.it=FALSE, method="cv")
+y_hat_train <- predict(gbm0, x, type="response", n.trees=nTreesForPrediction0)
+y_hat_test <- predict(gbm0, test, type="response", n.trees=nTreesForPrediction0)
 
 y_hat_train[y_hat_train >  threshold] <- spam
 y_hat_train[y_hat_train <= threshold] <- nonspam
@@ -174,26 +178,27 @@ y_hat_test[y_hat_test <= threshold] <- nonspam
 
 #Training misclassification rates:
 cat("TRAIN overall misclassification rate: ", 
-    misclassification_rate(y_hat_train, y_train), "\n")
+    percent(misclass_rate(y_hat_train, y_train)), "\n")
 cat("TRAIN spam    misclassification rate: ", 
-    misclassification_rate(y_hat_train[y_train==spam], y_train[y_train==spam]), "\n")
+    percent(misclass_rate(y_hat_train[y_train==spam], y_train[y_train==spam])), "\n")
 cat("TRAIN nonspam misclassification rate: ", 
-    misclassification_rate(y_hat_train[y_train==nonspam], y_train[y_train==nonspam]), "\n")
+    percent(misclass_rate(y_hat_train[y_train==nonspam], y_train[y_train==nonspam])), "\n")
 
 
 #Spam misclassification rates:
 cat("TEST  overall misclassification rate: ", 
-    misclassification_rate(y_hat_test, y_test), "\n")
+    percent(misclass_rate(y_hat_test, y_test)), "\n")
 cat("TEST  spam    misclassification rate: ", 
-    misclassification_rate(y_hat_test[y_test==spam], y_test[y_test==spam]), "\n")
+    percent(misclass_rate(y_hat_test[y_test==spam], y_test[y_test==spam])), "\n")
 #Non-Spam misclassiciation rates:
 cat("TEST  nonspam misclassification rate: ", 
-    misclassification_rate(y_hat_test[y_test==nonspam], y_test[y_test==nonspam]), "\n")
+    percent(misclass_rate(y_hat_test[y_test==nonspam], y_test[y_test==nonspam])), "\n")
 ```
 
 ### (b) Your classifier in part (a) can be used as a spam filter. One of the possible disadvantages of such a spam filter is that it might filter out too many good (non-spam) emails. Therefore, a better spam filter might be the one that penalizes misclassifying non-spam emails more heavily than the spam ones. Suppose that you want to build a spam filter that “throws out” no more that 0.3% of the good (non-spam) emails. You have to find and use a cost matrix that penalizes misclassifying “good” emails as“spam” more than misclassifying “spam” emails as “good” by the method of trial and error. Once you have constructed your final spam filter with the property described above, answer the following questions:
 
-```{r, eval = TRUE, results="hold"}
+```{r, eval = FALSE, results="hold"}
+#set weights, fit model
 w <- x$type
 w[x$type == spam] <- 1
 w[x$type == nonspam] <- 200
@@ -206,81 +211,78 @@ gbm1 <- gbm(type ~ ., data=x,  cv.folds=20, train.fraction=1,
             bag.fraction=0.5,
             distribution="bernoulli", verbose=F,
             weights = w)
-
-bestTreeForPrediction <- gbm.perf(gbm1, plot.it=FALSE,method="cv")#method={"OOB","test","cv"}
 ```
+
 ### (i) What is the overall misclassification error of your final filter and what is the percentage of good emails and spam emails that were misclassified respectively?
 
-```{r, eval = TRUE, results = "hold"}
-#misclassification rate on training set
-y_hat_train <- predict(gbm1, x, type="response", n.trees=bestTreeForPrediction)
-y_hat_train[y_hat_train > threshold] <- spam
+```{r, eval = FALSE, results = "hold"}
+#predictions
+nTreesForPrediction1 <- gbm.perf(gbm1, plot.it=FALSE,method="cv")
+y_hat_train <- predict(gbm1, x, type="response", n.trees=nTreesForPrediction1)
+y_hat_test <- predict(gbm1, test, type="response", n.trees=nTreesForPrediction1)
+
+y_hat_train[y_hat_train >  threshold] <- spam
 y_hat_train[y_hat_train <= threshold] <- nonspam
-y_train <- x$type
-correct_train <- y_train == y_hat_train
-spam_correct_train <- correct_train[y_train==spam]
-nonspam_correct_train <- correct_train[y_train==nonspam]
-
-pct_correct_train <- sum(correct_train)/length(correct_train)
-pct_spam_correct_train <- sum(spam_correct_train)/length(spam_correct_train)
-pct_nonspam_correct_train <- sum(nonspam_correct_train)/length(nonspam_correct_train)
-
-#misclassification rate on test set
-y_hat_test <- predict(gbm1, test, type="response", n.trees=bestTreeForPrediction)
-y_hat_test[y_hat_test > threshold] <- spam
+y_hat_test[y_hat_test >  threshold] <- spam
 y_hat_test[y_hat_test <= threshold] <- nonspam
-y_test <- test$type
-correct_test <- y_test == y_hat_test
-spam_correct_test <- correct_test[y_test==spam]
-nonspam_correct_test <- correct_test[y_test==nonspam]
 
-pct_correct_test <- sum(correct_test)/length(correct_test)
-pct_spam_correct_test <- sum(spam_correct_test)/length(spam_correct_test)
-pct_nonspam_correct_test <- sum(nonspam_correct_test)/length(nonspam_correct_test)
+#Training misclassification rates:
+cat("TRAIN overall misclassification rate: ", 
+    percent(misclass_rate(y_hat_train, y_train)), "\n")
+cat("TRAIN spam    misclassification rate: ", 
+    percent(misclass_rate(y_hat_train[y_train==spam], y_train[y_train==spam])), "\n")
+cat("TRAIN nonspam misclassification rate: ", 
+    percent(misclass_rate(y_hat_train[y_train==nonspam], y_train[y_train==nonspam])), "\n")
 
-#Overall misclassification:
-print("Train/test overall misclassification rate:")
-1-pct_correct_train
-1-pct_correct_test
-
-#Spam misclassification:
-print("Train/test spam misclassification rate:")
-1-pct_spam_correct_train
-1-pct_spam_correct_test
-
-#Nonspam misclassification:
-print("Train/test nonspam misclassification rate:")
-1-pct_nonspam_correct_train
-1-pct_nonspam_correct_test
-
+#Spam misclassification rates:
+cat("TEST  overall misclassification rate: ", 
+    percent(misclass_rate(y_hat_test, y_test)), "\n")
+cat("TEST  spam    misclassification rate: ", 
+    percent(misclass_rate(y_hat_test[y_test==spam], y_test[y_test==spam])), "\n")
+#Non-Spam misclassiciation rates:
+cat("TEST  nonspam misclassification rate: ", 
+    percent(misclass_rate(y_hat_test[y_test==nonspam], y_test[y_test==nonspam])), "\n")
 ```
 
 ### (ii) What are the important variables in discriminating good emails from spam for your spam filter?
-```{r, eval = TRUE}
-top5 <-summary(gbm1,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:5]
-top5 <- gsub("`","",top5)
-print(top5)
+```{r, eval = FALSE}
+#Unweighted filter
+influential_vars <- summary.gbm(gbm0,main="RELATIVE INFLUENCE",plotit=FALSE)
+top5_unweighted <- gsub("`","",influential_vars$var[1:5])
+
+#Weighted filter
+influential_vars <- summary.gbm(gbm1,main="RELATIVE INFLUENCE",plotit=FALSE)
+top5_weighted <- gsub("`","",influential_vars$var[1:5])
+
+cat("Top 5 influential variables, unweighted model: ", 
+    top5_unweighted, "\n")
+cat("Top 5 influential variables, weighted model: ", 
+    top5_weighted, "\n")
 ```
 
 ### (iii) Using the interpreting tools provided by gbm, describe the dependence of the response on the most important attributes.
 
-Partial dependence plots show what the average change in the value of our model's output is when varying a subset of variables. In this case, we are looking at single variables. Looking at the partial dependence, we can understand what the effect of increasing or decreasing that variable's value is on the model's output (holding all other variables constant). This gives us a better understanding of the behavior of otherwise "black box" models.
+Partial dependence plots show how a model's output affect is when varying a subset of variables (accounting for the other complementing subset of variables). For this problem, we will at single variable partial dependence plots. Looking at the partial dependence, we can understand what the effect of increasing or decreasing the single variable in questions's value has on the model's output (accounting for all other variables). This gives us a better understanding of the behavior of otherwise "black box" models.
 
-Looking at the variable with the most relative influence, "remove", we can see that as we increase the frequency of the word remove as a proportion of an email's length, it increases the average score of the model's output. This means that emails with a high frequency of "remove" relative to their length are indicative of spam since spam is the positve class and nonspam is the zero class.
+\textbf{Unweighted model:} Looking at the variable with the most relative influence, \textit{"!"}, we can see that as we increase the frequency of \textit{"!"} as a proportion of an email's length, it increases the model's probability that this is spam. This means that emails with a high frequency of \textit{"!"} relative to their length are indicative of spam since spam is the positve class and nonspam is the zero class.
 
 We see opposite behavior in "hp". Since George and his colleagues worked at Hewlett-Packard, emails with "hp" display the opposite effect and the higher we move "hp" in frequency the more likely it is that the email is legitimate and non-spam (according to our model).
 
+The other top influential variables have similar dependence plots: the variable influences the model's output to a particular class as its value is increased while taking into account the effects of the other variables.
 
-```{r, eval = TRUE}
-top5_indexes <- match(top5, rflabs)
-for(i in top5_indexes){
-  plot(gbm1,i,bestTreeForPrediction,type="response")
-}
+\textbf{Weighted model:} The partial dependence plots of the weighted model are harder to interpret. We have used the weights to force our model to learn
+
+```{r, eval = FALSE}
+plot(gbm0,match("!", rflabs),  nTreesForPrediction0, type="response",height=2)
+plot(gbm0,match("hp", rflabs), nTreesForPrediction0, type="response",height=2)
+
+plot(gbm1,match("CAPAVE", rflabs),   nTreesForPrediction1, type="link",height=2)
+plot(gbm1,match("business", rflabs), nTreesForPrediction1, type="link",height=2)
 ```
 
 # Question 7
 ### Regression: California Housing. The data set calif_stats315B.csv consists of aggregated data from 20,640 California census blocks (from the 1990 census). The goal is to predict the median house value in each neighborhood from the others described in calif_stats315B.txt. Fit a gbm model to the data and write a short report that should include at least
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -315,7 +317,7 @@ bestTreeForPrediction <- gbm.perf(model, plot.it=FALSE,method="cv")#method={"OOB
 
 The MSE of the response variable house_value is $\sim0.15$. Since the response is in units of \$100,000, this means on average the squared error of the median house_value predicted by our model is $\sim0.154 \times \$100,000$, or $\sim \$15,400$.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 #MSE for accuracy
 y <- data$house_value
 y_hat <- predict(model, data, type="response", n.trees=bestTreeForPrediction)
@@ -331,7 +333,7 @@ The second-tier of variables in terms of importance had similar levels of import
 
 The 4 variables that all had the similar levels of insignificance in predicting house_value for a given neighborhood: housing_median_age, average_no_rooms, population, average_no_bedrooms.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
 top4 <- gsub("`","",top4)
 print(top4)
@@ -347,7 +349,7 @@ JCH: talk about what pink and blue zones means. these are the most influential i
 
 The univariate dependence plots show that home_value tends to decrease as homes get further from the coast. It also shows that home_value tends to decrease as homes get further north (which makes sense since the Bay area is at the $\sim$half way mark of California in terms of latitude). However, there is important nuance in the interaction effects between these two variables as discussed in the paragraph above.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 best.iter <- gbm.perf(model, plot.it=FALSE, method ='cv')
 top4_indexes <- match(top4, labels) - 1 #-1 because first label is response var
 
@@ -366,7 +368,7 @@ plot(model,c(8,7),best.iter)
 
 ### (a) Fit a gbm model for predicting age form the other demographic attributes and compare the accuracy with the accuracy of your best single tree from Homework 1.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -427,7 +429,7 @@ MSE_tree
 
 The most important variables were also identified as the most important in our tree from homework 1: MarStat, Occup, HouseStat, and Edu
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 top4 <-summary(model_gbm,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
 top4 <- gsub("`","",top4)
 print(top4)
@@ -436,7 +438,7 @@ print(top4)
 # Question 9
 ### Multiclass classification: marketing data. The data set occup_stats315B.csv comes from the same marketing database used in Homework 1. The description of the attributes can be found in occup_stats315B.txt. The goal in this problem is to fit a gbm model to predict the type of occupation from the 13 other demographic variables.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 rm(list = ls())
 data_path <- paste(getwd(),'/data',sep='')
 setwd(data_path)
@@ -497,7 +499,7 @@ model <- gbm(Occup ~ ., data=house_data, train.fraction=1,
 
 ### (a) Report the test set misclassification error for gbm on the data set, and also the misclassification error for each class.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 bestTreeForPrediction <- gbm.perf(model, method='cv')#method={"OOB","test","cv"}
 
 #determine misclassification rate
@@ -524,7 +526,7 @@ for(occupation in levels(house_data$Occup)){
 
 JCH: Look for importance variables by class
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
 top4 <- gsub("`","",top4)
 print(top4)
