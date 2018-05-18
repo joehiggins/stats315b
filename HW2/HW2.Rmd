@@ -169,6 +169,34 @@ F(\mathbf{x}) = F_l(\mathbf{z}_l) + F_{\backslash l}(\mathbf{z}_{\backslash l})
 $$
 then the partial dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ is $F_l(\mathbf{z}_l)$ up to an additive constant. This is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ accounting for the effect of the other variables $\mathbf{z}_{\backslash l}$. Show that this need not be the case for $E[F(\mathbf{x})\ |\ \mathbf{z}_l]$ which is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ ignoring the other variables $\mathbf{z}_{\backslash l}$. Under what conditions would the two be the same?
 
+Consider the partial dependence of  $F(\mathbf{x})$ on $\mathbf{z}_l$, denoted $\bar{F_l}(z_l)$
+$$
+\begin{aligned}
+\bar{F_l}(z_l) &= E_{z\backslash l}[F(x)] \\
+ &= E_{z\backslash l}[F_l(z_l) + F_{\backslash l}(\mathbf{z}_{\backslash l})] \\
+ &= E_{z\backslash l}[F_l(z_l)] + E_{z\backslash l}[F_{\backslash l}(\mathbf{z}_{\backslash l})] \\
+ &= \int F_l(z_l)p_{\backslash l}(z_{\backslash l})dz_{\backslash l} + \int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l})dz_{\backslash l}\\
+\text{Since }F_l\text{ does not depend on }z_{\backslash l}:\\
+\bar{F_l}(z_l) &= F_l(z_l) \int p_{\backslash l}(z_{\backslash l})dz_{\backslash l} + \int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l})dz_{\backslash l} \\
+\text{Since } \int p_{\backslash l}(z_{\backslash l})dz_{\backslash l} = 1:\\
+ \bar{F_l}(z_l) &= F_l(z_l) + \int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l})dz_{\backslash l}\\
+\text{We also know that given the data,} &\int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l})dz_{\backslash l} \approx \frac{1}{N}\sum_{i=1}^NF_{\backslash l}(\mathbf{z}_{\backslash li}) = c \text{ where c is some constant. So:} \\
+\bar{F_l}(z_l) &= F_l(z_l) + c \quad \blacksquare
+\end{aligned}
+$$
+Now consider $E_{z\backslash l}[F(x) | z_l]$
+$$
+\begin{aligned}
+E_{z\backslash l}[F(x) | z_l] &= E_{z\backslash l}[F_l(\mathbf{z}_l) + F_{\backslash l}(\mathbf{z}_{\backslash l})| z_l]\\
+&= E_{z\backslash l}[F_l(\mathbf{z}_l)|z_l] + E[F_{\backslash l}(\mathbf{z}_{\backslash l})| z_l]\\
+&= F_l(z_l) + E[F_{\backslash l}(\mathbf{z}_{\backslash l})| z_l]\\
+&= F_l(z_l) + \int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l} | z_l)dz_{\backslash l}\\
+\end{aligned}
+$$
+This second term is not a constant w.r.t $z_l$, since the distribution of $z_{\backslash l}$ can change based on different values of $z_l$. 
+
+The conditional expectation is only a constant when $p_{\backslash l}(z_{\backslash l} | z_l) = p_{\backslash l}(z_{\backslash l})$, i.e. when $z_l$ and $z_{\backslash l}$ are independent. 
+
 ```{r}
 #Utility functions
 misclass_rate <- function(y_hat, y){
