@@ -46,7 +46,75 @@ In the boosting context, each predictor is a possible tree that could be built o
 Sparsity is not always a necessary assumption in linear regression, especially if your feature space is small.  For example, if we were predicting house prices from zip code and square footage, we would expect both variables to be important. 
 
 # Question 3
-### Show that the convex members of the power family of penalties, except for the lasso, have the property that solutions to $\hat{a}(\lambda) = argmin_a \hat{R}(a) + \lambda P_{\gamma}(a)$ have nonzero values for all coefficients at each path point indexed by $\lambda$. By contrast the convex members of the elastic net (except ridge) can produce solutions with many zero valued coefficients at various path points.
+### Let $\hat{R}(a) = \frac{1}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)^2$.  Show that the convex members of the power family of penalties, except for the lasso, have the property that solutions to $\hat{a}(\lambda) = argmin_a \hat{R}(a) + \lambda P_{\gamma}(a)$ have nonzero values for all coefficients at each path point indexed by $\lambda$ (except for possibly a set of isolated path points).
+
+Let $h_{\gamma}(a,\lambda) = \hat{R}(a) + \lambda P_{\gamma}(a)$.
+
+Since both $\hat{R}(a)$ and $P_{\gamma}(a)$ when $\gamma > 1$ are convex, differentiable functions, we know that the minimum of $h_{\gamma}(a,\lambda)$ with respect to $a$ will occur when $\frac{\partial h}{\partial a} = 0$, and there will be one global minimum. Let $a_j^*$ be the value of $a_j$ that achieves this global minimum: $\frac{\partial h}{\partial a_j}|_{a_j^*} = 0.$  
+
+We will show that for all $a_j$, $P(a_j^*=0) \approx 0$. 
+
+$$
+\begin{aligned}
+\frac{\partial h}{\partial a_j} &=  \frac{\partial}{\partial a_j}\big[\hat{R}(a) + \lambda P_\gamma(a) \big] \\
+&= \frac{\partial}{\partial a_j}\big[ \frac{1}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)^2 + \lambda |a_j|^{\gamma} \big]\\
+&= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{ij} +  \lambda \gamma |a_j|^{(\gamma - 2)}a_j \\
+\text{Evaluating at our minimum value } a_j^*: \\
+0 &= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{ij} +  \lambda \gamma |a_j^*|^{(\gamma - 2)}a_j^* \\
+\text{Now assume that } a_j^* = 0: \\
+0 &= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{ij}  \\
+0 &= \sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{ij}  \\
+\end{aligned}
+$$
+The probability of this sum being equal to 0 for an arbitrary set of training data and choice of $j$ is $\approx 0$.  So the Power family of penalties with $\gamma > 1$ will result in non-zero coefficients (except in extremely rare circumstances.$\blacksquare$
+
+### Show that with probability > 0, the quantity $a_j^*$ that minimizes $h_{\gamma}(a,\lambda) = \hat{R}(a) + \lambda P_{\gamma}(a)$ can be 0 for an arbitrary $\lambda$ when $P_{\gamma}(a) = \frac{1}{2}\sum_{j=1}^n(\gamma - 1)a_j^2 + (2-\gamma)|a_j| \quad (1 \leq \gamma < 2)$
+
+Since $P_{\gamma}(a)$ is not differentiable, we can't take the gradient and solve as we did in the previous section. Instead, we will show a range of achievable values for which if $a_j = 0$, the directional derivative of $h_{\gamma}(a,\lambda)$ in both the $e_j$ and $-e_j$ directions is $>0$.
+
+Without loss of generality, let $j = 1$.  We denote the directional derivative in the direction of $u$ as $D_{u}h$.
+$$ 
+\begin{aligned}
+D_{e_1}h &= D_{e_1}\hat{R}(a) + \lambda D_{e_1}P_\gamma(a) \\ \\
+D_{e_1}\hat{R}(a) &= \nabla \hat{R}(a) \cdot e_1 \\
+&= \nabla \hat{R}(a)[1] \\
+&= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} \\ \\
+D_{e_1}P_\gamma(a) &= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}P_\gamma(a + \epsilon e_1) - P_\gamma(a) \\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(a_1 + \epsilon)^2 + (2-\gamma)|a_1 + \epsilon| -  \frac{1}{2}(\gamma - 1)(a_1)^2 + (2-\gamma)|a_1| \big]\\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(a_1^2 + 2a_1\epsilon + \epsilon^2 - a_1^2) + (2-\gamma)[|a_1 + \epsilon| - |a_1|] \big]\\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(2a_1\epsilon + \epsilon^2) + (2-\gamma)[|a_1 + \epsilon| - |a_1|] \big]\\
+&= \lim_{\epsilon \rightarrow 0}\big[\frac{1}{2}(\gamma - 1)(2a_1 + \epsilon) + (2-\gamma)[|\frac{a_1}{\epsilon} + 1| - |\frac{a_1}{\epsilon}|] \big]\\
+\text{Assume that }a_1 = 0: \\
+&= \lim_{\epsilon \rightarrow 0}\big[\frac{1}{2}(\gamma - 1)(\epsilon) + (2-\gamma) \big]\\
+&= (2-\gamma)\\ \\
+D_{e_1}h|_{a_1=0} &= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} + \lambda (2-\gamma)\\
+\text{This is } > 0 \text{ when :}\\
+0 &< -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} + \lambda (2-\gamma)\\
+\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} &< \lambda (2-\gamma)\\ \\
+\end{aligned}
+$$
+Now, we calculate the same thing for $-e_1:$
+$$
+\begin{aligned}
+D_{-e_1}h &= D_{-e_1}\hat{R}(a) + \lambda D_{-e_1}P_\gamma(a) \\ \\
+D_{-e_1}\hat{R}(a) &= \nabla \hat{R}(a) \cdot -e_1 \\
+&= -\nabla \hat{R}(a)[1] \\
+&= \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} \\ \\
+D_{-e_1}P_\gamma(a) &= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}P_\gamma(a - \epsilon e_1) - P_\gamma(a) \\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(a_1 - \epsilon)^2 + (2-\gamma)|a_1 - \epsilon| -  \frac{1}{2}(\gamma - 1)(a_1)^2 + (2-\gamma)|a_1| \big]\\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(a_1^2 - 2a_1\epsilon + \epsilon^2 - a_1^2) + (2-\gamma)[|a_1 - \epsilon| - |a_1|] \big]\\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(-2a_1\epsilon + \epsilon^2) + (2-\gamma)[|a_1 - \epsilon| - |a_1|] \big]\\
+&= \lim_{\epsilon \rightarrow 0}\big[\frac{1}{2}(\gamma - 1)(-2a_1 + \epsilon) + (2-\gamma)[|\frac{a_1}{\epsilon} - 1| - |\frac{a_1}{\epsilon}|] \big]\\
+\text{Assume that }a_1 = 0: \\
+&= \lim_{\epsilon \rightarrow 0}\big[\frac{1}{2}(\gamma - 1)(\epsilon) + (2-\gamma) \big]\\
+&= (2-\gamma)\\ \\
+D_{-e_1}h|_{a_1=0} &= \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} + \lambda (2-\gamma)\\
+\text{This is } > 0 \text{ when :}\\
+0 &< \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} + \lambda (2-\gamma)\\
+-\lambda (2-\gamma) &< \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1}\\ \\
+\end{aligned}
+$$
+So, it is possible for $a_1 = 0$ to be the argmin of $h$ whenever $-\lambda(2-\gamma) < \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} < \lambda(2-\gamma)$.  This will occur with greater than probability 0 for an arbitrary $\lambda$, so we have shown that the elastic net penalty can lead to zero-valued coefficients. $\blacksquare$
 
 # Question 4
 ### Show that the variable $x_{j^{*}}$ that has the maximum absolute correlation with $j^{*} = argmax_{1 \leq j \leq J} |E(y x_j )|$ is the same as the one that best predicts y using squared—error loss $j^{*} = argmin_{1 \leq j \leq J}\  min_{\rho}E[y - \rho x_j]^2$. This shows that the base learner most correlated with the generalized residual is the one that best predicts it with squared—error loss.  
@@ -117,7 +185,7 @@ percent <- function(x, digits = 1, format = "f", ...) {
 # Question 6
 ### Binary classification: Spam Email. The data set for this problem is spam_stats315B.csv, with documentation files spam_stats315B_info.txt and spam_stats315B_names,txt. The data set is a collection of 4601 emails of which 1813 were considered spam, i.e. unsolicited commercial email. The data set consists of 58 attributes of which 57 are continuous predictors and one is a class label that indicates whether the email was considered spam (1) or not (0). Among the 57 predictor attributes are: percentage of the word “free” in the email, percentage of exclamation marks in the email, etc. See file spam_stats315B_names.txt for the full list of attributes. The goal is, of course, to predict whether or not an email is “spam”. This data set is used for illustration in the tutorial Boosting with R Programming. The data set spam_stats315B_train.csv represents a subsample of these emails randomly selected from spam_stats315B.csv to be used for training. The file spam_stats315B_test.csv contains the remaining emails to be used for evaluating results.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 #remove all variables except for functions
 rm(list = setdiff(ls(), lsf.str()))
 
@@ -152,7 +220,7 @@ x <- train[sample(nrow(train)),]
 
 ### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
 
-```{r, eval = TRUE, results="hold"}
+```{r, eval = FALSE, results="hold"}
 #fit model on training data
 set.seed(444) # random for bag.fraction
 gbm0 <- gbm(type~., data=x, train.fraction=1,
@@ -195,7 +263,7 @@ cat("TEST  nonspam misclassification rate: ",
 
 ### (b) Your classifier in part (a) can be used as a spam filter. One of the possible disadvantages of such a spam filter is that it might filter out too many good (non-spam) emails. Therefore, a better spam filter might be the one that penalizes misclassifying non-spam emails more heavily than the spam ones. Suppose that you want to build a spam filter that “throws out” no more that 0.3% of the good (non-spam) emails. You have to find and use a cost matrix that penalizes misclassifying “good” emails as“spam” more than misclassifying “spam” emails as “good” by the method of trial and error. Once you have constructed your final spam filter with the property described above, answer the following questions:
 
-```{r, eval = TRUE, results="hold"}
+```{r, eval = FALSE, results="hold"}
 #set weights, fit model
 w <- x$type
 w[x$type == spam] <- 1
@@ -213,7 +281,7 @@ gbm1 <- gbm(type ~ ., data=x,  cv.folds=20, train.fraction=1,
 
 ### (i) What is the overall misclassification error of your final filter and what is the percentage of good emails and spam emails that were misclassified respectively?
 
-```{r, eval = TRUE, results = "hold"}
+```{r, eval = FALSE, results = "hold"}
 #predictions
 nTreesForPrediction1 <- gbm.perf(gbm1, plot.it=FALSE,method="cv")
 y_hat_train <- predict(gbm1, x, type="response", n.trees=nTreesForPrediction1)
@@ -243,7 +311,7 @@ cat("TEST  nonspam misclassification rate: ",
 ```
 
 ### (ii) What are the important variables in discriminating good emails from spam for your spam filter?
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 #Unweighted filter
 influential_vars <- summary.gbm(gbm0,main="RELATIVE INFLUENCE",order=TRUE,plotit=FALSE)
 top5_unweighted <- gsub("`","",influential_vars$var[1:5])
@@ -270,7 +338,7 @@ The other top influential variables have similar dependence plots: they influenc
 
 \textbf{Weighted model:} The partial dependence plots of the weighted model are harder to interpret. We have used the weights to incentivize our model to classify emails as non-spam, even in the evidence of what humans might consider spammy. Let's look at the plot for \texttt{CAPAVE}, or \texttt{capital\_run\_length\_average}. A partial dependence plot of our weighted Bernoulli model's link value (logit) shows a shape reminiscent of \textit{"hp"}, However, look at the y-axis values. The difference of maximum and minimum values on this log odds plot doesn't mean much in terms of probability, which we can see in the following plot of \texttt{CAPAVE}'s response value.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 plot(gbm0,match("!", rflabs),  nTreesForPrediction0, type="response",height=2)
 plot(gbm0,match("hp", rflabs),  nTreesForPrediction0, type="response",height=3)
 
