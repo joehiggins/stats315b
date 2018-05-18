@@ -28,11 +28,9 @@ The advantages of choosing a random subset of predictor variables are:
 \item Because we are no longer doing an exhaustive search over all predictor variables, each split requires less processing power during the training process.  Given modern computer architecture, this advantage matters less since each tree in the ensemble is independent and can be computed simultaneously in a different parallel process.
 
 \end{itemize}
-The disadvantage of this approach is that it can result in trees with very weak predictive power.  Suppose that none of the best predictors were available for a given tree's first several splits -- this would result in a highly sub-optimal tree.
+The disadvantage of this approach is that it can result in trees with very weak predictive power.  Suppose that none of the best predictors were available for a given tree's first several splits -- this would result in a highly sub-optimal tree. However, if this method decreases the variance of the forest enough to offset potential increases in bias, it will lower our model's error.
 
 Another way to inject randomness into the process and de-correlate the trees is to decrease the size of the bootstrapped sample of the training data.  Each individual tree is now more likely to overfit the smaller sample, increasing tree variation within the forest.
-
---NOTE: add statement on bias/variance tradeoff for MSE decomposition
 
 # Question 2
 ### Why is it necessary to use regularization in linear regression when the number of predictor variables is greater than the number of observations in the training sample? Explain how regularization helps in this case. Are there other situations where regularization might help? What is the potential disadvantage of introducing regularization? Why is sparsity a reasonable assumption in the boosting context. Is it always? If not, why not?
@@ -104,7 +102,7 @@ $$
 then the partial dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ is $F_l(\mathbf{z}_l)$ up to an additive constant. This is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ accounting for the effect of the other variables $\mathbf{z}_{\backslash l}$. Show that this need not be the case for $E[F(\mathbf{x})\ |\ \mathbf{z}_l]$ which is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ ignoring the other variables $\mathbf{z}_{\backslash l}$. Under what conditions would the two be the same?
 
 ```{r}
-#Useful functions
+#Utility functions
 misclass_rate <- function(y_hat, y){
   correct <- y_hat == y
   pct_correct = sum(correct)/length(correct)
@@ -119,7 +117,7 @@ percent <- function(x, digits = 1, format = "f", ...) {
 # Question 6
 ### Binary classification: Spam Email. The data set for this problem is spam_stats315B.csv, with documentation files spam_stats315B_info.txt and spam_stats315B_names,txt. The data set is a collection of 4601 emails of which 1813 were considered spam, i.e. unsolicited commercial email. The data set consists of 58 attributes of which 57 are continuous predictors and one is a class label that indicates whether the email was considered spam (1) or not (0). Among the 57 predictor attributes are: percentage of the word “free” in the email, percentage of exclamation marks in the email, etc. See file spam_stats315B_names.txt for the full list of attributes. The goal is, of course, to predict whether or not an email is “spam”. This data set is used for illustration in the tutorial Boosting with R Programming. The data set spam_stats315B_train.csv represents a subsample of these emails randomly selected from spam_stats315B.csv to be used for training. The file spam_stats315B_test.csv contains the remaining emails to be used for evaluating results.
 
-```{r}
+```{r, eval = TRUE}
 #remove all variables except for functions
 rm(list = setdiff(ls(), lsf.str()))
 
@@ -154,7 +152,7 @@ x <- train[sample(nrow(train)),]
 
 ### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
 
-```{r, eval = FALSE, results="hold"}
+```{r, eval = TRUE, results="hold"}
 #fit model on training data
 set.seed(444) # random for bag.fraction
 gbm0 <- gbm(type~., data=x, train.fraction=1,
@@ -197,7 +195,7 @@ cat("TEST  nonspam misclassification rate: ",
 
 ### (b) Your classifier in part (a) can be used as a spam filter. One of the possible disadvantages of such a spam filter is that it might filter out too many good (non-spam) emails. Therefore, a better spam filter might be the one that penalizes misclassifying non-spam emails more heavily than the spam ones. Suppose that you want to build a spam filter that “throws out” no more that 0.3% of the good (non-spam) emails. You have to find and use a cost matrix that penalizes misclassifying “good” emails as“spam” more than misclassifying “spam” emails as “good” by the method of trial and error. Once you have constructed your final spam filter with the property described above, answer the following questions:
 
-```{r, eval = FALSE, results="hold"}
+```{r, eval = TRUE, results="hold"}
 #set weights, fit model
 w <- x$type
 w[x$type == spam] <- 1
@@ -215,7 +213,7 @@ gbm1 <- gbm(type ~ ., data=x,  cv.folds=20, train.fraction=1,
 
 ### (i) What is the overall misclassification error of your final filter and what is the percentage of good emails and spam emails that were misclassified respectively?
 
-```{r, eval = FALSE, results = "hold"}
+```{r, eval = TRUE, results = "hold"}
 #predictions
 nTreesForPrediction1 <- gbm.perf(gbm1, plot.it=FALSE,method="cv")
 y_hat_train <- predict(gbm1, x, type="response", n.trees=nTreesForPrediction1)
@@ -245,7 +243,7 @@ cat("TEST  nonspam misclassification rate: ",
 ```
 
 ### (ii) What are the important variables in discriminating good emails from spam for your spam filter?
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 #Unweighted filter
 influential_vars <- summary.gbm(gbm0,main="RELATIVE INFLUENCE",order=TRUE,plotit=FALSE)
 top5_unweighted <- gsub("`","",influential_vars$var[1:5])
@@ -272,17 +270,17 @@ The other top influential variables have similar dependence plots: they influenc
 
 \textbf{Weighted model:} The partial dependence plots of the weighted model are harder to interpret. We have used the weights to incentivize our model to classify emails as non-spam, even in the evidence of what humans might consider spammy. Let's look at the plot for \texttt{CAPAVE}, or \texttt{capital\_run\_length\_average}. A partial dependence plot of our weighted Bernoulli model's link value (logit) shows a shape reminiscent of \textit{"hp"}, However, look at the y-axis values. The difference of maximum and minimum values on this log odds plot doesn't mean much in terms of probability, which we can see in the following plot of \texttt{CAPAVE}'s response value.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 plot(gbm0,match("!", rflabs),  nTreesForPrediction0, type="response",height=2)
-plot(gbm0,match("hp", rflabs),  nTreesForPrediction0, type="response",height=2)
+plot(gbm0,match("hp", rflabs),  nTreesForPrediction0, type="response",height=3)
 
-plot(gbm1,match("CAPAVE", rflabs), nTreesForPrediction1, type="link",height=2)
-plot(gbm1,match("CAPAVE", rflabs), nTreesForPrediction1, type="response",height=2)
+plot(gbm1,match("CAPAVE", rflabs), nTreesForPrediction1, type="link",height=4)
+plot(gbm1,match("CAPAVE", rflabs), nTreesForPrediction1, type="response",height=4)
 ```
 
 # Question 7
 ### Regression: California Housing. The data set calif_stats315B.csv consists of aggregated data from 20,640 California census blocks (from the 1990 census). The goal is to predict the median house value in each neighborhood from the others described in calif_stats315B.txt. Fit a gbm model to the data and write a short report that should include at least
-```{r, eval = FALSE}
+```{r, eval = FALSE, results="hold"}
 #reset all variables except user-defined functions
 rm(list = setdiff(ls(), lsf.str()))
 
@@ -316,7 +314,7 @@ model <- gbm(house_value~., data=data, train.fraction=1,
 
 The MSE of the response variable house_value is $\sim0.15$. Since the response is in units of \$100,000, this means on average the squared error of the median house_value predicted by our model is $\sim0.154 \times \$100,000$, or $\sim \$15,400$.
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, results="hold"}
 #make predictions
 nTreesForPrediction <- gbm.perf(model, plot.it=FALSE, method="cv")
 y_hat <- predict(model, data, type="response", n.trees=nTreesForPrediction)
@@ -335,7 +333,7 @@ The second-tier of variables in terms of importance had similar levels of import
 
 The 4 variables that all had the similar levels of insignificance in predicting house_value for a given neighborhood: housing_median_age, average_no_rooms, population, average_no_bedrooms.
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, results="hold"}
 influential_vars <- summary.gbm(model,main="RELATIVE INFLUENCE",order=TRUE)
 top4 <- gsub("`","",influential_vars$var[1:4])
 cat("Top 4 influential variables: ", 
@@ -372,7 +370,7 @@ plot(model,c(match("longitude",labels)-1,match("latitude",labels)-1),
 
 Our GBM achieves a better accuracy in this regression problem, with an MSE of 0.5648001 compared to our best single tree which has an MSE of 0.6992926.
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, results="hold"}
 #reset all variables except user-defined functions
 rm(list = setdiff(ls(), lsf.str()))
 
@@ -429,9 +427,10 @@ cat("MSE, tree: ", MSE_tree, "\n")
 ### (b) Identify the most important variables.
 
 The most important variables were: \texttt{MarStat, Occup, HouseStat, and Edu}
+
 These variables are also identified as important by the best single tree from homework 1.
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, results="hold"}
 influential_vars <- summary.gbm(model_gbm,main="RELATIVE INFLUENCE",order=TRUE)
 top4 <- gsub("`","",influential_vars$var[1:4])
 cat("GBM top 4 influential variables: ",top4 , "\n")
@@ -441,12 +440,11 @@ cat("Single tree top 6 important variables: ",important_vars_single_tree[1:6], "
 ```
 
 # Question 9
+
 ### Multiclass classification: marketing data. The data set occup_stats315B.csv comes from the same marketing database used in Homework 1. The description of the attributes can be found in occup_stats315B.txt. The goal in this problem is to fit a gbm model to predict the type of occupation from the 13 other demographic variables.
 
-```{r, eval = FALSE}
-rm(list = ls())
-data_path <- paste(getwd(),'/data',sep='')
-setwd(data_path)
+```{r, eval = FALSE, results="hold"}
+rm(list = setdiff(ls(), lsf.str()))
 
 #Read and type data
 labels <-c(
@@ -490,13 +488,15 @@ occup_labels <- c(
 )
 
 #load the data
-house_data <- read.csv('occup_stats315B.csv', header=FALSE, sep=",")
-colnames(house_data) <- labels
-house_data[factor_columns] <- lapply(house_data[factor_columns], as.factor)
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
+occup_data <- read.csv('occup_stats315B.csv', header=FALSE, sep=",")
+colnames(occup_data) <- labels
+occup_data[factor_columns] <- lapply(occup_data[factor_columns], as.factor)
 
 #fit GBM model for occupation
 set.seed(444) # random for bag.fraction
-model <- gbm(Occup ~ ., data=house_data, train.fraction=1,
+model <- gbm(Occup ~ ., data=occup_data, train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
             distribution="multinomial", verbose=F)
@@ -504,36 +504,35 @@ model <- gbm(Occup ~ ., data=house_data, train.fraction=1,
 
 ### (a) Report the test set misclassification error for gbm on the data set, and also the misclassification error for each class.
 
-```{r, eval = FALSE}
-bestTreeForPrediction <- gbm.perf(model, method='cv')#method={"OOB","test","cv"}
+```{r, eval = FALSE, results="hold"}
+nTreesForPrediction <- gbm.perf(model, method='cv')
 
 #determine misclassification rate
-y_hat <- predict(model, house_data, type="response", n.trees=bestTreeForPrediction)
-y_hat_max_p <- apply(y_hat,1,which.max)
-y <- house_data$Occup
-correct <- y == y_hat_max_p
+y_hat_p <- predict(model, occup_data, type="response", n.trees=nTreesForPrediction)
+y_hat <- apply(y_hat,1,which.max)
+y <- occup_data$Occup
 
-#overall
-pct_correct <- sum(correct)/length(correct)
-print("Overall misclassification rate:")
-1-pct_correct
+#overall 
+cat("Overall misclassification rate: ", percent(misclass_rate(y_hat, y)), "\n")
 
-for(occupation in levels(house_data$Occup)){
+#by class
+for(occupation in levels(occup_data$Occup)){
   occupation_i <- strtoi(occupation)
-  print(occup_labels[occupation_i])
-  correct_in_class <- correct[y==occupation_i]
-  pct_correct_in_class <- sum(correct_in_class)/length(correct_in_class)
-  print(1-pct_correct_in_class)
+  cat(percent(misclass_rate(y_hat[y==occupation_i], y[y==occupation_i])), ":", 
+    occup_labels[occupation_i], "\n")
 }
 ```
 
 ### (b) Identify the most important variables.
 
-JCH: Look for importance variables by class
+The most important variables overall are \texttt{age}, texttt{income}, and texttt{education}.
 
-```{r, eval = FALSE}
-top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
-top4 <- gsub("`","",top4)
-print(top4)
+Occupation is hard to predict with the data given, as can be seen by the overall high misclassification rate. However the three classes we are able to predict better than most: Professional/Managerial, Student, and Retired.
+
+It is important to note that the three most important variables actually do a good job to distinguish these relatively well-predicted classes from the rest. Specifically: income for professionals, age and education for students, and age for retirees.
+
+```{r, eval = FALSE, results="hold"}
+influential_vars <- summary.gbm(model,main="RELATIVE INFLUENCE",order=TRUE)
+cat("Top 3 influential variables: ",gsub("`","",influential_vars$var[1:3]) , "\n")
 ```
 
