@@ -175,19 +175,19 @@ y_hat_test[y_hat_test <= threshold] <- nonspam
 #Training misclassification rates:
 cat("TRAIN overall misclassification rate: ", 
     misclassification_rate(y_hat_train, y_train), "\n")
-cat("TRAIN overall misclassification rate: ", 
+cat("TRAIN spam    misclassification rate: ", 
     misclassification_rate(y_hat_train[y_train==spam], y_train[y_train==spam]), "\n")
-cat("TRAIN overall misclassification rate: ", 
+cat("TRAIN nonspam misclassification rate: ", 
     misclassification_rate(y_hat_train[y_train==nonspam], y_train[y_train==nonspam]), "\n")
 
 
 #Spam misclassification rates:
 cat("TEST  overall misclassification rate: ", 
     misclassification_rate(y_hat_test, y_test), "\n")
-cat("TEST  overall misclassification rate: ", 
+cat("TEST  spam    misclassification rate: ", 
     misclassification_rate(y_hat_test[y_test==spam], y_test[y_test==spam]), "\n")
 #Non-Spam misclassiciation rates:
-cat("TEST  overall misclassification rate: ", 
+cat("TEST  nonspam misclassification rate: ", 
     misclassification_rate(y_hat_test[y_test==nonspam], y_test[y_test==nonspam]), "\n")
 ```
 
