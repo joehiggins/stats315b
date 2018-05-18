@@ -104,7 +104,7 @@ $$
 then the partial dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ is $F_l(\mathbf{z}_l)$ up to an additive constant. This is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ accounting for the effect of the other variables $\mathbf{z}_{\backslash l}$. Show that this need not be the case for $E[F(\mathbf{x})\ |\ \mathbf{z}_l]$ which is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ ignoring the other variables $\mathbf{z}_{\backslash l}$. Under what conditions would the two be the same?
 
 ```{r}
-#Useful functions for coding portion
+#Useful functions
 misclass_rate <- function(y_hat, y){
   correct <- y_hat == y
   pct_correct = sum(correct)/length(correct)
@@ -247,11 +247,11 @@ cat("TEST  nonspam misclassification rate: ",
 ### (ii) What are the important variables in discriminating good emails from spam for your spam filter?
 ```{r, eval = FALSE}
 #Unweighted filter
-influential_vars <- summary.gbm(gbm0,main="RELATIVE INFLUENCE",plotit=FALSE)
+influential_vars <- summary.gbm(gbm0,main="RELATIVE INFLUENCE",order=TRUE,plotit=FALSE)
 top5_unweighted <- gsub("`","",influential_vars$var[1:5])
 
 #Weighted filter
-influential_vars <- summary.gbm(gbm1,main="RELATIVE INFLUENCE",plotit=FALSE)
+influential_vars <- summary.gbm(gbm1,main="RELATIVE INFLUENCE",order=TRUE,plotit=FALSE)
 top5_weighted <- gsub("`","",influential_vars$var[1:5])
 
 cat("Top 5 influential variables, unweighted model: ", 
@@ -262,30 +262,29 @@ cat("Top 5 influential variables, weighted model: ",
 
 ### (iii) Using the interpreting tools provided by gbm, describe the dependence of the response on the most important attributes.
 
-Partial dependence plots show how a model's output affect is when varying a subset of variables (accounting for the other complementing subset of variables). For this problem, we will at single variable partial dependence plots. Looking at the partial dependence, we can understand what the effect of increasing or decreasing the single variable in questions's value has on the model's output (accounting for all other variables). This gives us a better understanding of the behavior of otherwise "black box" models.
+Partial dependence plots show how a model's output is affected when varying a subset of variables (accounting for the other complementary subset of variables). Looking at the partial dependence, we can understand what the effect of changing a particular subset of variables' values has on the model's output (accounting for all other variables). This gives us a better understanding of the behavior of otherwise "black box" models. For this problem, we consider single variable partial dependence plots.
 
-\textbf{Unweighted model:} Looking at the variable with the most relative influence, \textit{"!"}, we can see that as we increase the frequency of \textit{"!"} as a proportion of an email's length, it increases the model's probability that this is spam. This means that emails with a high frequency of \textit{"!"} relative to their length are indicative of spam since spam is the positve class and nonspam is the zero class.
+\textbf{Unweighted model:} Looking at the variable with the most relative influence, \textit{"!"}, we can see that as we increase the frequency of \textit{"!"} as a proportion of an email's length, it increases the model's output probability that it is spam. This means that emails with a high frequency of \textit{"!"} relative to their length are indicative of spam since spam is the positve class and nonspam is the zero class.
 
-We see opposite behavior in "hp". Since George and his colleagues worked at Hewlett-Packard, emails with "hp" display the opposite effect and the higher we move "hp" in frequency the more likely it is that the email is legitimate and non-spam (according to our model).
+We see opposite behavior in \textit{"hp"}. Since George and his colleagues worked at Hewlett-Packard, emails with "hp" display the opposite effect and the higher we move "hp" in frequency the more likely it is that the email is legitimate and non-spam (according to our model).
 
-The other top influential variables have similar dependence plots: the variable influences the model's output to a particular class as its value is increased while taking into account the effects of the other variables.
+The other top influential variables have similar dependence plots: they influence the model's output to a particular class as its value is increased (taking into account the effects of the other variables).
 
-\textbf{Weighted model:} The partial dependence plots of the weighted model are harder to interpret. We have used the weights to force our model to learn
+\textbf{Weighted model:} The partial dependence plots of the weighted model are harder to interpret. We have used the weights to incentivize our model to classify emails as non-spam, even in the evidence of what humans might consider spammy. Let's look at the plot for \texttt{CAPAVE}, or \texttt{capital\_run\_length\_average}. A partial dependence plot of our weighted Bernoulli model's link value (logit) shows a shape reminiscent of \textit{"hp"}, However, look at the y-axis values. The difference of maximum and minimum values on this log odds plot doesn't mean much in terms of probability, which we can see in the following plot of \texttt{CAPAVE}'s response value.
 
 ```{r, eval = FALSE}
 plot(gbm0,match("!", rflabs),  nTreesForPrediction0, type="response",height=2)
-plot(gbm0,match("hp", rflabs), nTreesForPrediction0, type="response",height=2)
+plot(gbm0,match("hp", rflabs),  nTreesForPrediction0, type="response",height=2)
 
-plot(gbm1,match("CAPAVE", rflabs),   nTreesForPrediction1, type="link",height=2)
-plot(gbm1,match("business", rflabs), nTreesForPrediction1, type="link",height=2)
+plot(gbm1,match("CAPAVE", rflabs), nTreesForPrediction1, type="link",height=2)
+plot(gbm1,match("CAPAVE", rflabs), nTreesForPrediction1, type="response",height=2)
 ```
 
 # Question 7
 ### Regression: California Housing. The data set calif_stats315B.csv consists of aggregated data from 20,640 California census blocks (from the 1990 census). The goal is to predict the median house value in each neighborhood from the others described in calif_stats315B.txt. Fit a gbm model to the data and write a short report that should include at least
 ```{r, eval = FALSE}
-rm(list = ls())
-data_path <- paste(getwd(),'/data',sep='')
-setwd(data_path)
+#reset all variables except user-defined functions
+rm(list = setdiff(ls(), lsf.str()))
 
 #data labls
 labels <-c(
@@ -301,6 +300,8 @@ labels <-c(
 )
 
 #load the data
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
 data <- read.csv(file="calif_stats315B.csv", header=FALSE, sep=",")
 colnames(data) <- labels
 
@@ -310,17 +311,18 @@ model <- gbm(house_value~., data=data, train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
             distribution="gaussian", verbose=F)
-
-bestTreeForPrediction <- gbm.perf(model, plot.it=FALSE,method="cv")#method={"OOB","test","cv"}
 ```
 ### (a) The prediction accuracy of gbm on the data set.
 
 The MSE of the response variable house_value is $\sim0.15$. Since the response is in units of \$100,000, this means on average the squared error of the median house_value predicted by our model is $\sim0.154 \times \$100,000$, or $\sim \$15,400$.
 
 ```{r, eval = FALSE}
-#MSE for accuracy
+#make predictions
+nTreesForPrediction <- gbm.perf(model, plot.it=FALSE, method="cv")
+y_hat <- predict(model, data, type="response", n.trees=nTreesForPrediction)
+
+#Calculate MSE on of regression
 y <- data$house_value
-y_hat <- predict(model, data, type="response", n.trees=bestTreeForPrediction)
 MSE <- sum((y_hat - y)^2)/length(y)
 MSE
 ```
@@ -334,32 +336,32 @@ The second-tier of variables in terms of importance had similar levels of import
 The 4 variables that all had the similar levels of insignificance in predicting house_value for a given neighborhood: housing_median_age, average_no_rooms, population, average_no_bedrooms.
 
 ```{r, eval = FALSE}
-top4 <-summary(model,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
-top4 <- gsub("`","",top4)
-print(top4)
+influential_vars <- summary.gbm(model,main="RELATIVE INFLUENCE",order=TRUE)
+top4 <- gsub("`","",influential_vars$var[1:4])
+cat("Top 4 influential variables: ", 
+    top4, "\n")
 ```
 ### (c) Comments on the dependence of the response on the most important variables (you may want to consider partial dependence plots (plot) on single and pairs of variables, etc.).
 
-We can see from the individual dependence plots that as median_income increases holding other variables constant, our model's output for home_value also increases.
+This section refer to plots included following the discussion.
 
-The interaction effects between latitude and longitude are enlightening. The border between the pink and blue zones have interior corner points at the Bay Area ($latlng = (38.0,-122.0)$) and Los Angeles ($latlng = (34.0, -118.0)$). It is unsurprising that these major metropolitan areas are correlated with home_value. 
+We can see from the univariate dependence plots that as \texttt{median\_income} increases, our model's output for \texttt{home\_value} also increases (accounting effects of other variables).
 
-JCH: talk about what pink and blue zones means. these are the most influential in changing how house value changes
+Additionally, the univariate dependence plots of \texttt{longitude} and \texttt{latitude} show that \texttt{home\_value} tends to decrease as homes get further from the coast. It also shows that \texttt{home\_value} tends to decrease as homes get further north (which makes sense since the Bay area is at the $\sim$half-way mark of California in terms of latitude). However, there is important nuance in the interaction between these two variables.
 
+The bivariate partial dependence of the model on \texttt{latitude} and \texttt{longitude} shows us something the univariate plots alone do not. 2-dimensional partial dependence plots show the model's output as a heat map over a grid of 2 variables. Pink is a lower output value, blue is higher. The border between the pink and blue zones have interior corner points at the Bay Area ($latlng = (38, -122)$) and Los Angeles ($latlng = (34, -118)$). It is not surprising that these major metropolitan areas influence \texttt{home\_value}.
 
-The univariate dependence plots show that home_value tends to decrease as homes get further from the coast. It also shows that home_value tends to decrease as homes get further north (which makes sense since the Bay area is at the $\sim$half way mark of California in terms of latitude). However, there is important nuance in the interaction effects between these two variables as discussed in the paragraph above.
 
 ```{r, eval = FALSE}
-best.iter <- gbm.perf(model, plot.it=FALSE, method ='cv')
+nTreesForPrediction <- gbm.perf(model, plot.it=FALSE, method ='cv')
 top4_indexes <- match(top4, labels) - 1 #-1 because first label is response var
 
-#main effects
-for(i in top4_indexes){
-  plot(model,i,best.iter)
-}
+#univariate partial dependence
+for(i in top4_indexes){ plot(model,i,nTreesForPrediction) }
 
-#longitude, latitude interaction effects
-plot(model,c(8,7),best.iter)
+#longitude, latitude 2d partial dependence
+plot(model,c(match("longitude",labels)-1,match("latitude",labels)-1),
+     nTreesForPrediction)
 ```
 
 # Question 8
@@ -368,12 +370,15 @@ plot(model,c(8,7),best.iter)
 
 ### (a) Fit a gbm model for predicting age form the other demographic attributes and compare the accuracy with the accuracy of your best single tree from Homework 1.
 
+Our GBM achieves a better accuracy in this regression problem, with an MSE of 0.5648001 compared to our best single tree which has an MSE of 0.6992926.
+
 ```{r, eval = FALSE}
-rm(list = ls())
-data_path <- paste(getwd(),'/data',sep='')
-setwd(data_path)
+#reset all variables except user-defined functions
+rm(list = setdiff(ls(), lsf.str()))
 
 #Read and type data
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
 age_data <- read.csv('age_stats315B.csv')
 factor_columns <- c(
   'Occup',
@@ -387,12 +392,13 @@ factor_columns <- c(
 )
 age_data[factor_columns] <- lapply(age_data[factor_columns], as.factor)
 
-#fit a GBM model
+#fit a GBM
 set.seed(444) # random for bag.fraction
 model_gbm <- gbm(age~., data=age_data, train.fraction=1,
             interaction.depth=4, shrinkage=.05,
             n.trees=2500, bag.fraction=0.5, cv.folds=5,
             distribution="gaussian", verbose=F)
+nTreesForPrediction <- gbm.perf(model_gbm, method='cv', plot.it=FALSE)
 
 #fit a tree
 model_tree <- rpart(age ~ ., data = age_data, method = "anova", 
@@ -401,18 +407,14 @@ model_tree <- rpart(age ~ ., data = age_data, method = "anova",
                                           maxsurrogate = 5, 
                                           usesurrogate = 2, 
                                           cp=0.0001))
-
 # Find the minimum cross-validation error + one SD
 min_error_window <- min(model_tree$cptable[,"xerror"] + model_tree$cptable[,"xstd"])
-
 # Find the simplest model with xerror within the min_error_window
 best_cp <- first(model_tree$cptable[which(model_tree$cptable[,"xerror"] < min_error_window),"CP"])
 best_single_tree <- prune(model_tree, cp = best_cp)
 
-bestTreeForPrediction <- gbm.perf(model_gbm, method='cv', plot.it=FALSE)#method={"OOB","test","cv"}
-
 #Make predictions
-y_hat_gbm <- predict(model_gbm, age_data, type="response", n.trees=bestTreeForPrediction)
+y_hat_gbm <- predict(model_gbm, age_data, type="response", n.trees=nTreesForPrediction)
 y_hat_tree <- predict(best_single_tree, age_data)
 
 #Compare errors
@@ -420,19 +422,22 @@ y <- age_data$age
 MSE_gbm <- sum((y_hat_gbm - y)^2)/length(y)
 MSE_tree <- sum((y_hat_tree - y)^2)/length(y)
 
-MSE_gbm
-MSE_tree
-
+cat("MSE, gbm: ", MSE_gbm, "\n")
+cat("MSE, tree: ", MSE_tree, "\n")
 ```
 
 ### (b) Identify the most important variables.
 
-The most important variables were also identified as the most important in our tree from homework 1: MarStat, Occup, HouseStat, and Edu
+The most important variables were: \texttt{MarStat, Occup, HouseStat, and Edu}
+These variables are also identified as important by the best single tree from homework 1.
 
 ```{r, eval = FALSE}
-top4 <-summary(model_gbm,main="RELATIVE INFLUENCE OF ALL PREDICTORS")$var[1:4]
-top4 <- gsub("`","",top4)
-print(top4)
+influential_vars <- summary.gbm(model_gbm,main="RELATIVE INFLUENCE",order=TRUE)
+top4 <- gsub("`","",influential_vars$var[1:4])
+cat("GBM top 4 influential variables: ",top4 , "\n")
+
+important_vars_single_tree <- names(best_single_tree$variable.importance)
+cat("Single tree top 6 important variables: ",important_vars_single_tree[1:6], "\n")
 ```
 
 # Question 9
