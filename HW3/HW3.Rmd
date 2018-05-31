@@ -1,0 +1,640 @@
+---
+title: "Stats 315B: Homework 1"
+author: "Joe Higgins, Austin Wang, Jessica Wetstone"
+date: "Due 5/20/2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+library(gbm)
+library(rpart)
+library(rpart.plot)
+library(ModelMetrics)
+```
+
+# Question 1
+### Random forests predict with an ensemble of bagged trees each trained on a bootstrap sample randomly drawn from the original training data. Additional random variation among the trees is induced by choosing the variable for each split from a small randomly chosen subset of all of the predictor variables when building each tree. What are the advantages and disadvantages of this random variable selection strategy? How can one introduce additional tree variation in the forest without randomly selecting subsets of variables?
+
+The advantages of choosing a random subset of predictor variables are:
+
+\begin{itemize}
+
+\item The random variation introduced by choosing the variable for each split from a randomly chosen subset de-correlates the resulting trees in the forest, forcing them to be different from each other.  This has the effect of decreasing the variance of the ensemble's estimate, since the variance of the mean of a collection random variables is directly related to the correlation of those variables.  Decreasing the correlation of the trees therefore decreases the variance of the forest.
+
+\item Because we are no longer doing an exhaustive search over all predictor variables, each split requires less processing power during the training process.  Given modern computer architecture, this advantage matters less since each tree in the ensemble is independent and can be computed simultaneously in a different parallel process.
+
+\end{itemize}
+The disadvantage of this approach is that it can result in trees with very weak predictive power.  Suppose that none of the best predictors were available for a given tree's first several splits -- this would result in a highly sub-optimal tree. However, if this method decreases the variance of the forest enough to offset potential increases in bias, it will lower our model's error.
+
+Another way to inject randomness into the process and de-correlate the trees is to decrease the size of the bootstrapped sample of the training data.  Each individual tree is now more likely to overfit the smaller sample, increasing tree variation within the forest.
+
+# Question 2
+### Why is it necessary to use regularization in linear regression when the number of predictor variables is greater than the number of observations in the training sample? Explain how regularization helps in this case. Are there other situations where regularization might help? What is the potential disadvantage of introducing regularization? Why is sparsity a reasonable assumption in the boosting context. Is it always? If not, why not?
+
+If the number of predictor variables $n$ is greater than the number of observations in the training sample $N$, then there is an infinite number of solutions that will satisfy the linear regression problem -- and there will be very high variance in the solution derived from that training sample.  There are certain penalties (L1) that will set coefficients equal to zero, reducing the number of predictor variables in the solution.
+
+Regularization always decreases the size of the function class, reducing variance.  Therefore, in situations where our model is likely to have high variance, such as when we have a small training set, regularization would help.
+
+A potential disadvantage of regularization is that it could increase bias - with strong penalties, the increase in squared bias could overtake the decrease in variance, ultimately increasing the mean-squared error.
+
+In the boosting context, each predictor is a possible tree that could be built on the training data from the set of all possible trees.  It is reasonable to assume that most trees - out of the set of all possible trees (all combinations of variables and all possible splits) - will do very poorly on the overall prediction problem.  So we would want most of our coefficients in the linear regression to be 0.
+
+Sparsity is not always a necessary assumption in linear regression, especially if your feature space is small.  For example, if we were predicting house prices from zip code and square footage, we would expect both variables to be important. 
+
+# Question 3
+### Let $\hat{R}(a) = \frac{1}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)^2$.  Show that the convex members of the power family of penalties, except for the lasso, have the property that solutions to $\hat{a}(\lambda) = argmin_a \hat{R}(a) + \lambda P_{\gamma}(a)$ have nonzero values for all coefficients at each path point indexed by $\lambda$ (except for possibly a set of isolated path points).
+
+Let $h_{\gamma}(a,\lambda) = \hat{R}(a) + \lambda P_{\gamma}(a)$.
+
+Since both $\hat{R}(a)$ and $P_{\gamma}(a)$ when $\gamma > 1$ are convex, differentiable functions, we know that the minimum of $h_{\gamma}(a,\lambda)$ with respect to $a$ will occur when $\frac{\partial h}{\partial a} = 0$, and there will be one global minimum. Let $a_j^*$ be the value of $a_j$ that achieves this global minimum: $\frac{\partial h}{\partial a_j}|_{a_j^*} = 0.$  
+
+We will show that for all $a_j$, $P(a_j^*=0) \approx 0$. 
+
+$$
+\begin{aligned}
+\frac{\partial h}{\partial a_j} &=  \frac{\partial}{\partial a_j}\big[\hat{R}(a) + \lambda P_\gamma(a) \big] \\
+&= \frac{\partial}{\partial a_j}\big[ \frac{1}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)^2 + \lambda |a_j|^{\gamma} \big]\\
+&= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{ij} +  \lambda \gamma |a_j|^{(\gamma - 2)}a_j \\
+\text{Evaluating at our minimum value } a_j^*: \\
+0 &= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{ij} +  \lambda \gamma |a_j^*|^{(\gamma - 2)}a_j^* \\
+\text{Now assume that } a_j^* = 0: \\
+0 &= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{ij}  \\
+0 &= \sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{ij}  \\
+\end{aligned}
+$$
+The probability of this sum being equal to 0 for an arbitrary set of training data and choice of $j$ is $\approx 0$.  So the Power family of penalties with $\gamma > 1$ will result in non-zero coefficients (except in extremely rare circumstances.$\blacksquare$
+
+### Show that with probability > 0, the quantity $a_j^*$ that minimizes $h_{\gamma}(a,\lambda) = \hat{R}(a) + \lambda P_{\gamma}(a)$ can be 0 for an arbitrary $\lambda$ when $P_{\gamma}(a) = \frac{1}{2}\sum_{j=1}^n(\gamma - 1)a_j^2 + (2-\gamma)|a_j| \quad (1 \leq \gamma < 2)$
+
+Since $P_{\gamma}(a)$ is not differentiable, we can't take the gradient and solve as we did in the previous section. Instead, we will show a range of achievable values for which if $a_j = 0$, the directional derivative of $h_{\gamma}(a,\lambda)$ in both the $e_j$ and $-e_j$ directions is $>0$.
+
+Without loss of generality, let $j = 1$.  We denote the directional derivative in the direction of $u$ as $D_{u}h$.
+$$ 
+\begin{aligned}
+D_{e_1}h &= D_{e_1}\hat{R}(a) + \lambda D_{e_1}P_\gamma(a) \\ \\
+D_{e_1}\hat{R}(a) &= \nabla \hat{R}(a) \cdot e_1 \\
+&= \nabla \hat{R}(a)[1] \\
+&= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} \\ \\
+D_{e_1}P_\gamma(a) &= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}P_\gamma(a + \epsilon e_1) - P_\gamma(a) \\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(a_1 + \epsilon)^2 + (2-\gamma)|a_1 + \epsilon| -  \frac{1}{2}(\gamma - 1)(a_1)^2 + (2-\gamma)|a_1| \big]\\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(a_1^2 + 2a_1\epsilon + \epsilon^2 - a_1^2) + (2-\gamma)[|a_1 + \epsilon| - |a_1|] \big]\\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(2a_1\epsilon + \epsilon^2) + (2-\gamma)[|a_1 + \epsilon| - |a_1|] \big]\\
+&= \lim_{\epsilon \rightarrow 0}\big[\frac{1}{2}(\gamma - 1)(2a_1 + \epsilon) + (2-\gamma)[|\frac{a_1}{\epsilon} + 1| - |\frac{a_1}{\epsilon}|] \big]\\
+\text{Assume that }a_1 = 0: \\
+&= \lim_{\epsilon \rightarrow 0}\big[\frac{1}{2}(\gamma - 1)(\epsilon) + (2-\gamma) \big]\\
+&= (2-\gamma)\\ \\
+D_{e_1}h|_{a_1=0} &= -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} + \lambda (2-\gamma)\\
+\text{This is } > 0 \text{ when :}\\
+0 &< -\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} + \lambda (2-\gamma)\\
+\frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} &< \lambda (2-\gamma)\\ \\
+\end{aligned}
+$$
+Now, we calculate the same thing for $-e_1:$
+$$
+\begin{aligned}
+D_{-e_1}h &= D_{-e_1}\hat{R}(a) + \lambda D_{-e_1}P_\gamma(a) \\ \\
+D_{-e_1}\hat{R}(a) &= \nabla \hat{R}(a) \cdot -e_1 \\
+&= -\nabla \hat{R}(a)[1] \\
+&= \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} \\ \\
+D_{-e_1}P_\gamma(a) &= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}P_\gamma(a - \epsilon e_1) - P_\gamma(a) \\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(a_1 - \epsilon)^2 + (2-\gamma)|a_1 - \epsilon| -  \frac{1}{2}(\gamma - 1)(a_1)^2 + (2-\gamma)|a_1| \big]\\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(a_1^2 - 2a_1\epsilon + \epsilon^2 - a_1^2) + (2-\gamma)[|a_1 - \epsilon| - |a_1|] \big]\\
+&= \lim_{\epsilon \rightarrow 0}\frac{1}{\epsilon}\big[\frac{1}{2}(\gamma - 1)(-2a_1\epsilon + \epsilon^2) + (2-\gamma)[|a_1 - \epsilon| - |a_1|] \big]\\
+&= \lim_{\epsilon \rightarrow 0}\big[\frac{1}{2}(\gamma - 1)(-2a_1 + \epsilon) + (2-\gamma)[|\frac{a_1}{\epsilon} - 1| - |\frac{a_1}{\epsilon}|] \big]\\
+\text{Assume that }a_1 = 0: \\
+&= \lim_{\epsilon \rightarrow 0}\big[\frac{1}{2}(\gamma - 1)(\epsilon) + (2-\gamma) \big]\\
+&= (2-\gamma)\\ \\
+D_{-e_1}h|_{a_1=0} &= \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} + \lambda (2-\gamma)\\
+\text{This is } > 0 \text{ when :}\\
+0 &< \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} + \lambda (2-\gamma)\\
+-\lambda (2-\gamma) &< \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1}\\ \\
+\end{aligned}
+$$
+So, it is possible for $a_1 = 0$ to be the argmin of $h$ whenever $-\lambda(2-\gamma) < \frac{2}{N}\sum_{i = 1}^{N}(y_i - \bar{a}\bar{x}_i)x_{i1} < \lambda(2-\gamma)$.  This will occur with greater than probability 0 for an arbitrary $\lambda$, so we have shown that the elastic net penalty can lead to zero-valued coefficients. $\blacksquare$
+
+# Question 4
+### Show that the variable $x_{j^{*}}$ that has the maximum absolute correlation with $j^{*} = argmax_{1 \leq j \leq J} |E(y x_j )|$ is the same as the one that best predicts y using squared—error loss $j^{*} = argmin_{1 \leq j \leq J}\  min_{\rho}E[y - \rho x_j]^2$. This shows that the base learner most correlated with the generalized residual is the one that best predicts it with squared—error loss.  
+  
+Let $f(\rho,\  x_j, \ y) = E[y - \rho x_j]^2$. We first find $min_{\rho}\ f(\rho,\ x_j, \ y)$ by taking the partial derivative of $f$ with respect to $\rho$ and setting it equal to 0:
+
+$$
+\begin{aligned}
+f(\rho,\  x_j, \ y) &= E[y - \rho x_j]^2 \\
+&= E[y^2 -2\rho yx_j + \rho^2x_j^2] \\
+&= E[y^2] - 2\rho E[yx_j] + \rho^2E[x_j^2]  \\
+&= E[y^2] - 2\rho E[yx_j] + \rho^2 \qquad \text{since } E[x_j^2] = 1\\
+\\
+\implies \frac{\partial f}{\partial \rho} &= -2E[yx_j]+2\rho \\
+\implies 0 &= -2E[yx_j]+2\rho^* \\
+\implies \rho^* &= E[yx_j] \\
+\\
+\implies min_{\rho}\ f(\rho,\ x_j, \ y) &= f(\rho^*,\ x_j, \ y) \\
+&= E[y - \rho^*x_j]^2 \\
+&= E[y^2] - 2\rho^* E[yx_j] + \rho^{*^2} \\
+&= E[y^2] - 2E[yx_j]E[yx_j] + (E[yx_j])^2 \\
+&= E[y^2] - (E[yx_j])^2 \\
+\end{aligned}
+$$
+Note that this is a unique minimum value because $f$ is strictly convex in $\rho$. We know this because $\frac{\partial^2 f}{\partial \rho^2} > 0$:
+
+$$
+\begin{aligned}
+\frac{\partial f}{\partial \rho} &= -2E[yx_j]+2\rho \\
+\implies \frac{\partial^2 f}{\partial \rho^2} &= 2 \\
+&> 0
+\end{aligned}
+$$
+Then:
+
+$$
+\begin{aligned}
+argmin_{1 \leq j \leq J}\  min_{\rho}E[y - \rho x_j]^2 &= argmin_{1 \leq j \leq J}\ (E[y^2] - (E[yx_j])^2) \\
+&= argmin_{1 \leq j \leq J}\ -(E[yx_j])^2 \\
+&= argmax_{1 \leq j \leq J}\ (E[yx_j])^2 \\
+&= argmax_{1 \leq j \leq J}\ |E[yx_j]|^2 \\
+&= argmax_{1 \leq j \leq J}\ |E[yx_j]|\qquad \text{since } f(x) = \sqrt{x} \text{ is monotonically increasing for } x>0
+\end{aligned}
+$$
+
+Therefore, $argmax_{1 \leq j \leq J}\ |E[yx_j]| = argmin_{1 \leq j \leq J}\  min_{\rho}E[y - \rho x_j]^2$, so the base learner most correlated with the generalized residual is the one that best predicts it with squared—error loss. $\blacksquare$
+
+# Question 5
+Let $\mathbf{z}_l = \{z_1, ..., z_l\}$ be a subset of the predictor variables $\mathbf{x} = \{x_1, ..., x_n\}$ and $\mathbf{z}_{\backslash l}$ the complement subset, i.e. $\mathbf{z}_l \cup \mathbf{z}_{\backslash l} = \mathbf{x}$. Show that if a function $F(\mathbf{x})$ is additive in $\mathbf{z}_l$ and $\mathbf{z}_{\backslash l}$, i.e.
+$$
+F(\mathbf{x}) = F_l(\mathbf{z}_l) + F_{\backslash l}(\mathbf{z}_{\backslash l})
+$$
+then the partial dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ is $F_l(\mathbf{z}_l)$ up to an additive constant. This is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ accounting for the effect of the other variables $\mathbf{z}_{\backslash l}$. Show that this need not be the case for $E[F(\mathbf{x})\ |\ \mathbf{z}_l]$ which is the dependence of $F(\mathbf{x})$ on $\mathbf{z}_l$ ignoring the other variables $\mathbf{z}_{\backslash l}$. Under what conditions would the two be the same?
+
+Consider the partial dependence of  $F(\mathbf{x})$ on $\mathbf{z}_l$, denoted $\bar{F_l}(z_l)$
+$$
+\begin{aligned}
+\bar{F_l}(z_l) &= E_{z\backslash l}[F(x)] \\
+ &= E_{z\backslash l}[F_l(z_l) + F_{\backslash l}(\mathbf{z}_{\backslash l})] \\
+ &= E_{z\backslash l}[F_l(z_l)] + E_{z\backslash l}[F_{\backslash l}(\mathbf{z}_{\backslash l})] \\
+ &= \int F_l(z_l)p_{\backslash l}(z_{\backslash l})dz_{\backslash l} + \int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l})dz_{\backslash l}\\
+\text{Since }F_l\text{ does not depend on }z_{\backslash l}:\\
+\bar{F_l}(z_l) &= F_l(z_l) \int p_{\backslash l}(z_{\backslash l})dz_{\backslash l} + \int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l})dz_{\backslash l} \\
+\text{Since } \int p_{\backslash l}(z_{\backslash l})dz_{\backslash l} = 1:\\
+ \bar{F_l}(z_l) &= F_l(z_l) + \int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l})dz_{\backslash l}\\
+\text{We also know that given the data,} &\int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l})dz_{\backslash l} \approx \frac{1}{N}\sum_{i=1}^NF_{\backslash l}(\mathbf{z}_{\backslash li}) = c \text{ where c is some constant. So:} \\
+\bar{F_l}(z_l) &= F_l(z_l) + c \quad \blacksquare
+\end{aligned}
+$$
+Now consider $E_{z\backslash l}[F(x) | z_l]$
+$$
+\begin{aligned}
+E_{z\backslash l}[F(x) | z_l] &= E_{z\backslash l}[F_l(\mathbf{z}_l) + F_{\backslash l}(\mathbf{z}_{\backslash l})| z_l]\\
+&= E_{z\backslash l}[F_l(\mathbf{z}_l)|z_l] + E[F_{\backslash l}(\mathbf{z}_{\backslash l})| z_l]\\
+&= F_l(z_l) + E[F_{\backslash l}(\mathbf{z}_{\backslash l})| z_l]\\
+&= F_l(z_l) + \int F_{\backslash l}(\mathbf{z}_{\backslash l})p_{\backslash l}(z_{\backslash l} | z_l)dz_{\backslash l}\\
+\end{aligned}
+$$
+This second term is not a constant w.r.t $z_l$, since the distribution of $z_{\backslash l}$ can change based on different values of $z_l$. 
+
+The conditional expectation is only a constant when $p_{\backslash l}(z_{\backslash l} | z_l) = p_{\backslash l}(z_{\backslash l})$, i.e. when $z_l$ and $z_{\backslash l}$ are independent. 
+
+\pagebreak
+
+We will make use of the following utility functions throughout the coding portion of this assignment:
+
+```{r}
+#Utility functions
+misclass_rate <- function(y_hat, y){
+  correct <- y_hat == y
+  pct_correct = sum(correct)/length(correct)
+  return(1 - pct_correct)
+}
+
+percent <- function(x, digits = 1, format = "f", ...) {
+  paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
+}
+```
+
+\pagebreak
+
+# Question 6
+### Binary classification: Spam Email. The data set for this problem is spam_stats315B.csv, with documentation files spam_stats315B_info.txt and spam_stats315B_names,txt. The data set is a collection of 4601 emails of which 1813 were considered spam, i.e. unsolicited commercial email. The data set consists of 58 attributes of which 57 are continuous predictors and one is a class label that indicates whether the email was considered spam (1) or not (0). Among the 57 predictor attributes are: percentage of the word “free” in the email, percentage of exclamation marks in the email, etc. See file spam_stats315B_names.txt for the full list of attributes. The goal is, of course, to predict whether or not an email is “spam”. This data set is used for illustration in the tutorial Boosting with R Programming. The data set spam_stats315B_train.csv represents a subsample of these emails randomly selected from spam_stats315B.csv to be used for training. The file spam_stats315B_test.csv contains the remaining emails to be used for evaluating results.
+
+```{r, eval = TRUE}
+#remove all variables except for functions
+rm(list = setdiff(ls(), lsf.str()))
+
+#data labels
+rflabs<-c("make", "address", "all", "3d", "our", "over", "remove",
+  "internet","order", "mail", "receive", "will",
+  "people", "report", "addresses","free", "business",
+  "email", "you", "credit", "your", "font","000","money",
+  "hp", "hpl", "george", "650", "lab", "labs",
+  "telnet", "857", "data", "415", "85", "technology", "1999",
+  "parts","pm", "direct", "cs", "meeting", "original", "project",
+  "re","edu", "table", "conference", ";", "(", "[", "!", "$", "#",
+  "CAPAVE", "CAPMAX", "CAPTOT","type")
+
+#load the data
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
+train <- read.csv(file="spam_stats315B_train.csv", header=FALSE, sep=",")
+test <- read.csv(file="spam_stats315B_test.csv", header=FALSE, sep=",")
+colnames(train)<-rflabs
+colnames(test)<-rflabs
+
+#set labels and variables to avoid confusion
+spam <- 1
+nonspam <- 0
+threshold = 0.50
+
+#randomize order of data
+set.seed(131)
+x <- train[sample(nrow(train)),]
+```
+
+### (a) Based on the training data, fit a gbm model for predicting whether or not an email is “spam”, following the example in the tutorial. What is your estimate of the misclassification rate? Of all the spam emails of the test set what percentage was misclassified, and of all the non-spam emails in the test set what percentage was misclassified?
+
+```{r, eval = TRUE, results="hold"}
+#fit model on training data
+set.seed(444) # random for bag.fraction
+gbm0 <- gbm(type~., data=x, train.fraction=1,
+            interaction.depth=4, shrinkage=.05,
+            n.trees=2500, bag.fraction=0.5, cv.folds=5,
+            distribution="bernoulli", verbose=F)
+
+#Ground truths
+y_train <- x$type
+y_test <- test$type
+
+#Predictions 
+nTreesForPrediction0 <- gbm.perf(gbm0, plot.it=FALSE, method="cv")
+y_hat_train <- predict(gbm0, x, type="response", n.trees=nTreesForPrediction0)
+y_hat_test <- predict(gbm0, test, type="response", n.trees=nTreesForPrediction0)
+
+y_hat_train[y_hat_train >  threshold] <- spam
+y_hat_train[y_hat_train <= threshold] <- nonspam
+y_hat_test[y_hat_test >  threshold] <- spam
+y_hat_test[y_hat_test <= threshold] <- nonspam
+
+#Training misclassification rates:
+cat("TRAIN overall misclassification rate: ", 
+    percent(misclass_rate(y_hat_train, y_train)), "\n")
+cat("TRAIN spam    misclassification rate: ", 
+    percent(misclass_rate(y_hat_train[y_train==spam], y_train[y_train==spam])), "\n")
+cat("TRAIN nonspam misclassification rate: ", 
+    percent(misclass_rate(y_hat_train[y_train==nonspam], y_train[y_train==nonspam])), "\n")
+
+
+#Spam misclassification rates:
+cat("TEST  overall misclassification rate: ", 
+    percent(misclass_rate(y_hat_test, y_test)), "\n")
+cat("TEST  spam    misclassification rate: ", 
+    percent(misclass_rate(y_hat_test[y_test==spam], y_test[y_test==spam])), "\n")
+#Non-Spam misclassiciation rates:
+cat("TEST  nonspam misclassification rate: ", 
+    percent(misclass_rate(y_hat_test[y_test==nonspam], y_test[y_test==nonspam])), "\n")
+```
+
+### (b) Your classifier in part (a) can be used as a spam filter. One of the possible disadvantages of such a spam filter is that it might filter out too many good (non-spam) emails. Therefore, a better spam filter might be the one that penalizes misclassifying non-spam emails more heavily than the spam ones. Suppose that you want to build a spam filter that “throws out” no more that 0.3% of the good (non-spam) emails. You have to find and use a cost matrix that penalizes misclassifying “good” emails as“spam” more than misclassifying “spam” emails as “good” by the method of trial and error. Once you have constructed your final spam filter with the property described above, answer the following questions:
+
+```{r, eval = TRUE, results="hold"}
+#set weights, fit model
+w <- x$type
+w[x$type == spam] <- 1
+w[x$type == nonspam] <- 200
+
+set.seed(444) # random for bag.fraction
+gbm1 <- gbm(type ~ ., data=x,  cv.folds=20, train.fraction=1,
+            interaction.depth=1,
+            shrinkage=.05,
+            n.trees=3000, 
+            bag.fraction=0.5,
+            distribution="bernoulli", verbose=F,
+            weights = w)
+```
+
+### (i) What is the overall misclassification error of your final filter and what is the percentage of good emails and spam emails that were misclassified respectively?
+
+```{r, eval = TRUE, results = "hold"}
+#predictions
+nTreesForPrediction1 <- gbm.perf(gbm1, plot.it=FALSE,method="cv")
+y_hat_train <- predict(gbm1, x, type="response", n.trees=nTreesForPrediction1)
+y_hat_test <- predict(gbm1, test, type="response", n.trees=nTreesForPrediction1)
+
+y_hat_train[y_hat_train >  threshold] <- spam
+y_hat_train[y_hat_train <= threshold] <- nonspam
+y_hat_test[y_hat_test >  threshold] <- spam
+y_hat_test[y_hat_test <= threshold] <- nonspam
+
+#Training misclassification rates:
+cat("TRAIN overall misclassification rate: ", 
+    percent(misclass_rate(y_hat_train, y_train)), "\n")
+cat("TRAIN spam    misclassification rate: ", 
+    percent(misclass_rate(y_hat_train[y_train==spam], y_train[y_train==spam])), "\n")
+cat("TRAIN nonspam misclassification rate: ", 
+    percent(misclass_rate(y_hat_train[y_train==nonspam], y_train[y_train==nonspam])), "\n")
+
+#Spam misclassification rates:
+cat("TEST  overall misclassification rate: ", 
+    percent(misclass_rate(y_hat_test, y_test)), "\n")
+cat("TEST  spam    misclassification rate: ", 
+    percent(misclass_rate(y_hat_test[y_test==spam], y_test[y_test==spam])), "\n")
+#Non-Spam misclassiciation rates:
+cat("TEST  nonspam misclassification rate: ", 
+    percent(misclass_rate(y_hat_test[y_test==nonspam], y_test[y_test==nonspam])), "\n")
+```
+
+### (ii) What are the important variables in discriminating good emails from spam for your spam filter?
+```{r, eval = TRUE}
+#Unweighted filter
+influential_vars <- summary.gbm(gbm0,main="RELATIVE INFLUENCE",order=TRUE,plotit=FALSE)
+top5_unweighted <- gsub("`","",influential_vars$var[1:5])
+
+#Weighted filter
+influential_vars <- summary.gbm(gbm1,main="RELATIVE INFLUENCE",order=TRUE,plotit=FALSE)
+top5_weighted <- gsub("`","",influential_vars$var[1:5])
+
+cat("Top 5 influential variables, unweighted model: ", 
+    top5_unweighted, "\n")
+cat("Top 5 influential variables, weighted model: ", 
+    top5_weighted, "\n")
+```
+
+### (iii) Using the interpreting tools provided by gbm, describe the dependence of the response on the most important attributes.
+
+Partial dependence plots show how a model's output is affected when varying a subset of variables (accounting for the other complementary subset of variables). Looking at the partial dependence, we can understand what the effect of changing a particular subset of variables' values has on the model's output (accounting for all other variables). This gives us a better understanding of the behavior of otherwise "black box" models. For this problem, we consider single variable partial dependence plots.
+
+\textbf{Unweighted model:} Looking at the variable with the most relative influence, \textit{"!"}, we can see that as we increase the frequency of \textit{"!"} as a proportion of an email's length, it increases the model's output probability that it is spam. This means that emails with a high frequency of \textit{"!"} relative to their length are indicative of spam since spam is the positve class and nonspam is the zero class.
+
+We see opposite behavior in \textit{"hp"}. Since George and his colleagues worked at Hewlett-Packard, emails with \textit{"hp"} display the opposite effect and the higher we move \textit{"hp"} in frequency the more likely it is that the email is legitimate and non-spam (according to our model).
+
+The other top influential variables have similar dependence plots: they influence the model's output to a particular class as its value is increased (taking into account the effects of the other variables).
+
+\textbf{Weighted model:} The partial dependence plots of the weighted model are harder to interpret. We have used the weights to incentivize our model to classify emails as non-spam, even in the evidence of what humans might consider spammy. Let's look at the plot for \texttt{CAPAVE}, or \texttt{capital\_run\_length\_average}. A partial dependence plot of our weighted Bernoulli model's link value (logit) shows a shape reminiscent of \textit{"hp"}, However, look at the y-axis values. The difference of maximum and minimum values on this log odds plot doesn't mean much in terms of probability, which we can see in the following plot of \texttt{CAPAVE}'s response value.
+
+```{r, eval = TRUE}
+plot(gbm0,match("!", rflabs),  nTreesForPrediction0, type="response",height=1)
+plot(gbm0,match("hp", rflabs),  nTreesForPrediction0, type="response",height=1)
+
+plot(gbm1,match("CAPAVE", rflabs), nTreesForPrediction1, type="link",height=1)
+plot(gbm1,match("CAPAVE", rflabs), nTreesForPrediction1, type="response",height=1)
+```
+
+# Question 7
+### Regression: California Housing. The data set calif_stats315B.csv consists of aggregated data from 20,640 California census blocks (from the 1990 census). The goal is to predict the median house value in each neighborhood from the others described in calif_stats315B.txt. Fit a gbm model to the data and write a short report that should include at least
+```{r, eval = TRUE, results="hold"}
+#reset all variables except user-defined functions
+rm(list = setdiff(ls(), lsf.str()))
+
+#data labls
+labels <-c(
+  "house_value", 
+  "median_income",
+  "housing_median_age",
+  "average_no_rooms",
+  "average_no_bedrooms",
+  "population",
+  "average_occupancy",
+  "latitude",
+  "longitude"
+)
+
+#load the data
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
+data <- read.csv(file="calif_stats315B.csv", header=FALSE, sep=",")
+colnames(data) <- labels
+
+#fit model on training data
+set.seed(444) # random for bag.fraction
+model <- gbm(house_value~., data=data, train.fraction=1,
+            interaction.depth=4, shrinkage=.05,
+            n.trees=2500, bag.fraction=0.5, cv.folds=5,
+            distribution="gaussian", verbose=F)
+```
+### (a) The prediction accuracy of gbm on the data set.
+
+The MSE of the response variable \texttt{house\_value} is $\sim0.15$. Since the response is in units of \$100,000, this means on average the squared error of the median \texttt{house\_value} predicted by our model is $\sim0.154 \times \$100,000$, or $\sim \$15,400$.
+
+```{r, eval = TRUE, results="hold"}
+#make predictions
+nTreesForPrediction <- gbm.perf(model, plot.it=FALSE, method="cv")
+y_hat <- predict(model, data, type="response", n.trees=nTreesForPrediction)
+
+#Calculate MSE on of regression
+y <- data$house_value
+MSE <- sum((y_hat - y)^2)/length(y)
+MSE
+```
+
+### (b) Identification of the most important variables.
+
+The most important variable for predicting \texttt{house\_value} for a particular neighborhood in California is \texttt{median\_income}, which intuitively makes sense.
+
+The second-tier of variables in terms of importance had similar levels of importance: \texttt{average\_occupancy}, \texttt{latitude} and \texttt{longitude}.
+
+The 4 variables that all had the similar levels of insignificance in predicting \texttt{house\_value} for a given neighborhood: \texttt{housing\_median\_age}, \texttt{average\_no\_rooms}, \texttt{population}, \texttt{average\_no\_bedrooms}.
+
+```{r, eval = TRUE, results="hold"}
+influential_vars <- summary.gbm(model,main="RELATIVE INFLUENCE",order=TRUE)
+top4 <- gsub("`","",influential_vars$var[1:4])
+cat("Top 4 influential variables: ", 
+    top4, "\n")
+```
+### (c) Comments on the dependence of the response on the most important variables (you may want to consider partial dependence plots (plot) on single and pairs of variables, etc.).
+
+This section refer to plots included following the discussion.
+
+We can see from the univariate dependence plots that as \texttt{median\_income} increases, our model's output for \texttt{home\_value} also increases (accounting effects of other variables).
+
+Additionally, the univariate dependence plots of \texttt{longitude} and \texttt{latitude} show that \texttt{home\_value} tends to decrease as homes get further from the coast. It also shows that \texttt{home\_value} tends to decrease as homes get further north (which makes sense since the Bay area is at the $\sim$half-way mark of California in terms of latitude). However, there is important nuance in the interaction between these two variables.
+
+The bivariate partial dependence of the model on \texttt{latitude} and \texttt{longitude} shows us something the univariate plots alone do not. 2-dimensional partial dependence plots show the model's output as a heat map over a grid of 2 variables. Pink is a lower output value, blue is higher. The border between the pink and blue zones have interior corner points at the Bay Area ($latlng = (38, -122)$) and Los Angeles ($latlng = (34, -118)$). It is not surprising that these major metropolitan areas influence \texttt{home\_value}.
+
+
+```{r, eval = TRUE}
+nTreesForPrediction <- gbm.perf(model, plot.it=FALSE, method ='cv')
+top4_indexes <- match(top4, labels) - 1 #-1 because first label is response var
+
+#univariate partial dependence
+for(i in top4_indexes){ plot(model,i,nTreesForPrediction) }
+
+#longitude, latitude 2d partial dependence
+plot(model,c(match("longitude",labels)-1,match("latitude",labels)-1),
+     nTreesForPrediction)
+```
+
+# Question 8
+
+### Regression: Marketing data. The data set age_stats315B.csv was already used in Homework 1. Review age_stats315B.txt for the information about order of attributes etc. 
+
+### (a) Fit a gbm model for predicting age form the other demographic attributes and compare the accuracy with the accuracy of your best single tree from Homework 1.
+
+Our GBM achieves a better accuracy in this regression problem, with an MSE of 0.5648001 compared to our best single tree which has an MSE of 0.6992926.
+
+```{r, eval = TRUE, results="hold"}
+#reset all variables except user-defined functions
+rm(list = setdiff(ls(), lsf.str()))
+
+#Read and type data
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
+age_data <- read.csv('age_stats315B.csv')
+factor_columns <- c(
+  'Occup',
+  'TypeHome',
+  'sex',
+  'MarStat',
+  'DualInc',
+  'HouseStat',
+  'Ethnic',
+  'Lang'
+)
+age_data[factor_columns] <- lapply(age_data[factor_columns], as.factor)
+
+#fit a GBM
+set.seed(444) # random for bag.fraction
+model_gbm <- gbm(age~., data=age_data, train.fraction=1,
+            interaction.depth=4, shrinkage=.05,
+            n.trees=2500, bag.fraction=0.5, cv.folds=5,
+            distribution="gaussian", verbose=F)
+nTreesForPrediction <- gbm.perf(model_gbm, method='cv', plot.it=FALSE)
+
+#fit a tree
+model_tree <- rpart(age ~ ., data = age_data, method = "anova", 
+                    control=rpart.control(minbucket = 10, 
+                                          xval = 10, 
+                                          maxsurrogate = 5, 
+                                          usesurrogate = 2, 
+                                          cp=0.0001))
+# Find the minimum cross-validation error + one SD
+min_error_window <- min(model_tree$cptable[,"xerror"] + model_tree$cptable[,"xstd"])
+# Find the simplest model with xerror within the min_error_window
+best_cp <- first(model_tree$cptable[which(model_tree$cptable[,"xerror"] < min_error_window),"CP"])
+best_single_tree <- prune(model_tree, cp = best_cp)
+
+#Make predictions
+y_hat_gbm <- predict(model_gbm, age_data, type="response", n.trees=nTreesForPrediction)
+y_hat_tree <- predict(best_single_tree, age_data)
+
+#Compare errors
+y <- age_data$age
+MSE_gbm <- sum((y_hat_gbm - y)^2)/length(y)
+MSE_tree <- sum((y_hat_tree - y)^2)/length(y)
+
+cat("MSE, gbm: ", MSE_gbm, "\n")
+cat("MSE, tree: ", MSE_tree, "\n")
+```
+
+### (b) Identify the most important variables.
+
+The most important variables were: \texttt{MarStat, Occup, HouseStat, Edu}
+
+These variables are also identified as important by the best single tree from homework 1.
+
+```{r, eval = TRUE, results="hold"}
+influential_vars <- summary.gbm(model_gbm,main="RELATIVE INFLUENCE",order=TRUE)
+top4 <- gsub("`","",influential_vars$var[1:4])
+cat("GBM top 4 influential variables: ",top4 , "\n")
+
+important_vars_single_tree <- names(best_single_tree$variable.importance)
+cat("Single tree top 6 important variables: ",important_vars_single_tree[1:6], "\n")
+```
+
+# Question 9
+
+### Multiclass classification: marketing data. The data set occup_stats315B.csv comes from the same marketing database used in Homework 1. The description of the attributes can be found in occup_stats315B.txt. The goal in this problem is to fit a gbm model to predict the type of occupation from the 13 other demographic variables.
+
+```{r, eval = TRUE, results="hold"}
+rm(list = setdiff(ls(), lsf.str()))
+
+#Read and type data
+labels <-c(
+  "Occup", 
+  "TypeHome",
+  "sex",
+  "MarStat",
+  "age",
+  "Edu",
+  "Income",
+  "LiveBA",
+  "DualInc",
+  "Persons",
+  "Under18",
+  "HouseStat",
+  "Ethnic",
+  "Lang"
+)
+factor_columns <- c(
+  'TypeHome',
+  'sex',
+  'MarStat',
+  'Occup',
+  'LiveBA',
+  'DualInc',
+  'HouseStat',
+  'Ethnic',
+  'Lang'
+)
+
+occup_labels <- c(
+  "Professional/Managerial",
+  "Sales Worker",
+  "Factory Worker/Laborer/Driver",
+  "Clerical/Service Worker",
+  "Homemaker",
+  "Student, HS or College",
+  "Military",
+  "Retired",
+  "Unemployed"
+)
+
+#load the data
+data_path <- paste(getwd(),'/data',sep='')
+setwd(data_path)
+occup_data <- read.csv('occup_stats315B.csv', header=FALSE, sep=",")
+colnames(occup_data) <- labels
+occup_data[factor_columns] <- lapply(occup_data[factor_columns], as.factor)
+
+#fit GBM model for occupation
+set.seed(444) # random for bag.fraction
+model <- gbm(Occup ~ ., data=occup_data, train.fraction=1,
+            interaction.depth=4, shrinkage=.05,
+            n.trees=2500, bag.fraction=0.5, cv.folds=5,
+            distribution="multinomial", verbose=F)
+```
+
+### (a) Report the test set misclassification error for gbm on the data set, and also the misclassification error for each class.
+
+```{r, eval = TRUE, results="hold"}
+nTreesForPrediction <- gbm.perf(model, method='cv')
+
+#determine misclassification rate
+y_hat_p <- predict(model, occup_data, type="response", n.trees=nTreesForPrediction)
+y_hat <- apply(y_hat_p,1,which.max)
+y <- occup_data$Occup
+
+#overall 
+cat("Overall misclassification rate: ", percent(misclass_rate(y_hat, y)), "\n")
+
+#by class
+for(occupation in levels(occup_data$Occup)){
+  occupation_i <- strtoi(occupation)
+  cat(percent(misclass_rate(y_hat[y==occupation_i], y[y==occupation_i])), ":", 
+    occup_labels[occupation_i], "\n")
+}
+```
+
+### (b) Identify the most important variables.
+
+The most important variables overall are \texttt{age}, \texttt{income}, and \texttt{education}.
+
+Occupation is hard to predict with the data given, as can be seen by the overall high misclassification rate. However the three classes we are able to predict better than most: Professional/Managerial, Student, and Retired.
+
+It is important to note that the three most important variables actually do a good job to distinguish these relatively well-predicted classes from the rest. Specifically: income for professionals, age and education for students, and age for retirees.
+
+```{r, eval = TRUE, results="hold"}
+influential_vars <- summary.gbm(model,main="RELATIVE INFLUENCE",order=TRUE)
+cat("Top 3 influential variables: ",gsub("`","",influential_vars$var[1:3]) , "\n")
+```
+
