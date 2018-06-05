@@ -81,7 +81,7 @@ test_y  <- data.frame(test[,'type'])
 
 reference: https://piazza.com/class/jfehm8n4ied2w9?cid=235
 
-```{r}
+```{r, results="hold"}
 get_accuracy <- function(y_hat, y, threshold){
   y_hat[y_hat >  threshold] <- 1
   y_hat[y_hat <= threshold] <- 0
@@ -107,7 +107,7 @@ for(size in num_neurons){
         train_scaled_X, train_y, size=num_neurons[size],
         linout = FALSE, entropy = FALSE, softmax = FALSE,
         censored = FALSE, skip = FALSE, rang = wt_rang, decay = 0,
-        maxit = 100, Hess = FALSE, trace = TRUE
+        maxit = 100, Hess = FALSE, trace = FALSE
     )
   
     y_hat <- predict(model, test_scaled_X)
@@ -120,7 +120,9 @@ for(size in num_neurons){
 
 best_performing_idx <- which.max(accuracies)
 best_performing_num_neurons <- num_neurons[best_performing_idx]
-print(best_performing_num_neurons)
+
+cat("Best performing number of hidden layer neurons: ", 
+    best_performing_num_neurons, "\n")
 
 ```
 
@@ -128,7 +130,7 @@ print(best_performing_num_neurons)
 
 see: https://piazza.com/class/jfehm8n4ied2w9?cid=223
 
-```{r}
+```{r, results="hold"}
 weight_decays <- seq(0,1,.1)
 num_reps <- 10
 accuracies <- list()
@@ -144,7 +146,7 @@ for(weight_decay in weight_decays){
         train_scaled_X, train_y, size= best_performing_num_neurons,
         linout = FALSE, entropy = FALSE, softmax = FALSE,
         censored = FALSE, skip = FALSE, rang = wt_rang, decay = weight_decay,
-        maxit = 100, Hess = FALSE, trace = TRUE
+        maxit = 100, Hess = FALSE, trace = FALSE
     )
   
     y_hat <- predict(model, test_scaled_X)
@@ -156,7 +158,9 @@ for(weight_decay in weight_decays){
 
 best_performing_idx <- which.max(accuracies)
 best_performing_weight_decay <- weight_decays[best_performing_idx]
-print(best_performing_weight_decay)
+
+cat("Best performing weight decay for best structural model: ", 
+    best_performing_weight_decay, "\n")
 
 ```
 
@@ -165,26 +169,15 @@ print(best_performing_weight_decay)
 
 See: https://piazza.com/class/jfehm8n4ied2w9?cid=257
 
-```{r}
+```{r, results="hold"}
+percent <- function(x, digits = 2, format = "f", ...) {
+  paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
+}
+
 wt_rang = 0.5
 num_neurons <- seq(1:10)
 weight_decays <- seq(0,1,.1)
 num_reps <- 10
-
-models <- list()
-for(i in c(1:length(num_neurons))){
-  
-  #average over several random initializations
-  for(j in c(1:length(weight_decays))){
-    model <- nnet(
-        train_scaled_X, train_y, size=num_neurons[i],
-        linout = FALSE, entropy = FALSE, softmax = FALSE,
-        censored = FALSE, skip = FALSE, rang = wt_rang, decay = weight_decays[j],
-        maxit = 100, Hess = FALSE, trace = TRUE
-    )
-    models[[paste(i,j,sep="_")]] <- model
-  }
-}
 
 find_threshold <- function(model){
   thresholds <- seq(0,1,0.01)
@@ -200,9 +193,6 @@ find_threshold <- function(model){
   }
   return(thresh)
 }
-
-model_thresholds <- lapply(models, function(x) {find_threshold(x)})
-rbind(models, model_thresholds)
 
 get_misclassification_rates <- function(model, threshold){
   y_hat <- predict(model, test_scaled_X)
@@ -221,11 +211,37 @@ get_misclassification_rates <- function(model, threshold){
   return(c(misclassification_rate, spam_misclassification_rate, nonspam_misclassification_rate))
 }
 
+
+models <- list()
+for(i in c(1:length(num_neurons))){
+  
+  for(j in c(1:length(weight_decays))){
+    model <- nnet(
+        train_scaled_X, train_y, size=num_neurons[i],
+        linout = FALSE, entropy = FALSE, softmax = FALSE,
+        censored = FALSE, skip = FALSE, rang = wt_rang, decay = weight_decays[j],
+        maxit = 100, Hess = FALSE, trace = FALSE
+    )
+    models[[paste(i,j,sep="_")]] <- model
+  }
+}
+
+model_thresholds <- lapply(models, function(x) {find_threshold(x)})
+
 misclassification_rates <- mapply(get_misclassification_rates, models, model_thresholds)
 best_model_idx <- which.min(misclassification_rates[1,])
 
 best_model <- models[[best_model_idx]]
 best_misclassification_rates <- misclassification_rates[,best_model_idx]
+
+cat("Best model: ","\n") 
+cat("Hidden layer size: ", best_model$n[2], "\n")
+cat("Decay: ", best_model$decay, "\n\n")
+
+cat("Misclassifiction rates: ","\n") 
+cat(percent(best_misclassification_rates[1]), ": Overall","\n")
+cat(percent(best_misclassification_rates[2]), ": Spam","\n")
+cat(percent(best_misclassification_rates[3]), ": Nonspam","\n")
 
 ```
 
