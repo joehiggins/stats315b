@@ -20,21 +20,109 @@ library(nnet)
 ### Consider a radial basis function network with spherical Gaussian basis of the form $B(x|\mu_m,\sigma_m) =  \left( -\frac{1}{2\sigma^{2}_{m}} \sum_{j=1}^{n} (x_j - \mu_{jm})^2 \right)$, with the function approximation given by $\hat{F}(x) = \sum_{m=1}^{M} a_m B(x|\mu_m,\sigma_m)$ and sum-of-squares error criterion. Derive expressions for the gradient $G(x)$ with respect to all (types of) parameters in the network.
 
 # Question 3
+### Consider a (“elliptical”) radial basis function network with elliptically symmetric Gaussian basis $B(\mathbf{x}|\mathbf{\mu}_m,\Sigma ) = exp(-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_m)^T \Sigma (\mathbf{x}-\mathbf{\mu}_m))$ where $\Sigma$ is a positive definite matrix.  Show that the output of such a network is equivalent to that of one composed of spherically symmetric Gaussian basis functions (Problem 2) with $\sigma_m = 1$, provided the input vector is first transformed by an appropriate linear transformation. Find expressions relating the transformed input vector $\mathbf{\bar{x}}$ and the transformed basis function centers $\mathbf{\bar{\mu}}_m$ to the corresponding original vectors $\mathbf{x}$ and $\mathbf{\mu}_m$.
+
+We will show that we can simply rescale the parameters $\mathbf{x}$ and $\mathbf{\mu}_m$ by $\Sigma^{-\frac{1}{2}}$. We know that  $\Sigma^{-\frac{1}{2}}$ exists because $\Sigma$ is a symmetric, positive definite matrix so it has exactly one positive definite square root, and that square root is invertible.
+
+Let $\mathbf{\bar{x}} = \Sigma^{-\frac{1}{2}}\mathbf{x}$ and $\mathbf{\bar{\mu}}_m = \Sigma^{-\frac{1}{2}}\mathbf{\mu}_m$.  Then plugging those values in to the elliptically symmetric Gaussian basis function: 
+
+$$
+\begin{aligned}
+B(\mathbf{\bar{x}}|\mathbf{\bar{\mu}}_m,\Sigma ) &= e^{-\frac{1}{2}(\mathbf{\bar{x}}-\mathbf{\bar{\mu}}_m)^T \Sigma (\mathbf{\bar{x}}-\mathbf{\bar{\mu}}_m)} \\
+&= e^{-\frac{1}{2}(\Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m))^T \Sigma (\Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
+&= e^{-\frac{1}{2}((\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}}^T \Sigma \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
+\text{Since }\Sigma^{-\frac{1}{2}} \text{ is symmetric}:\\
+&= e^{-\frac{1}{2}((\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}} \Sigma \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
+\text{Substituting }\Sigma = \Sigma^{\frac{1}{2}}\Sigma^{\frac{1}{2}}:\\
+&= e^{-\frac{1}{2}((\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}} \Sigma^{\frac{1}{2}}\Sigma^{\frac{1}{2}} \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
+&= e^{-\frac{1}{2}((\mathbf{x}-\mathbf{\mu}_m)^T(\mathbf{x}-\mathbf{\mu}_m)}
+\end{aligned}
+$$
+So $B(\mathbf{\bar{x}}|\mathbf{\bar{\mu}}_m,\Sigma)$ is equivalent to the spherical basis network with parameters $\mathbf{x}$, $\mathbf{\mu}_m$, $\sigma_m^2=1$. $\blacksquare$
 
 # Question 4
+### Now consider a more general “elliptical” radial basis function network with Gaussian basis functions $B(\mathbf{x}|\mathbf{\mu}_m,\Sigma_m ) = exp(-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_m)^T \Sigma_m (\mathbf{x}-\mathbf{\mu}_m))$.  Here the matrix $\Sigma_m$ is allowed to be different for each basis function. In standard feed—forward neural networks the “hidden units” compute (transfer) functions that vary in only one direction in the input space. Characterize the type of matrices $\Sigma_m$ that would cause radial basis functions to have this property also. In this sense general (elliptical) radial basis functions networks can be viewed as a generalization of standard feed-forward networks as well.
+
+First, we assume that $\mu_m = 0$ to simplify the notation.  Otherwise we can define $\mathbf{\bar{x}} = \mathbf{x} - \mu_m$ and follow the reasoning with $\mathbf{\bar{x}}$ below.
+
+Since $\Sigma_m$ is symmetric, we know $\Sigma_m = V\Lambda V^T = \sum_{i=1}^p\lambda_jv_jv_j^T$, where $V$ is an orthonormal basis for $\mathbb{R}^p$, and $\mathbf{x} \in \mathbb{R}^p$. 
+
+We are interested in defining $\Sigma_m$ such that the basis function network only allows x to change in 1 direction, which we call $\mathbf{v}_{j^*}$.  Using the basis $V$ from above, we are interested in finding the $\Sigma_m$ such that for all vectors $\mathbf{v}_j \in V, j \neq j^*$,
+\begin{equation}
+B(\mathbf{x} + \mathbf{v}_j|0, \Sigma_m )) = B(\mathbf{x}|0, \Sigma_m ))
+\end{equation}
+
+For (1) to happen, $\Sigma_m$ must be such that:
+$$
+\begin{aligned}
+B(\mathbf{x} + \mathbf{v}_j|0, \Sigma_m )) &= B(\mathbf{x}|0, \Sigma_m )) \\
+e^{-\frac{1}{2}(\mathbf{x} + \mathbf{v}_j)^T \Sigma_m (\mathbf{x} + \mathbf{v}_j)} &= e^{-\frac{1}{2}\mathbf{x}^T \Sigma_m \mathbf{x}} \\
+\text{Taking the log of both sides:} \\
+-\frac{1}{2}(\mathbf{x} + \mathbf{v}_j)^T \Sigma_m (\mathbf{x} + \mathbf{v}_j) &= -\frac{1}{2}\mathbf{x}^T \Sigma_m \mathbf{x} \\
+(\mathbf{x} + \mathbf{v}_j)^T \Sigma_m (\mathbf{x} + \mathbf{v}_j) &= \mathbf{x}^T \Sigma_m \mathbf{x} \\
+(\mathbf{x}^T + \mathbf{v}_j^T) \Sigma_m (\mathbf{x} + \mathbf{v}_j) &= \mathbf{x}^T \Sigma_m \mathbf{x} \\
+(\mathbf{x}^T\Sigma_m + \mathbf{v}_j^T\Sigma_m)(\mathbf{x} + \mathbf{v}_j) &= \mathbf{x}^T \Sigma_m \mathbf{x} \\
+\mathbf{x}^T\Sigma_m\mathbf{x} + \mathbf{x}^T\Sigma_m\mathbf{v}_j + \mathbf{v}_j^T\Sigma_m\mathbf{x} +    \mathbf{v}_j^T\Sigma_m\mathbf{v}_j &= \mathbf{x}^T \Sigma_m \mathbf{x} \\
+\mathbf{x}^T\Sigma_m\mathbf{x} + 2\mathbf{x}^T\Sigma_m\mathbf{v}_j +  \mathbf{v}_j^T\Sigma_m\mathbf{v}_j &= \mathbf{x}^T \Sigma_m \mathbf{x} \\
+2\mathbf{x}^T\Sigma_m\mathbf{v}_j +  \mathbf{v}_j^T\Sigma_m\mathbf{v}_j &= 0 \\
+(2\mathbf{x} + \mathbf{v}_j)^T\Sigma_m\mathbf{v}_j &= 0 \\
+\end{aligned}
+$$
+So now we need to find a $\Sigma_m$ such that the above property holds.
+
+Recall that $\Sigma_m = \sum_{i=1}^p\lambda_jv_jv_j^T$. We assert that if $\Sigma_m$ is a rank 1 matrix of the form $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \mathbf{v}_{j^*}^T$ -- i.e. assume that for all values $j \neq j^*$, $\lambda_j = 0$ -- then the above property does hold.
+
+Assume that $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \mathbf{v}_{j^*}^T$. Then for any $\mathbf{v}_j$, $j \neq j^*$:
+$$
+\begin{aligned}
+(2\mathbf{x} + \mathbf{v}_j)^T\Sigma_m\mathbf{v}_j &= \sum_{i=1}^p\lambda_j(2\mathbf{x} + \mathbf{v}_j)^Tq_jq_j^T\mathbf{v}_j \\
+ &= \lambda_{j^*}(2\mathbf{x} + \mathbf{v}_j)^T\mathbf{v}_{j^*}\mathbf{v}_{j^*}^T\mathbf{v}_j \\
+\text{Since } V \text{ is an orthonormal basis, for all } j \neq j^*, \mathbf{v}_{j^*}^T\mathbf{v}_j = 0: \\
+&= \lambda_{j^*}(2\mathbf{x} + \mathbf{v}_j)^T\mathbf{v}_{j^*} (0) \\
+&= 0 \\
+\end{aligned}
+$$
+Therefore we have shown that for $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \mathbf{v}_{j^*}^T$, $B(\mathbf{x} + \mathbf{v}_j|0, \Sigma_m )) = B(\mathbf{x}|0, \Sigma_m ))$ holds for all $j \neq j^*$, and the basis function can only vary in the direction $v_{j^*} $
 
 # Question 5
 ### Describe $K$—fold cross-validation. What is it used for. What are the advan- tages/disadvantages of using more folds (increasing $K$). When does cross—validation estimate the performance of the actual predicting function being used.
 
+Disadvantages of using more folds (as $K \rightarrow N$):
+\begin{itemize}
+\item As more and more of the data is included in the training set, the answer for the error will have higher variance as the training sets become more similar to each other.
+\item More computation time to execute the full K-fold test
+\end{itemize}
+
+Advantages of using more folds:
+\begin{itemize}
+\item You can use more of your available data to train, meaning that your solution will have less bias (Depending on how sensitive your problem is to the size of the training set used)
+\item Assuming that your final model will be the one trained on the full dataset, your cross-validation estimator will be approximately unbiased for the expected prediction error of your final model
+\end{itemize}
+
+In general, cross-validation measures the error of the modeling procedure (i.e. how good is a neural network with hyperparameters {H} at accomplishing a particular task) as opposed to the actual model or "predicting function" that you will use to predict the target on future data.  This is because for each fold, you learn a new set of values for the parameters.  Cross-validation only estimates the performance of the actual predicting function to be used if the parameter weights learned for each fold are identical.
+
 # Question 6
 ### Suppose there are several outcome variables $\{y_1,y_2,...,y_M\}$ associated with a common set of predictor variables $x = \{x_1,x_2,...,x_n\}$. One could train separate single output neural networks for each outcome y_m or train a single network with multiple outputs, one for each y_m. What are the relative advantages/disadvantages of these two respective approaches. In what situations would one expect each to be better than the other.
+
+Advantages of training multiple networks:
+\begin{itemize}
+\item You can finetune the network to predict a particular outcome variable very well
+\item If the outcomes are unrelated and the important subspace of the predictor space is very different for each, then you will probably hurt your learning by training on all of the outcomes at the same time.
+\end{itemize}
+
+Disadvantages:
+\begin{itemize}
+\item Requires more computation time - you have to train $M$ networks as opposed to just training 1. 
+\item More parameters means that you can end up in more local minima (more likely to overfit)
+\item For each of the individual networks, you are not using the information that you have that $\mathbf{x}$ also predicts $\{y_j\}, j \neq k$ where $y_k$ is the outcome variable of your network.  Training a network with auxiliary losses can be thought of us a form of regularization -- encouraging representations in the lower levels of the network that are more meaningful (And create a network that is more generalizable).
+\end{itemize}
 
 # Question 7 
 ### Spam Email. The data sets spam_stats315B_train.csv, spam_stats315B_test.csv and documentation for this problem are the same as in Homework 2 and can be found in the class web page. You need first to standardize predictors and choose all the weights starting values at random in the interval [-0.5, 0.5].
 
 see: https://piazza.com/class/jfehm8n4ied2w9?cid=256
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 rm(list = ls())
 
 #Utility functions
@@ -80,7 +168,7 @@ set_seed <- function(){
 
 ```
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 #remove all variables except for functions
 rm(list = setdiff(ls(), lsf.str()))
 
@@ -130,7 +218,7 @@ The structural model with 4 hidden units performs best at classifying the test s
 
 reference: https://piazza.com/class/jfehm8n4ied2w9?cid=235
 
-```{r, results="hold", eval = TRUE}
+```{r, results="hold", eval = FALSE}
 #remove all except functions and data
 to_keep <- ls()[!(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y'))]
 rm(list = setdiff(to_keep, lsf.str()))
@@ -189,7 +277,7 @@ Our best model uses 4 neurons, and a weight decay of 0.1. It has an overall esti
 
 see: https://piazza.com/class/jfehm8n4ied2w9?cid=223
 
-```{r, results="hold", eval = TRUE}
+```{r, results="hold", eval = FALSE}
 #remove all except functions, data and best structural info
 to_keep <- ls()[
   !(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y','best_performing_num_neurons'))
@@ -259,7 +347,7 @@ Our best filter requiring the proportion of misclassified nonspam to be less tha
 
 See: https://piazza.com/class/jfehm8n4ied2w9?cid=257
 
-```{r, results="hold", eval = TRUE}
+```{r, results="hold", eval = FALSE}
 #remove all except functionsand data
 to_keep <- ls()[!(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y'))]
 rm(list = setdiff(to_keep, lsf.str()))
