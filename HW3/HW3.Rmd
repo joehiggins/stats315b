@@ -34,8 +34,55 @@ library(nnet)
 
 see: https://piazza.com/class/jfehm8n4ied2w9?cid=256
 
-```{r}
+```{r, eval = TRUE}
 rm(list = ls())
+
+#Utility functions
+
+#get overall accuracy of a model for a given threeshold
+get_accuracy <- function(y_hat, y, threshold){
+  y_hat[y_hat >  threshold] <- 1
+  y_hat[y_hat <= threshold] <- 0
+  correct <- y_hat == y
+  pct_correct = sum(correct)/length(correct)
+  return(pct_correct)
+}
+
+#returns misclassification rates for overall and each class for a given threshold
+get_misclassification_rates <- function(model, threshold){
+  y_hat <- predict(model, test_scaled_X)
+  y_hat[y_hat >  threshold] <- 1
+  y_hat[y_hat <= threshold] <- 0
+  
+  correct <- y_hat == test_y
+  correct_spam    <- correct[test_y == 1]
+  correct_nonspam <- correct[test_y == 0]
+  
+  misclassification_rate <- 1 - sum(correct)/length(correct)
+  spam_misclassification_rate <- 1 - sum(correct_spam)/length(correct_spam)  
+  nonspam_misclassification_rate <- 1 - sum(correct_nonspam)/length(correct_nonspam)
+
+  return(c(
+    misclassification_rate, 
+    spam_misclassification_rate, 
+    nonspam_misclassification_rate)
+  )
+}
+
+#display numeric as percent
+percent <- function(x, digits = 2, format = "f", ...) {
+  paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
+}
+
+set_seed <- function(){
+  set.seed(123)
+}
+
+```
+
+```{r, eval = TRUE}
+#remove all variables except for functions
+rm(list = setdiff(ls(), lsf.str()))
 
 #data labels
 rflabs<-c("make", "address", "all", "3d", "our", "over", "remove",
@@ -79,37 +126,38 @@ test_y  <- data.frame(test[,'type'])
 
 (a) Fit on the training set one hidden layer neural networks with 1, 2,..., 10 hidden units and different sets of starting values for the predictors (obtain in this way one model for each number of units). Which structural model performs best at classifying on the test set?
 
+The structural model with 4 hidden units performs best at classifying the test set, achieving an estimated (test set) accuracy of 92.24% . The second best was 3 hidden units, achieving 91.66% accuracy.
+
 reference: https://piazza.com/class/jfehm8n4ied2w9?cid=235
 
-```{r, results="hold"}
-get_accuracy <- function(y_hat, y, threshold){
-  y_hat[y_hat >  threshold] <- 1
-  y_hat[y_hat <= threshold] <- 0
-  correct <- y_hat == y
-  pct_correct = sum(correct)/length(correct)
-  return(pct_correct)
-}
+```{r, results="hold", eval = TRUE}
+#remove all except functions and data
+to_keep <- ls()[!(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y'))]
+rm(list = setdiff(to_keep, lsf.str()))
 
-wt_rang = 0.5
+#set parameters
 num_neurons <- seq(1:10)
 num_reps <- 10
+wt_rang = 0.5
 threshold <- .50
-accuracies <- list()
+accuracies <- c()
 
 #for each structural model
 for(size in num_neurons){
-  
+
   sum_accuracy <- 0
-  
-  #average over several random initializations
+    
+  #average accuracy over num_reps random initializations
   for(i in c(1:num_reps)){
+    
+    set_seed()
+    
     model <- nnet(
         train_scaled_X, train_y, size=num_neurons[size],
         linout = FALSE, entropy = FALSE, softmax = FALSE,
         censored = FALSE, skip = FALSE, rang = wt_rang, decay = 0,
         maxit = 100, Hess = FALSE, trace = FALSE
     )
-  
     y_hat <- predict(model, test_scaled_X)
     sum_accuracy <- sum_accuracy + get_accuracy(y_hat, test_y, threshold)
   }
@@ -117,31 +165,54 @@ for(size in num_neurons){
   accuracies <- c(accuracies, sum_accuracy/num_reps)
 }
 
-
+#get the num_neurons corresponding with model that produced highest average accuracy
 best_performing_idx <- which.max(accuracies)
 best_performing_num_neurons <- num_neurons[best_performing_idx]
+best2_performing_idx <- which.max(accuracies[accuracies!=max(accuracies)])
+best2_performing_num_neurons <- num_neurons[best2_performing_idx]
 
+#Report output
 cat("Best performing number of hidden layer neurons: ", 
-    best_performing_num_neurons, "\n")
+    best_performing_num_neurons, "\n",
+    "Accuracy: ",
+    percent(accuracies[best_performing_idx]),"\n")
 
+cat("2nd best performing number of hidden layer neurons: ", 
+    best2_performing_num_neurons, "\n",
+    "Accuracy: ",
+    percent(accuracies[best2_performing_idx]),"\n")
 ```
 
 (b) Choose the optimal regularization (weight decay for parameters 0,0.1,...,1) for the structural model found above by averaging your estimators of the misclassification error on the test set. The average should be over 10 runs with different starting values. Describe your final best model obtained from the tuning process: number of hidden units and the corresponding value of the regularization parameter. What is an estimation of the misclassification error of your model?
 
+Our best model uses 4 neurons, and a weight decay of 0.1. It has an overall estimated (test set) misclassification rate of 4.69% (spam 5.34%, and nonspam 4.26%). We see this is an improvement over the unregularized version, which had an estimated misclassification rate of 7.76%.
+
 see: https://piazza.com/class/jfehm8n4ied2w9?cid=223
 
-```{r, results="hold"}
+```{r, results="hold", eval = TRUE}
+#remove all except functions, data and best structural info
+to_keep <- ls()[
+  !(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y','best_performing_num_neurons'))
+]
+rm(list = setdiff(to_keep, lsf.str()))
+
+#set parameters
 weight_decays <- seq(0,1,.1)
 num_reps <- 10
-accuracies <- list()
+wt_rang = 0.5
+threshold <- .50
+accuracies <- c()
 
-#for each structural model
+#for each weight decay
 for(weight_decay in weight_decays){
   
   sum_accuracy <- 0
   
   #average over several random initializations
   for(i in c(1:num_reps)){
+    
+    set_seed()
+    
     model <- nnet(
         train_scaled_X, train_y, size= best_performing_num_neurons,
         linout = FALSE, entropy = FALSE, softmax = FALSE,
@@ -156,30 +227,47 @@ for(weight_decay in weight_decays){
   accuracies <- c(accuracies, sum_accuracy/num_reps)
 }
 
+#get the weight decay corresponding with model that produced highest average accuracy
 best_performing_idx <- which.max(accuracies)
 best_performing_weight_decay <- weight_decays[best_performing_idx]
 
-cat("Best performing weight decay for best structural model: ", 
-    best_performing_weight_decay, "\n")
+#get misclassification rates for our best chosen parameters
+set_seed()
+model <- nnet(
+    train_scaled_X, train_y, size= best_performing_num_neurons,
+    linout = FALSE, entropy = FALSE, softmax = FALSE,
+    censored = FALSE, skip = FALSE, rang = wt_rang, decay = best_performing_weight_decay,
+    maxit = 100, Hess = FALSE, trace = FALSE
+)
+misclassification_rates <- get_misclassification_rates(model, threshold)
+
+#Report output
+cat("Best number of hidden units: ", best_performing_num_neurons, "\n") 
+cat("Best weight decay for chosen structure: ", best_performing_weight_decay, "\n\n")
+
+cat("Misclassifiction rates: ","\n") 
+cat(percent(misclassification_rates[1]), ": Overall","\n")
+cat(percent(misclassification_rates[2]), ": Spam","\n")
+cat(percent(misclassification_rates[3]), ": Nonspam","\n")
 
 ```
 
 
 (c) As in the previous homework the goal now is to obtain a spam filter. Repeat the previous point requiring this time the proportion of misclassified good emails to be less than 1%.
 
+Our best filter requiring the proportion of misclassified nonspam to be less than 1% has a hidden layer size of 6 and weight decay of 0.2. This achieves an overall misclassification rate of 6.58% (spam: 14.89%, nonspam: 0.98%). We find the best filter by fitting a model for each combination of a number of hidden units in $\{1,2,...,10\}$ and the weight decay in $\{0.0,0.1,...,1.0\}$. We then find the minimum threshold that misclassifies at most 1% of nonspam emails for each model. By applying to each model it's own threshold, we find the model and threshold combination that yields the lowest overall misclassification rate while maintaining a nonspam misclassification rate of at most 1%.
+
 See: https://piazza.com/class/jfehm8n4ied2w9?cid=257
 
-```{r, results="hold"}
-percent <- function(x, digits = 2, format = "f", ...) {
-  paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
-}
+```{r, results="hold", eval = TRUE}
+#remove all except functionsand data
+to_keep <- ls()[!(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y'))]
+rm(list = setdiff(to_keep, lsf.str()))
 
-wt_rang = 0.5
-num_neurons <- seq(1:10)
-weight_decays <- seq(0,1,.1)
-num_reps <- 10
-
+#function that finds threshold for a 1% or lower nonspam misclassification rate 
+#for a given model
 find_threshold <- function(model){
+  
   thresholds <- seq(0,1,0.01)
   y_hat <- predict(model, test_scaled_X)
   
@@ -194,28 +282,18 @@ find_threshold <- function(model){
   return(thresh)
 }
 
-get_misclassification_rates <- function(model, threshold){
-  y_hat <- predict(model, test_scaled_X)
-  y_hat[y_hat >  threshold] <- 1
-  y_hat[y_hat <= threshold] <- 0
-  
-  correct <- y_hat == test_y
-  correct_spam    <- correct[test_y == 1]
-  correct_nonspam <- correct[test_y == 0]
-  
-  misclassification_rate <- 1 - sum(correct)/length(correct)
-  spam_misclassification_rate <- 1 - sum(correct_spam)/length(correct_spam)  
-  nonspam_misclassification_rate <- 1 - sum(correct_nonspam)/length(correct_nonspam)
-  
-  
-  return(c(misclassification_rate, spam_misclassification_rate, nonspam_misclassification_rate))
-}
+#set parameters
+num_neurons <- seq(1:10)
+weight_decays <- seq(0,1,.1)
+wt_rang = 0.5
 
-
+#fit a model to each set of parameters
 models <- list()
 for(i in c(1:length(num_neurons))){
-  
   for(j in c(1:length(weight_decays))){
+    
+    set_seed()
+    
     model <- nnet(
         train_scaled_X, train_y, size=num_neurons[i],
         linout = FALSE, entropy = FALSE, softmax = FALSE,
@@ -226,14 +304,19 @@ for(i in c(1:length(num_neurons))){
   }
 }
 
+#find the threshold that returns < 1% nonspam misclassification rate for each model
 model_thresholds <- lapply(models, function(x) {find_threshold(x)})
 
+#get the overall, spam, and non-spam misclassification rates at each threshold
 misclassification_rates <- mapply(get_misclassification_rates, models, model_thresholds)
-best_model_idx <- which.min(misclassification_rates[1,])
 
+#find the model with the lowest overall misclassification rate 
+#(using forced < 1% nonspam threshold)
+best_model_idx <- which.min(misclassification_rates[1,])
 best_model <- models[[best_model_idx]]
 best_misclassification_rates <- misclassification_rates[,best_model_idx]
 
+#report best model
 cat("Best model: ","\n") 
 cat("Hidden layer size: ", best_model$n[2], "\n")
 cat("Decay: ", best_model$decay, "\n\n")
