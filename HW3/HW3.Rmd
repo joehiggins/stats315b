@@ -270,7 +270,6 @@ Advantages of training multiple networks:
 \begin{itemize}
 \item You can finetune each network to predict a particular outcome variable very well
 \item If the outcomes are unrelated and the important subspace of the predictor space is very different for each, then you will probably hurt your learning by training on all of the outcomes in a single network with multiple outputs. 
-\item Since the goal of multitask learning is to find the best combination of outputs, a multiple-output model may comprimise accuracy for one output in order to minimize overall loss.
 \end{itemize}
 
 Disadvantages:
