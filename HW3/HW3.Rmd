@@ -243,23 +243,23 @@ $$
 Therefore we have shown that for $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \mathbf{v}_{j^*}^T$, $B(\mathbf{x} + \mathbf{v}_j|0, \Sigma_m )) = B(\mathbf{x}|0, \Sigma_m ))$ holds for all $j \neq j^*$, and the basis function can only vary in the direction $v_{j^*}$
 
 # Question 5
-### Describe $K$—fold cross-validation. What is it used for. What are the advan- tages/disadvantages of using more folds (increasing $K$). When does cross—validation estimate the performance of the actual predicting function being used.
+### Describe $K$—fold cross-validation. What is it used for. What are the advantages/disadvantages of using more folds (increasing $K$). When does cross—validation estimate the performance of the actual predicting function being used.
 
-In $K$—fold cross-validation, we split our training data into disjoint subsets of $m/K$ examples each, where $m$ is the total number of training examples. We then train the model $K$ times, leaving out a different $m/K$ as a cross-validation set each time. We estimate the model's error as the average cross-validation error over each of the $K$ folds. If you are evaluating multiple models, you often pick the model with the lowest average error from $K$-fold cross validation and retrain it on the entire dataset. The extreme of this procedure is $K = m$, also known as Leave-One-Out cross validation.
+In $K$—fold cross-validation, we split our training data into disjoint subsets of $N/K$ examples each, where $N$ is the total number of training examples. We then train the model $K$ times, leaving out a different $N/K$ as a cross-validation set each time. We estimate the model's error as the average cross-validation error over each of the $K$ folds. It is commonly used for evaluating multiple models (e.g., hyperparameter selection), you often pick the model with the lowest average error from $K$-fold cross validation and retrain it on the entire dataset. It is also more common to have higher $K$ in smaller data sets. The extreme of this procedure is $K = N$, also known as Leave-One-Out cross validation.
 
 Disadvantages of using more folds (as $K \rightarrow N$):
 \begin{itemize}
-\item As more and more of the data is included in the training set, the answer for the error will have higher variance as the training sets become more similar to each other.
-\item More computation time to execute the full K-fold test
+\item As $K$ increases, more and more of the data is included in the training set. As a result, the cross-validation error will have higher variance because each of the $K$ training sets become increasingly similar. One can think of this as a form of overfitting.
+\item More computation time as number of folds increases.
 \end{itemize}
 
 Advantages of using more folds:
 \begin{itemize}
-\item You can use more of your available data to train, meaning that your solution will have less bias (Depending on how sensitive your problem is to the size of the training set used)
+\item You can use more of your available data to train, meaning that your solution will have less bias (depending on how sensitive your problem is to the size of the training set used)
 \item Assuming that your final model will be the one trained on the full dataset, your cross-validation estimator will be approximately unbiased for the expected prediction error of your final model
 \end{itemize}
 
-In general, cross-validation measures the error of the modeling procedure (i.e. how good is a neural network with hyperparameters {H} at accomplishing a particular task) as opposed to the actual model or "predicting function" that you will use to predict the target on future data.  This is because for each fold, you learn a new set of values for the parameters.  Cross-validation only estimates the performance of the actual predicting function to be used if the parameter weights learned for each fold are identical.
+In general, cross-validation measures the error of the modeling procedure (i.e. how good is a neural network with hyperparameters {H} at accomplishing a particular task) as opposed to the actual model or "predicting function" that you will use to predict the target on future data.  This is because for each fold, you learn a new set of values for the parameters.  Cross-validation would estimate the performance of the actual predicting function to be used if the parameter weights learned for each fold are identical.
 
 # Question 6
 ### Suppose there are several outcome variables $\{y_1,y_2,...,y_M\}$ associated with a common set of predictor variables $x = \{x_1,x_2,...,x_n\}$. One could train separate single output neural networks for each outcome y_m or train a single network with multiple outputs, one for each y_m. What are the relative advantages/disadvantages of these two respective approaches. In what situations would one expect each to be better than the other.
