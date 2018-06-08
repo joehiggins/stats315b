@@ -48,16 +48,16 @@ First, we need to derive the gradient for the base case (the output node).  The 
 $$
 \begin{aligned}
   \frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{ko}^{(L)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial \hat{F}(x_i)}*\frac{\partial\hat{F}(x_i)}{\partial W_{ko}^{(L)}} \\
-  \frac{\partial L(y_i,\hat{F}(x_i))}{\hat{F}(x_i)} &= \frac{\partial}{\partial \hat{F}(x_i)}\big[ \frac{1}{2}(y_i - \hat{F}(x_i))^2\big] = (y_i - \hat{F}(x_i)) \\
+  \frac{\partial L(y_i,\hat{F}(x_i))}{\hat{F}(x_i)} &= \frac{\partial}{\partial \hat{F}(x_i)}\big[ \frac{1}{2}(\hat{F}(x_i) - y_i)^2\big] = (\hat{F}(x_i) - y_i) \\
   \frac{\partial\hat{F}(x_i)}{\partial W_{ko}^{(L)}} &= \frac{\partial}{\partial W_{ko}^{(L)}}\sum_{j=1}^{I_o^{(L)}}W_{jo}^{(L)}O_j^{(L-1)} = O_k^{(L-1)} \\
-    \frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{ko}^{(L)}} &= (y_i - \hat{F}(x_i)) * O_k^{(L-1)}
+    \frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{ko}^{(L)}} &= (\hat{F}(x_i) - y_i) * O_k^{(L-1)}
 \end{aligned}
 $$
 At the same time, we also calculate the gradient with respect to the output of each node in the $(L-1)^{th}$ layer connected to the output node:
 $$
 \begin{aligned}
   \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_{k}^{(L - 1)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial \hat{F}(x_i)}*\frac{\partial\hat{F}(x_i)}{\partial O_{k}^{(L - 1)}} \\
-  &= (y_i - \hat{F}(x_i)) * W_{ko}^{(L)}
+  &= (\hat{F}(x_i) - y_i) * W_{ko}^{(L)}
 \end{aligned}
 $$
 For the weights of each node in the $l^{th}$ layer, assuming we have already calculated the gradients of the output of the $l^{th}$ layer, we calculate the gradient:
@@ -67,7 +67,7 @@ $$
   \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_j^{(l)}}& \text{ was calculated in the previous step} \\
   \frac{\partial O_j^{(l)}}{\partial \zeta} &= \frac{\partial S(\zeta)}{\partial \zeta} = S(\zeta) * (1 - S(\zeta)) \text{, where } \zeta = \sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)} \\
   \frac{\partial \zeta}{\partial W_{kj}^{(l)}} &= \frac{\partial}{\partial W_{kj}^{(l)}} \sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)} = O_k^{(l-1)} \\
-\frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{ij}^{(l)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_k^{(l)}} * S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)}) * (1 - S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)})) * O_k^{(l-1)}
+\frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{kj}^{(l)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_k^{(l)}} * S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)}) * (1 - S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)})) * O_k^{(l-1)}
 \end{aligned}
 $$
 And finally for the outputs of the $(l-1)^{th}$ layer:
