@@ -2,6 +2,9 @@
 title: "Stats 315B: Homework 3"
 author: "Joe Higgins, Austin Wang, Jessica Wetstone"
 date: "Due 5/20/2018"
+header-includes:
+  - \usepackage{algorithm}
+  - \usepackage{algpseudocode}
 output: pdf_document
 ---
 
@@ -15,6 +18,103 @@ library(nnet)
 
 # Question 1
 ### Consider a multi-hidden layer neural network trained by sequential steepest-descent using the weight updating formula $w_t = w_{t-1} - \eta G(w_{t-1})$ Here $t$ labels the observations presented in sequence (time) and $G(w)$ is the gradient of the squared-error criterion evaluated at $w$. Derive a recursive "back-propagation" algorithm for updating all of the network weights at each step. With this algorithm the update for an input weight to a particular hidden node is computed using only the value of its corresponding input (that it weights), the value of the output of the hidden node to which it is input, and an "error signal" from each of the nodes in the next higher layer to which this node is connected. Thus, each node in the network can update its input weights using information provided only by the nodes to which it is connected.
+
+Per Piazza, we assume that the network has only one output node, and that the activation function for the output node is simply the identity $I(\zeta) = \zeta$. We also assume that the activation functions for all of the interior nodes are sigmoids: $S(\zeta) = \frac{1}{1 + e^{-\zeta}}$
+
+The loss of the network for a particular observation $x_i$ can be written $L(y_i, \hat{F}(x_i)) = \frac{1}{2}(y_i - \hat{F}(x_i))^2$. 
+
+We use the following notation:
+
+\begin{itemize}
+\item $O_i^{(j)}$ is the output of the $i^{th}$ node of layer $j$.
+\item $I_j^{(k)}$ is the number of inputs to the $j^{th}$ node of layer $k$
+\item $W_{ij}^{(k)}$ is the weight connecting the $i^{th}$ node in layer $k - 1$ to the $j^{th}$ node of layer $k$
+\item $n^{(l)}$ is the number of nodes in layer $l$.
+\end{itemize}
+
+
+The output of the final node $o$ is: 
+$$
+\hat{F}(x_i) = \sum_{k=1}^{I_o^{(L)}}W_{ko}^{(L)}O_k^{(L-1)}
+$$
+
+The output of each internal node is (where S is a sigmoid function): 
+$$ 
+O_j^{(l)} = S(\sum_{k=1}^{I_j^{(l)}}W_{kj}^{(l)}O_k^{(l-1)})
+$$
+We want to derive a recursive back-propagation algorithm for updating all of the network weights at each time step. At each time step, we calculate not only the gradient with respect to the weights of node $j$ in layer $l$ but also with respect to the outputs of the nodes in layer $l-1$ that are connected to node $j$.
+
+First, we need to derive the gradient for the base case (the output node).  The gradient of the loss with respect to the weight of the output node is:
+$$
+\begin{aligned}
+  \frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{ko}^{(L)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial \hat{F}(x_i)}*\frac{\partial\hat{F}(x_i)}{\partial W_{ko}^{(L)}} \\
+  \frac{\partial L(y_i,\hat{F}(x_i))}{\hat{F}(x_i)} &= \frac{\partial}{\partial \hat{F}(x_i)}\big[ \frac{1}{2}(y_i - \hat{F}(x_i))^2\big] = (y_i - \hat{F}(x_i)) \\
+  \frac{\partial\hat{F}(x_i)}{\partial W_{ko}^{(L)}} &= \frac{\partial}{\partial W_{ko}^{(L)}}\sum_{j=1}^{I_o^{(L)}}W_{jo}^{(L)}O_j^{(L-1)} = O_k^{(L-1)} \\
+    \frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{ko}^{(L)}} &= (y_i - \hat{F}(x_i)) * O_k^{(L-1)}
+\end{aligned}
+$$
+At the same time, we also calculate the gradient with respect to the output of each node in the $(L-1)^{th}$ layer connected to the output node:
+$$
+\begin{aligned}
+  \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_{k}^{(L - 1)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial \hat{F}(x_i)}*\frac{\partial\hat{F}(x_i)}{\partial O_{k}^{(L - 1)}} \\
+  &= (y_i - \hat{F}(x_i)) * W_{ko}^{(L)}
+\end{aligned}
+$$
+For the weights of each node in the $l^{th}$ layer, assuming we have already calculated the gradients of the output of the $l^{th}$ layer, we calculate the gradient:
+$$
+\begin{aligned}
+  \frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{kj}^{(l)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_j^{(l)}}*\frac{\partial O_j^{(l)}}{\partial \zeta} * \frac{\partial \zeta}{\partial W_{kj}^{(l)}} \\
+  \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_j^{(l)}}& \text{ was calculated in the previous step} \\
+  \frac{\partial O_j^{(l)}}{\partial \zeta} &= \frac{\partial S(\zeta)}{\partial \zeta} = S(\zeta) * (1 - S(\zeta)) \text{, where } \zeta = \sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)} \\
+  \frac{\partial \zeta}{\partial W_{kj}^{(l)}} &= \frac{\partial}{\partial W_{kj}^{(l)}} \sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)} = O_k^{(l-1)} \\
+\frac{\partial L(y_i,\hat{F}(x_i))}{\partial W_{ij}^{(l)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_k^{(l)}} * S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)}) * (1 - S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)})) * O_k^{(l-1)}
+\end{aligned}
+$$
+And finally for the outputs of the $(l-1)^{th}$ layer:
+$$
+\begin{aligned}
+  \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_{k}^{(l-1)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_j^{(l)}}*\frac{\partial O_j^{(l)}}{\partial \zeta} * \frac{\partial \zeta}{\partial O_{k}^{(l-1)}} \\
+\frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_{k}^{(l-1)}} &= \frac{\partial L(y_i,\hat{F}(x_i))}{\partial O_j^{(l)}} * S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)}) * (1 - S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)})) * W_{kj}^{(l)}
+\end{aligned}
+$$
+Using the derivations above, we can express the backpropagation algorithm in pseudocode as follows:
+\begin{algorithm}
+\begin{algorithmic}[1]
+\Procedure{BackProp}{}
+\For{layer $l$ = 1 ... $L$}
+\For{node $j$ = 1 ... $n^{(l)}$}
+\For{input node $i$ = 1 ... $I^{(L)}_j$}
+\State $W_{ij}^{(l)} \leftarrow$ initial guess
+\State gradient\_$W_{ij}^{(l)} \leftarrow$ 0
+\State gradient\_$O_j^{(l)} \leftarrow$ 0
+\State prev\_$W_{ij}^{(l)} \leftarrow$ 0
+\EndFor
+\EndFor
+\EndFor
+\Loop
+\For{observation $i$ = 1 ... $N$}
+\State prev\_$W_{kj}^{(l)} \leftarrow W_{kj}^{(l)}$
+\For {layer $l$ = $L$ ... $1$}
+\For {node $j$ = 1 ... $n^{(l)}$}
+\For {input node $k$ = 1 ... $I^{(L)}_j$}
+\If {$l == L$}
+\State gradient\_$W_{kj}^{(l)} \leftarrow (y_i - \hat{F}(x_i)) * O_k^{(L-1)}$
+\State gradient\_$O_{k}^{(l - 1)} \leftarrow (y_i - \hat{F}(x_i)) * W_{ko}^{(L)}$
+\Else
+\State gradient\_$W_{kj}^{(l)} \leftarrow$ gradient\_$O_j^{(l)} * S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)}) * (1 - S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)})) * O_k^{(l-1)}$
+\State gradient\_$O_{k}^{(l - 1)} \leftarrow $ gradient\_$O_j^{(l)} * S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)}) * (1 - S(\sum_{r=1}^{I_j^{(l)}}W_{rj}^{(l)}O_r^{(l-1)})) * W_{kj}^{(l)}$
+\EndIf
+\State $W_{kj}^{(l)} \leftarrow W_{kj}^{(l)} - \eta$ * gradient\_$W_{kj}^{(l)} $
+\EndFor
+\EndFor
+\EndFor
+\EndFor
+\EndLoop 
+\State until $| \mathbf{W} - \mathbf{prev\_W}| < $ threshold
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+      
 
 # Question 2
 ### Consider a radial basis function network with spherical Gaussian basis of the form $B(x|\mu_m,\sigma_m) =  \left( -\frac{1}{2\sigma^{2}_{m}} \sum_{j=1}^{n} (x_j - \mu_{jm})^2 \right)$, with the function approximation given by $\hat{F}(x) = \sum_{m=1}^{M} a_m B(x|\mu_m,\sigma_m)$ and sum-of-squares error criterion. Derive expressions for the gradient $G(x)$ with respect to all (types of) parameters in the network.
