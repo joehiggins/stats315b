@@ -245,7 +245,9 @@ Therefore we have shown that for $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \math
 # Question 5
 ### Describe $K$—fold cross-validation. What is it used for. What are the advantages/disadvantages of using more folds (increasing $K$). When does cross—validation estimate the performance of the actual predicting function being used.
 
-In $K$—fold cross-validation, we split our training data into disjoint subsets of $N/K$ examples each, where $N$ is the total number of training examples. We then train the model $K$ times, leaving out a different $N/K$ as a cross-validation set each time. We estimate the model's error as the average cross-validation error over each of the $K$ folds. It is commonly used for evaluating multiple models (e.g., hyperparameter selection), you often pick the model with the lowest average error from $K$-fold cross validation and retrain it on the entire dataset. It is also more common to have higher $K$ in smaller data sets. The extreme of this procedure is $K = N$, also known as Leave-One-Out cross validation.
+In $K$—fold cross-validation, we split our training data into disjoint subsets of $N/K$ examples each, where $N$ is the total number of training examples. We then train the model $K$ times, leaving out a different $N/K$ as a cross-validation set each time. We estimate the model's prediction error on future data as the average cross-validation error over each of the $K$ folds. 
+
+Cross-validation is commonly used for evaluating multiple models (e.g., hyperparameter selection) when you don't have enough data to have completely disjoint training and validation datasets.  The model that is chosen is often the one with the lowest average error from $K$-fold cross validation, and then it is frequently retrained on the entire dataset. It is also more common to have higher $K$ in smaller data sets. The extreme of this procedure is $K = N$, also known as Leave-One-Out cross validation.
 
 Disadvantages of using more folds (as $K \rightarrow N$):
 \begin{itemize}
