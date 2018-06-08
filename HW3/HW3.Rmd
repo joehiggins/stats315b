@@ -269,15 +269,17 @@ In general, cross-validation measures the error of the modeling procedure (i.e. 
 Advantages of training multiple networks:
 \begin{itemize}
 \item You can finetune each network to predict a particular outcome variable very well
-\item If the outcomes are unrelated and the important subspace of the predictor space is very different for each, then you will probably hurt your learning by training on all of the outcomes in a single network with multiple outputs. 
+\item If the outcomes are unrelated and the important subspace of the predictor space is very different for each, then you will probably hurt your learning by training on all of the outcomes in a single network with multiple outputs.
 \end{itemize}
 
 Disadvantages:
 \begin{itemize}
-\item Requires more computation time - you have to train $M$ networks as opposed to just training 1. 
+\item Requires more computation time - you have to train $M$ networks as opposed to just training 1.
 \item More parameters means that you can end up in more local minima (more likely to overfit)
 \item For each of the individual networks, you are not using the information that you have that $\mathbf{x}$ also predicts $\{y_j\}, j \neq k$ where $y_k$ is the outcome variable of your network.  Training a network with auxiliary losses can be thought of us a form of regularization -- encouraging representations in the lower levels of the network that are more meaningful (And create a network that is more generalizable).
 \end{itemize}
+
+To summarize: In situations where the outcome variables are unrelated, training a single model to predict all of the variables and learn a representation that can predict all of them would do worse than training individual models. If computation time isn't an issue, then individual models should be trained for each outcome variable.  In situations where the outcome variables are related and there is a risk of overfitting (Don't have enough training data for this to be an issue) then multi-task learning could be valuable.
 
 # Question 7 
 ### Spam Email. The data sets spam_stats315B_train.csv, spam_stats315B_test.csv and documentation for this problem are the same as in Homework 2 and can be found in the class web page. You need first to standardize predictors and choose all the weights starting values at random in the interval [-0.5, 0.5].
