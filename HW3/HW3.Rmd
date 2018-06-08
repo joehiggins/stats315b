@@ -187,13 +187,13 @@ Let $\mathbf{\bar{x}} = \Sigma^{-\frac{1}{2}}\mathbf{x}$ and $\mathbf{\bar{\mu}}
 $$
 \begin{aligned}
 B(\mathbf{\bar{x}}|\mathbf{\bar{\mu}}_m,\Sigma ) &= e^{-\frac{1}{2}(\mathbf{\bar{x}}-\mathbf{\bar{\mu}}_m)^T \Sigma (\mathbf{\bar{x}}-\mathbf{\bar{\mu}}_m)} \\
-&= e^{-\frac{1}{2}(\Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m))^T \Sigma (\Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
-&= e^{-\frac{1}{2}((\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}}^T \Sigma \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
+&= e^{-\frac{1}{2}(\Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m))^T \Sigma (\Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m))} \\
+&= e^{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}}^T \Sigma \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
 \text{Since }\Sigma^{-\frac{1}{2}} \text{ is symmetric}:\\
-&= e^{-\frac{1}{2}((\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}} \Sigma \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
+&= e^{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}} \Sigma \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
 \text{Substituting }\Sigma = \Sigma^{\frac{1}{2}}\Sigma^{\frac{1}{2}}:\\
-&= e^{-\frac{1}{2}((\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}} \Sigma^{\frac{1}{2}}\Sigma^{\frac{1}{2}} \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
-&= e^{-\frac{1}{2}((\mathbf{x}-\mathbf{\mu}_m)^T(\mathbf{x}-\mathbf{\mu}_m)}
+&= e^{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_m)^T{\Sigma^{-\frac{1}{2}}} \Sigma^{\frac{1}{2}}\Sigma^{\frac{1}{2}} \Sigma^{-\frac{1}{2}}(\mathbf{x}-\mathbf{\mu}_m)} \\
+&= e^{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_m)^T(\mathbf{x}-\mathbf{\mu}_m)}
 \end{aligned}
 $$
 So $B(\mathbf{\bar{x}}|\mathbf{\bar{\mu}}_m,\Sigma)$ is equivalent to the spherical basis network with parameters $\mathbf{x}$, $\mathbf{\mu}_m$, $\sigma_m^2=1$. $\blacksquare$
