@@ -173,7 +173,7 @@ L &= \frac{1}{2}\sum_{i=1}^N(y_i-\hat{F}(\mathbf{x}_i))^2 \\
 \\
 \frac{\partial L}{\partial \mu_k} &= \frac{a_k}{\sigma_k^2}\sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)B(\mathbf{x}_i|\mathbf{\mu}_k,\sigma_k)(\mathbf{x}_i-\mu_k) \\
 \frac{\partial L}{\partial\sigma_k} &= \frac{a_k}{\sigma^3_k}\sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)B(\mathbf{x}_i|\mathbf{\mu}_k,\sigma_k)(\mathbf{x}_i -\mu_k)^T(\mathbf{x}_i - \mu_k) \\
- \frac{\partial L}{\partial a_k} &= \sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)B(\mathbf{x}|\mu_k,\sigma_k) \\
+ \frac{\partial L}{\partial a_k} &= \sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)B(\mathbf{x}_i |\mu_k,\sigma_k) \\
 \end{aligned}
 $$
 
