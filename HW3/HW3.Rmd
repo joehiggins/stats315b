@@ -93,10 +93,10 @@ Using the derivations above, we can express the backpropagation algorithm in pse
 \EndFor
 \Loop
 \For{observation $i$ = 1 ... $N$}
-\State prev\_$W_{kj}^{(l)} \leftarrow W_{kj}^{(l)}$
 \For {layer $l$ = $L$ ... $1$}
 \For {node $j$ = 1 ... $n^{(l)}$}
 \For {input node $k$ = 1 ... $I^{(L)}_j$}
+\State prev\_$W_{kj}^{(l)} \leftarrow W_{kj}^{(l)}$
 \If {$l == L$}
 \State gradient\_$W_{kj}^{(l)} \leftarrow (y_i - \hat{F}(x_i)) * O_k^{(L-1)}$
 \State gradient\_$O_{k}^{(l - 1)} \leftarrow (y_i - \hat{F}(x_i)) * W_{ko}^{(L)}$
@@ -145,7 +145,7 @@ So $B(\mathbf{\bar{x}}|\mathbf{\bar{\mu}}_m,\Sigma)$ is equivalent to the spheri
 
 First, we assume that $\mu_m = 0$ to simplify the notation.  Otherwise we can define $\mathbf{\bar{x}} = \mathbf{x} - \mu_m$ and follow the reasoning with $\mathbf{\bar{x}}$ below.
 
-Since $\Sigma_m$ is symmetric, we know $\Sigma_m = V\Lambda V^T = \sum_{i=1}^p\lambda_jv_jv_j^T$, where $V$ is an orthonormal basis for $\mathbb{R}^p$, and $\mathbf{x} \in \mathbb{R}^p$. 
+Since $\Sigma_m$ is symmetric, we know $\Sigma_m = V\Lambda V^T = \sum_{j=1}^p\lambda_jv_jv_j^T$, where $V$ is an orthonormal basis for $\mathbb{R}^p$, and $\mathbf{x} \in \mathbb{R}^p$. 
 
 We are interested in defining $\Sigma_m$ such that the basis function network only allows x to change in 1 direction, which we call $\mathbf{v}_{j^*}$.  Using the basis $V$ from above, we are interested in finding the $\Sigma_m$ such that for all vectors $\mathbf{v}_j \in V, j \neq j^*$,
 \begin{equation}
@@ -170,12 +170,12 @@ e^{-\frac{1}{2}(\mathbf{x} + \mathbf{v}_j)^T \Sigma_m (\mathbf{x} + \mathbf{v}_j
 $$
 So now we need to find a $\Sigma_m$ such that the above property holds.
 
-Recall that $\Sigma_m = \sum_{i=1}^p\lambda_jv_jv_j^T$. We assert that if $\Sigma_m$ is a rank 1 matrix of the form $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \mathbf{v}_{j^*}^T$ -- i.e. assume that for all values $j \neq j^*$, $\lambda_j = 0$ -- then the above property does hold.
+Recall that $\Sigma_m = \sum_{j=1}^p\lambda_jv_jv_j^T$. We assert that if $\Sigma_m$ is a rank 1 matrix of the form $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \mathbf{v}_{j^*}^T$ -- i.e. assume that for all values $j \neq j^*$, $\lambda_j = 0$ -- then the above property does hold.
 
 Assume that $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \mathbf{v}_{j^*}^T$. Then for any $\mathbf{v}_j$, $j \neq j^*$:
 $$
 \begin{aligned}
-(2\mathbf{x} + \mathbf{v}_j)^T\Sigma_m\mathbf{v}_j &= \sum_{i=1}^p\lambda_j(2\mathbf{x} + \mathbf{v}_j)^Tq_jq_j^T\mathbf{v}_j \\
+(2\mathbf{x} + \mathbf{v}_j)^T\Sigma_m\mathbf{v}_j &= \sum_{j=1}^p\lambda_j(2\mathbf{x} + \mathbf{v}_j)^Tv_jv_j^T\mathbf{v}_j \\
  &= \lambda_{j^*}(2\mathbf{x} + \mathbf{v}_j)^T\mathbf{v}_{j^*}\mathbf{v}_{j^*}^T\mathbf{v}_j \\
 \text{Since } V \text{ is an orthonormal basis, for all } j \neq j^*, \mathbf{v}_{j^*}^T\mathbf{v}_j = 0: \\
 &= \lambda_{j^*}(2\mathbf{x} + \mathbf{v}_j)^T\mathbf{v}_{j^*} (0) \\
@@ -186,6 +186,8 @@ Therefore we have shown that for $\Sigma_m = \lambda_{j^*} \mathbf{v}_{j*} \math
 
 # Question 5
 ### Describe $K$—fold cross-validation. What is it used for. What are the advan- tages/disadvantages of using more folds (increasing $K$). When does cross—validation estimate the performance of the actual predicting function being used.
+
+In $K$—fold cross-validation, we split our training data into disjoint subsets of $m/K$ examples each, where $m$ is the total number of training examples. We then train the model $K$ times, leaving out a different $m/K$ as a cross-validation set each time. We estimate the model's error as the average cross-validation error over each of the $K$ folds. If you are evaluating multiple models, you often pick the model with the lowest average error from $K$-fold cross validation and retrain it on the entire dataset. The extreme of this procedure is $K = m$, also known as Leave-One-Out cross validation.
 
 Disadvantages of using more folds (as $K \rightarrow N$):
 \begin{itemize}
@@ -206,8 +208,8 @@ In general, cross-validation measures the error of the modeling procedure (i.e. 
 
 Advantages of training multiple networks:
 \begin{itemize}
-\item You can finetune the network to predict a particular outcome variable very well
-\item If the outcomes are unrelated and the important subspace of the predictor space is very different for each, then you will probably hurt your learning by training on all of the outcomes at the same time.
+\item You can finetune each network to predict a particular outcome variable very well
+\item If the outcomes are unrelated and the important subspace of the predictor space is very different for each, then you will probably hurt your learning by training on all of the outcomes in a single network with multiple outputs.
 \end{itemize}
 
 Disadvantages:
