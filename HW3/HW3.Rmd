@@ -117,7 +117,65 @@ Using the derivations above, we can express the backpropagation algorithm in pse
       
 
 # Question 2
-### Consider a radial basis function network with spherical Gaussian basis of the form $B(x|\mu_m,\sigma_m) =  \left( -\frac{1}{2\sigma^{2}_{m}} \sum_{j=1}^{n} (x_j - \mu_{jm})^2 \right)$, with the function approximation given by $\hat{F}(x) = \sum_{m=1}^{M} a_m B(x|\mu_m,\sigma_m)$ and sum-of-squares error criterion. Derive expressions for the gradient $G(x)$ with respect to all (types of) parameters in the network.
+### Consider a radial basis function network with spherical Gaussian basis of the form $B(x|\mathbf{\mu}_m,\sigma_m) =  \text{exp}\left( -\frac{1}{2\sigma^{2}_{m}} \sum_{j=1}^{n} (x_j - \mu_{jm})^2 \right)$, with the function approximation given by $\hat{F}(x) = \sum_{m=1}^{M} a_m B(\mathbf{x}|\mu_m,\sigma_m)$ and sum-of-squares error criterion. Derive expressions for the gradient $G(x)$ with respect to all (types of) parameters in the network.
+
+Using the sum-of-squares criterion, our loss function is given by:
+$$
+L = \frac{1}{2}\sum_{i=1}^N(y_i-\hat{F}(\mathbf{x}_i))^2
+$$
+
+We will calculate the gradients of $L$ with respect to an arbitrary $\mathbf{\mu}_k$, $\sigma_k$, and $a_k$.
+
+First, we calculate the gradients of $B(\mathbf{x}|\mathbf{\mu}_k,\sigma_k)$ with respect to $\mathbf{\mu}_k$ and $\sigma_k$:
+
+$$
+\begin{aligned}
+B(\mathbf{x}|\mathbf{\mu}_k,\sigma_k) &= \text{exp}\left( -\frac{1}{2\sigma^{2}_{k}} \sum_{j=1}^{n} (x_j - \mathbf{\mu}_{jk})^2 \right) \\
+&= \text{exp} \left( -\frac{1}{2\sigma^{2}_{k}}(\mathbf{x} -\mu_k)^T(\mathbf{x} - \mu_k) \right) \\
+&= \text{exp} \left( -\frac{1}{2\sigma^{2}_{k}}(\mathbf{x}^T\mathbf{x} - 2\mathbf{x}^T\mu_k + \mu_k^T\mu_k) \right) \\
+\\
+\implies \frac{\partial B(\mathbf{x}|\mu_k,\sigma_k)}{\partial\mu_k} &=\text{exp} \left( -\frac{1}{2\sigma^{2}_{k}}(\mathbf{x}^T\mathbf{x} - 2\mathbf{x}^T\mu_k + \mu_k^T\mu_k) \right)(-\frac{1}{2\sigma_k^2})(-2\mathbf{x}+2\mu_k) \\
+&=\frac{1}{\sigma_k^2}B(\mathbf{x}|\mathbf{\mu}_k,\sigma_k)(\mathbf{x}-\mu_k) \qquad \qquad \qquad \qquad \qquad (1) \\
+\\
+&\text{and} \\
+\\
+\implies\frac{\partial B(\mathbf{x}|\mu_k,\sigma_k)}{\partial\sigma_k} &=  \text{exp} \left( -\frac{1}{2\sigma^{2}_{k}}(\mathbf{x} -\mu_k)^T(\mathbf{x} - \mu_k) \right) (-\frac{1}{2})(\mathbf{x} -\mu_k)^T(\mathbf{x} - \mu_k)(-2)(\frac{1}{\sigma^3_k}) \\
+&= \frac{1}{\sigma^3_k}B(\mathbf{x}|\mathbf{\mu}_k,\sigma_k)(\mathbf{x} -\mu_k)^T(\mathbf{x} - \mu_k) \qquad \qquad \qquad (2)
+\end{aligned}
+$$
+
+Next we use $(1)$ and $(2)$ to calculate the gradients of $\hat{F}(\mathbf{x})$ with respect to $\mathbf{\mu}_k$, $\sigma_k$, and $a_k$:
+
+$$
+\begin{aligned}
+\hat{F}(\mathbf{x}) &= \sum_{m=1}^{M} a_m B(\mathbf{x}|\mu_m,\sigma_m) \\
+\implies \frac{\partial \hat{F}(\mathbf{x})}{\partial\mu_k} &= a_k\frac{\partial B(\mathbf{x}|\mu_k,\sigma_k)}{\partial\mu_k} \\
+&= \frac{a_k}{\sigma_k^2}B(\mathbf{x}|\mathbf{\mu}_k,\sigma_k)(\mathbf{x}-\mu_k) \qquad \qquad \qquad \qquad \qquad (3) \\
+\\
+\implies \frac{\partial \hat{F}(\mathbf{x})}{\partial\sigma_k} &= a_k\frac{\partial B(\mathbf{x}|\mu_k,\sigma_k)}{\partial\sigma_k} \\
+&= \frac{a_k}{\sigma^3_k}B(\mathbf{x}|\mathbf{\mu}_k,\sigma_k)(\mathbf{x} -\mu_k)^T(\mathbf{x} - \mu_k) \qquad \qquad \qquad (4) \\
+\\
+\implies\frac{\partial \hat{F}(\mathbf{x})}{\partial a_k} &= B(\mathbf{x}|\mu_k,\sigma_k) \qquad \qquad \qquad \qquad\qquad\qquad\qquad \ \ \ \ (5)
+\end{aligned}
+$$
+
+Finally, we use $(3)$, $(4)$, and $(5)$ to calculate the gradients of $L$ with respect to $\mathbf{\mu}_k$, $\sigma_k$, and $a_k$:
+
+$$
+\begin{aligned}
+L &= \frac{1}{2}\sum_{i=1}^N(y_i-\hat{F}(\mathbf{x}_i))^2 \\
+\\
+\implies \frac{\partial L}{\partial\mu_k} &= \sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)\frac{\partial \hat{F}(\mathbf{x}_i)}{\partial\mu_k} \\
+\implies \frac{\partial L}{\partial\sigma_k} &= \sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)\frac{\partial \hat{F}(\mathbf{x}_i)}{\partial\sigma_k} \\
+\implies \frac{\partial L}{\partial a_k} &= \sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)\frac{\partial \hat{F}(\mathbf{x}_i)}{\partial a_k} \\
+\\
+&\text{Therefore, our gradients are given by:}\\
+\\
+\frac{\partial L}{\partial \mu_k} &= \frac{a_k}{\sigma_k^2}\sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)B(\mathbf{x}_i|\mathbf{\mu}_k,\sigma_k)(\mathbf{x}_i-\mu_k) \\
+\frac{\partial L}{\partial\sigma_k} &= \frac{a_k}{\sigma^3_k}\sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)B(\mathbf{x}_i|\mathbf{\mu}_k,\sigma_k)(\mathbf{x}_i -\mu_k)^T(\mathbf{x}_i - \mu_k) \\
+ \frac{\partial L}{\partial a_k} &= \sum_{i=1}^N(\hat{F}(\mathbf{x}_i)-y_i)B(\mathbf{x}|\mu_k,\sigma_k) \\
+\end{aligned}
+$$
 
 # Question 3
 ### Consider a (“elliptical”) radial basis function network with elliptically symmetric Gaussian basis $B(\mathbf{x}|\mathbf{\mu}_m,\Sigma ) = exp(-\frac{1}{2}(\mathbf{x}-\mathbf{\mu}_m)^T \Sigma (\mathbf{x}-\mathbf{\mu}_m))$ where $\Sigma$ is a positive definite matrix.  Show that the output of such a network is equivalent to that of one composed of spherically symmetric Gaussian basis functions (Problem 2) with $\sigma_m = 1$, provided the input vector is first transformed by an appropriate linear transformation. Find expressions relating the transformed input vector $\mathbf{\bar{x}}$ and the transformed basis function centers $\mathbf{\bar{\mu}}_m$ to the corresponding original vectors $\mathbf{x}$ and $\mathbf{\mu}_m$.
