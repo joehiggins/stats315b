@@ -284,9 +284,9 @@ To summarize: In situations where the outcome variables are unrelated, training 
 # Question 7 
 ### Spam Email. The data sets spam_stats315B_train.csv, spam_stats315B_test.csv and documentation for this problem are the same as in Homework 2 and can be found in the class web page. You need first to standardize predictors and choose all the weights starting values at random in the interval [-0.5, 0.5].
 
-see: https://piazza.com/class/jfehm8n4ied2w9?cid=256
+See the following Piazza post to confirm scaling method: scale the training and test datasets by the training statistics. https://piazza.com/class/jfehm8n4ied2w9?cid=256
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 rm(list = ls())
 
 #Utility functions
@@ -332,7 +332,7 @@ set_seed <- function(){
 
 ```
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 #remove all variables except for functions
 rm(list = setdiff(ls(), lsf.str()))
 
@@ -380,9 +380,9 @@ test_y  <- data.frame(test[,'type'])
 
 The structural model with 4 hidden units performs best at classifying the test set, achieving an estimated (test set) accuracy of 92.24% . The second best was 3 hidden units, achieving 91.66% accuracy.
 
-reference: https://piazza.com/class/jfehm8n4ied2w9?cid=235
+Refer to the following piazza post that "different sets of starting values for the predictors" refers to averaging over several random initializations of weights: https://piazza.com/class/jfehm8n4ied2w9?cid=235
 
-```{r, results="hold", eval = FALSE}
+```{r, results="hold", eval = TRUE}
 #remove all except functions and data
 to_keep <- ls()[!(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y'))]
 rm(list = setdiff(to_keep, lsf.str()))
@@ -439,9 +439,9 @@ cat("2nd best performing number of hidden layer neurons: ",
 
 Our best model uses 4 neurons, and a weight decay of 0.1. It has an overall estimated (test set) misclassification rate of 4.69% (spam 5.34%, and nonspam 4.26%). We see this is an improvement over the unregularized version, which had an estimated misclassification rate of 7.76%.
 
-see: https://piazza.com/class/jfehm8n4ied2w9?cid=223
+Piazza post for methodology reference: https://piazza.com/class/jfehm8n4ied2w9?cid=223
 
-```{r, results="hold", eval = FALSE}
+```{r, results="hold", eval = TRUE}
 #remove all except functions, data and best structural info
 to_keep <- ls()[
   !(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y','best_performing_num_neurons'))
@@ -509,9 +509,9 @@ cat(percent(misclassification_rates[3]), ": Nonspam","\n")
 
 Our best filter requiring the proportion of misclassified nonspam to be less than 1% has a hidden layer size of 6 and weight decay of 0.2. This achieves an overall misclassification rate of 6.58% (spam: 14.89%, nonspam: 0.98%). We find the best filter by fitting a model for each combination of a number of hidden units in $\{1,2,...,10\}$ and the weight decay in $\{0.0,0.1,...,1.0\}$. We then find the minimum threshold that misclassifies at most 1% of nonspam emails for each model. By applying to each model it's own threshold, we find the model and threshold combination that yields the lowest overall misclassification rate while maintaining a nonspam misclassification rate of at most 1%.
 
-See: https://piazza.com/class/jfehm8n4ied2w9?cid=257
+Piazza post for threshold methodology reference: https://piazza.com/class/jfehm8n4ied2w9?cid=257
 
-```{r, results="hold", eval = FALSE}
+```{r, results="hold", eval = TRUE}
 #remove all except functionsand data
 to_keep <- ls()[!(ls() %in% c('train_scaled_X','train_y','test_scaled_X','test_y'))]
 rm(list = setdiff(to_keep, lsf.str()))
